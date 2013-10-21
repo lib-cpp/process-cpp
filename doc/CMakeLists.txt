@@ -17,7 +17,7 @@
 option(
   PROCESS_CPP_ENABLE_DOC_GENERATION
   "Generate package documentation with doxygen"
-  OFF
+  ON
 )
 
 if (PROCESS_CPP_ENABLE_DOC_GENERATION)

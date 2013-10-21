@@ -25,22 +25,22 @@ Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-Description: A simple convenience library for handling processes in C++11
+Description: A simple convenience library for handling processes in C++11 - runtime library.
  This package includes the process-cpp runtime libraries.
 
 Package: libprocess-cpp-dev
 Section: libdevel
 Architecture: any
 Multi-Arch: same
+Recommends: libprocess-cpp-doc
 Depends: libprocess-cpp0 (= ${binary:Version}),
          ${misc:Depends},
-Description: A simple convenience library for handling processes in C++11.
+Description: A simple convenience library for handling processes in C++11 - development headers and libraries.
  All the development headers and libraries for process-cpp.
 
-# Package: libcontent-hub-doc
-# Section: doc
-# Architecture: all
-# Depends: libcontent-hub-dev (>= ${source:Version}),
-#         ${misc:Depends},
-#Description: Documentation files for libcontent-hub-dev
-# Documentation files for the libcontent-hub development
+Package: libprocess-cpp-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends},
+Description: Documentation files for libprocess-cpp-dev
+ Documentation files for the libprocess-cpp development
