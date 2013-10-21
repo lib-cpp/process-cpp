@@ -23,12 +23,19 @@
 
 namespace posix
 {
+/**
+ * @brief The StandardStream enum wraps the POSIX standard streams.
+ */
 enum StandardStream
 {
     stdin = 0,
     stdout = 1,
     stderr = 2
 };
+
+/**
+ * @brief StandardStreamFlags is a bitfield of StandardStream values.
+ */
 typedef std::bitset<3> StandardStreamFlags;
 }
 #endif // POSIX_STANDARD_STREAM_H_

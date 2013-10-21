@@ -74,7 +74,7 @@ ChildProcess fork(const std::function<int()>& main,
 
         // We have to ensure that we exit here. Otherwise, we run into
         // all sorts of weird issues.
-        exit(result);
+        ::exit(result);
     }
 
     // We are in the parent process, and create a process object
@@ -124,7 +124,7 @@ ChildProcess vfork(const std::function<int()>& main,
 
         // We have to ensure that we exit here. Otherwise, we run into
         // all sorts of weird issues.
-        exit(result);
+        ::exit(result);
     }
 
     // We are in the parent process, and create a process object

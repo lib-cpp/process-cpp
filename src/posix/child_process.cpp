@@ -145,7 +145,7 @@ ChildProcess::~ChildProcess()
 {
 }
 
-Wait::Result ChildProcess::wait_for(const Wait::Flags& flags)
+wait::Result ChildProcess::wait_for(const wait::Flags& flags)
 {
     int status = -1;
     pid_t result_pid = ::waitpid(pid(), std::addressof(status), flags);
@@ -153,30 +153,30 @@ Wait::Result ChildProcess::wait_for(const Wait::Flags& flags)
     if (result_pid == -1)
         throw std::system_error(errno, std::system_category());
 
-    Wait::Result result;
+    wait::Result result;
 
     if (result_pid == 0)
     {
-        result.status = Wait::Result::Status::no_state_change;
+        result.status = wait::Result::Status::no_state_change;
         return result;
     }
 
     if (WIFEXITED(status))
     {
-        result.status = Wait::Result::Status::exited;
-        result.detail.if_exited.status = static_cast<Exit::Status>(WEXITSTATUS(status));
+        result.status = wait::Result::Status::exited;
+        result.detail.if_exited.status = static_cast<exit::Status>(WEXITSTATUS(status));
     } else if (WIFSIGNALED(status))
     {
-        result.status = Wait::Result::Status::signaled;
+        result.status = wait::Result::Status::signaled;
         result.detail.if_signaled.signal = static_cast<Signal>(WTERMSIG(status));
         result.detail.if_signaled.core_dumped = WCOREDUMP(status);
     } else if (WIFSTOPPED(status))
     {
-        result.status = Wait::Result::Status::stopped;
+        result.status = wait::Result::Status::stopped;
         result.detail.if_stopped.signal = static_cast<Signal>(WSTOPSIG(status));
     } else if (WIFCONTINUED(status))
     {
-        result.status = Wait::Result::Status::continued;
+        result.status = wait::Result::Status::continued;
     }
 
     return result;

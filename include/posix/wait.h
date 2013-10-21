@@ -28,11 +28,8 @@
 
 namespace posix
 {
-struct Wait
+namespace wait
 {
-    Wait() = delete;
-    ~Wait() = delete;
-
     enum Flag
     {
         continued = WCONTINUED,
@@ -41,36 +38,56 @@ struct Wait
     };
     typedef std::uint32_t Flags;
 
+    /**
+     * @brief The Result struct encapsulates the result of waiting for a process state change.
+     */
     struct Result
     {
+        /**
+         * @brief The status of the process/wait operation.
+         */
         enum class Status
         {
-            undefined,
-            no_state_change,
-            exited,
-            signaled,
-            stopped,
-            continued
+            undefined, ///< Marks an undefined state.
+            no_state_change, ///< No state change occured.
+            exited, ///< The process exited normally.
+            signaled, ///< The process was signalled and terminated.
+            stopped, ///< The process was signalled and stopped.
+            continued ///< The process resumed operation.
         } status = Status::undefined;
 
+        /**
+         * @brief Union of result-specific details.
+         */
         union
         {
+            /**
+             * Contains the exit status of the process if status == Status::exited.
+             */
             struct
             {
-                Exit::Status status;
+                exit::Status status; ///< Exit status of the process.
             } if_exited;
+
+            /**
+             * Contains the signal that caused the process to terminate if status == Status::signaled.
+             */
             struct
             {
-                Signal signal;
-                bool core_dumped;
+                Signal signal; ///< Signal that caused the process to terminate.
+                bool core_dumped; ///< true if the process termination resulted in a core dump.
             } if_signaled;
+
+            /**
+             * Contains the signal that caused the process to terminate if status == Status::stopped.
+             */
             struct
             {
-                Signal signal;
+                Signal signal; ///< Signal that caused the process to terminate.
             } if_stopped;
         } detail;
     };
-};
+}
 }
 
 #endif // POSIX_WAIT_H_

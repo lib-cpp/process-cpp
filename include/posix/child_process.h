@@ -27,15 +27,40 @@
 
 namespace posix
 {
+/**
+ * @brief The Process class models a child process of this process.
+ *
+ * In addition to the functionality offered by the Process class, an instance
+ * of ChildProcess offers functionality to wait for status changes of the child
+ * process and to access the child process's standard streams if they have been
+ * redirected when forking or exec'ing.
+ */
 class ChildProcess : public Process
 {
 public:
     ~ChildProcess();
 
-    Wait::Result wait_for(const Wait::Flags& flags);
+    /**
+     * @brief Wait for the child process to change state.
+     * @param [in] flags Alters the behavior of the wait operation.
+     * @return Result of the wait operation, as well as information about the
+     * reasons for a child process's state change.
+     */
+    wait::Result wait_for(const wait::Flags& flags);
 
+    /**
+     * @brief Access this process's stderr.
+     */
     std::istream& cerr();
+
+    /**
+     * @brief Access this process's stdin.
+     */
     std::ostream& cin();
+
+    /**
+     * @brief Access this process's stdout.
+     */
     std::istream& cout();
 
 private:

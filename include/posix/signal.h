@@ -23,7 +23,9 @@
 
 namespace posix
 {
-
+/**
+ * @brief The Signal enum collects the most common POSIX signals.
+ */
 enum class Signal
 {
     sig_hup = SIGHUP,

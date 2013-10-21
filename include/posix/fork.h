@@ -26,9 +26,23 @@
 
 namespace posix
 {
+/**
+ * @brief fork forks a new process and executes the provided main function in the newly forked process.
+ * @throws std::system_error in case of errors.
+ * @param [in] main The main function of the newly forked process.
+ * @param [in] flags Specify which standard streams should be redirected to the parent process.
+ * @return An instance of ChildProcess in case of success.
+ */
 ChildProcess fork(const std::function<int()>& main,
                   const StandardStreamFlags& flags);
 
+/**
+ * @brief fork vforks a new process and executes the provided main function in the newly forked process.
+ * @throws std::system_error in case of errors.
+ * @param [in] main The main function of the newly forked process.
+ * @param [in] flags Specify which standard streams should be redirected to the parent process.
+ * @return An instance of ChildProcess in case of success.
+ */
 ChildProcess vfork(const std::function<int()>& main,
                    const StandardStreamFlags& flags);
 }

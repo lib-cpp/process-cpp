@@ -23,14 +23,17 @@
 
 namespace posix
 {
-struct Exit
+namespace exit
 {
+    /**
+     * @brief The Status enum wrap's the posix exit status.
+     */
     enum class Status
     {
         success = EXIT_SUCCESS,
         failure = EXIT_FAILURE
     };
-};
+}
 }
 
 #endif // POSIX_EXIT_H_
