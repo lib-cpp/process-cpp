@@ -1,0 +1,46 @@
+Source: process-cpp
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Build-Depends: cmake,
+               debhelper (>= 9),
+               doxygen,
+               google-mock,
+               libboost-dev,
+               libboost-iostreams-dev,
+               libboost-system-dev,
+               libgtest-dev,
+               lcov,
+Standards-Version: 3.9.4
+Section: libs
+Homepage: https://launchpad.net/process-cpp
+# If you aren't a member of ~phablet-team but need to upload packaging changes,
+# just go ahead. ~phablet-team will notice and sync up the code again.
+Vcs-Bzr: https://code.launchpad.net/~phablet-team/content-hub/trunk
+Vcs-Browser: https://bazaar.launchpad.net/~phablet-team/process-cpp/trunk/files
+
+Package: libprocess-cpp0
+Section: libs
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends},
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+Description: A simple convenience library for handling processes in C++11
+ This package includes the process-cpp runtime libraries.
+
+Package: libprocess-cpp-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libprocess-cpp0 (= ${binary:Version}),
+         ${misc:Depends},
+Description: A simple convenience library for handling processes in C++11.
+ All the development headers and libraries for process-cpp.
+
+# Package: libcontent-hub-doc
+# Section: doc
+# Architecture: all
+# Depends: libcontent-hub-dev (>= ${source:Version}),
+#         ${misc:Depends},
+#Description: Documentation files for libcontent-hub-dev
+# Documentation files for the libcontent-hub development
