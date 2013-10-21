@@ -26,17 +26,6 @@ namespace posix
 namespace linux
 {
 
-const Self& Process::self()
-{
-    return mutable_self();
-}
-
-Self& Process::mutable_self()
-{
-    static posix::linux::Self thiz;
-    return thiz;
-}
-
 Process::~Process() noexcept
 {
 }
@@ -49,14 +38,5 @@ Process Process::parent() const
 Process::Process(pid_t pid) : posix::Process(pid)
 {
 }
-
-Self::Self() : posix::Self()
-{
-}
-
-Self::~Self()
-{
-}
-
 }
 }

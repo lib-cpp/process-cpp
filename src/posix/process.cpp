@@ -18,7 +18,6 @@
 
 #include <posix/process.h>
 
-#include <posix/environment.h>
 #include <posix/signal.h>
 
 #include <sys/types.h>
@@ -47,55 +46,6 @@ struct Process::Private
 {
     pid_t pid;
 };
-
-struct Self::Private
-{
-    Environment env;
-};
-
-Self::Self() : Process(getpid()), d(new Private())
-{
-}
-
-Self::~Self()
-{
-}
-
-const Environment& Self::env() const
-{
-    return d->env;
-}
-
-Environment& Self::mutable_env()
-{
-    return d->env;
-}
-
-std::istream& Self::cin()
-{
-    return std::cin;
-}
-
-std::ostream& Self::cout()
-{
-    return std::cout;
-}
-
-std::ostream& Self::cerr()
-{
-    return std::cerr;
-}
-
-const Self& Process::self()
-{    
-    return mutable_self();
-}
-
-Self& Process::mutable_self()
-{
-    static Self thiz;
-    return thiz;
-}
 
 Process::Process(pid_t pid)
     : d(new Private{pid})

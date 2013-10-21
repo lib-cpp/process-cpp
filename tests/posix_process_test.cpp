@@ -28,21 +28,21 @@
 
 TEST(PosixProcess, this_process_instance_reports_correct_pid)
 {
-    EXPECT_EQ(getpid(), posix::Process::self().pid());
+    EXPECT_EQ(getpid(), posix::this_process::instance().pid());
 }
 
 TEST(PosixProcess, accessing_streams_of_this_process_works)
 {
-    posix::Process::mutable_self().cout() << "posix::Process::self().cout()" << std::endl;
-    posix::Process::mutable_self().cerr() << "posix::Process::self().cerr()" << std::endl;
+    posix::this_process::cout() << "posix::this_process::instance().cout()" << std::endl;
+    posix::this_process::cerr() << "posix::this_process::instance().cerr()" << std::endl;
 }
 
 TEST(Self, non_mutable_access_to_the_environment_returns_correct_results)
 {
     static const char* home = "HOME";
     static const char* totally_not_existent = "totally_not_existent_42";
-    EXPECT_EQ(getenv("HOME"), posix::Process::self().env().value_for_key(home));
-    EXPECT_EQ("", posix::Process::self().env().value_for_key(totally_not_existent));
+    EXPECT_EQ(getenv("HOME"), posix::this_process::env::get(home));
+    EXPECT_EQ("", posix::this_process::env::get(totally_not_existent));
 }
 
 TEST(Self, mutable_access_to_the_environment_alters_the_environment)
@@ -50,28 +50,28 @@ TEST(Self, mutable_access_to_the_environment_alters_the_environment)
     static const char* totally_not_existent = "totally_not_existent_42";
     static const char* totally_not_existent_value = "42";
 
-    EXPECT_EQ("", posix::Process::self().env().value_for_key(totally_not_existent));
-    EXPECT_NO_THROW(posix::Process::mutable_self().mutable_env().set_value_for_key(
+    EXPECT_EQ("", posix::this_process::env::get(totally_not_existent));
+    EXPECT_NO_THROW(posix::this_process::env::set_or_throw(
                         totally_not_existent,
                         totally_not_existent_value));
     EXPECT_EQ(totally_not_existent_value,
-              posix::Process::self().env().value_for_key(totally_not_existent));
+              posix::this_process::env::get(totally_not_existent));
 
     EXPECT_NO_THROW(
-                posix::Process::mutable_self().mutable_env().unset_value_for_key(
+                posix::this_process::env::unset_or_throw(
                     totally_not_existent));
     EXPECT_EQ("",
-              posix::Process::self().env().value_for_key(totally_not_existent));
+              posix::this_process::env::get(totally_not_existent));
 }
 
 TEST(Self, getting_env_var_for_empty_key_does_not_throw)
 {
-    EXPECT_NO_THROW(posix::Process::self().env().value_for_key(""));
+    EXPECT_NO_THROW(posix::this_process::env::get(""));
 }
 
 TEST(Self, setting_env_var_for_empty_key_throws)
 {
-    EXPECT_ANY_THROW(posix::Process::mutable_self().mutable_env().set_value_for_key(
+    EXPECT_ANY_THROW(posix::this_process::env::set_or_throw(
                         "",
                         "uninteresting"));
 }
@@ -180,7 +180,7 @@ TEST(ChildProcess, exec_returns_process_object_with_valid_pid_and_wait_for_retur
     const std::string program{"/usr/bin/sleep"};
     const std::vector<std::string> argv = {"10"};
     std::map<std::string, std::string> env;
-    posix::Process::self().env().for_each([&env](const std::string& key, const std::string& value)
+    posix::this_process::env::for_each([&env](const std::string& key, const std::string& value)
     {
         env.insert(std::make_pair(key, value));
     });
@@ -205,7 +205,7 @@ TEST(ChildProcess, signalling_an_execd_child_makes_wait_for_return_correct_resul
     const std::string program{"/usr/bin/env"};
     const std::vector<std::string> argv = {};
     std::map<std::string, std::string> env;
-    posix::Process::self().env().for_each([&env](const std::string& key, const std::string& value)
+    posix::this_process::env::for_each([&env](const std::string& key, const std::string& value)
     {
         env.insert(std::make_pair(key, value));
     });
@@ -248,7 +248,7 @@ TEST(ChildProcess, stopping_an_execd_child_makes_wait_for_return_correct_result)
     const std::string program{"/usr/bin/sleep"};
     const std::vector<std::string> argv = {"10"};
     std::map<std::string, std::string> env;
-    posix::Process::self().env().for_each([&env](const std::string& key, const std::string& value)
+    posix::this_process::env::for_each([&env](const std::string& key, const std::string& value)
     {
         env.insert(std::make_pair(key, value));
     });
@@ -309,7 +309,7 @@ TEST(StreamRedirect, redirecting_stdin_stdout_stderr_works)
 
 TEST(Environment, iterating_the_environment_does_not_throw)
 {
-    EXPECT_NO_THROW(posix::Process::self().env().for_each(
+    EXPECT_NO_THROW(posix::this_process::env::for_each(
                         [](const std::string& key, const std::string& value)
                         {
                             std::cout << key << " -> " << value << std::endl;

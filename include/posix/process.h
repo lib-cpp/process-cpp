@@ -19,6 +19,7 @@
 #ifndef POSIX_PROCESS_H_
 #define POSIX_PROCESS_H_
 
+#include <posix/this_process.h>
 #include <posix/wait.h>
 
 #include <memory>
@@ -26,7 +27,6 @@
 
 namespace posix
 {
-class Environment;
 enum class Signal;
 class Self;
 class WaitFlags;
@@ -37,18 +37,6 @@ class WaitFlags;
 class Process
 {
 public:
-    /**
-     * @brief Access a process instance corresponding to the current process.
-     * @return A non-mutable reference to the current process.
-     */
-    static const Self& self();
-
-    /**
-     * @brief Access a process instance corresponding to the current process.
-     * @return A mutable reference to the current process.
-     */
-    static Self& mutable_self();
-
     /**
      * @brief Frees resources associated with the process.
      */
@@ -81,56 +69,8 @@ public:
     virtual void send_signal(const Signal& signal, std::system_error& e) noexcept;
 
 protected:
+    friend const Process& posix::this_process::instance();
     explicit Process(pid_t pid);
-
-private:
-    struct Private;
-    std::shared_ptr<Private> d;
-};
-
-/**
- * @brief The Self class refers to this process.
- *
- * Provides a richer interface, including access to this process's environment
- * and to its std streams.
- */
-class Self : public Process
-{
-public:
-    Self(const Self&) = default;
-    Self& operator=(const Self&) = default;
-
-    /**
-     * @brief Provides mutable access to the environment of this process.
-     * @return A mutable reference to this process's environment
-     */
-    Environment& mutable_env();
-
-    /**
-     * @brief Provides read-only access to the environment of this process.
-     * @return A non-mutable reference to this process's environment
-     */
-    const Environment& env() const;
-
-    /**
-     * @brief Access this process's stdin.
-     */
-    std::istream& cin();
-
-    /**
-     * @brief Access this process's stdout.
-     */
-    std::ostream& cout();
-
-    /**
-     * @brief Access this process's stderr.
-     */
-    std::ostream& cerr();
-
-protected:
-    friend class Process;
-    Self();
-    ~Self();
 
 private:
     struct Private;

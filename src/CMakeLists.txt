@@ -22,6 +22,7 @@ add_library(
   posix/exec.cpp
   posix/fork.cpp
   posix/process.cpp
+  posix/this_process.cpp
   posix/linux/process.cpp
 
   posix/linux/proc/process/oom_adj.cpp

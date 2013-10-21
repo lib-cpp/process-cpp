@@ -33,9 +33,6 @@ class Self;
 class Process : public posix::Process
 {
 public:
-    static const Self& self();
-    static Self& mutable_self();
-
     virtual ~Process() noexcept;
 
     Process parent() const;
@@ -43,21 +40,6 @@ protected:
     explicit Process(pid_t pid);
 
 private:
-    struct Private;
-    std::shared_ptr<Private> d;
-};
-
-class Self : public posix::Self
-{
-public:
-    Self(const Self&) = default;
-    Self& operator=(const Self&) = default;
-
-private:
-    friend class posix::linux::Process;
-    Self();
-    ~Self();
-
     struct Private;
     std::shared_ptr<Private> d;
 };

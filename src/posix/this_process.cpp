@@ -16,12 +16,14 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <posix/environment.h>
+#include <posix/this_process.h>
+#include <posix/process.h>
 
 #include <boost/algorithm/string.hpp>
 
+#include <iostream>
 #include <mutex>
-#include <system_error>
+#include <vector>
 
 #include <cerrno>
 #include <cstdlib>
@@ -32,6 +34,12 @@
 extern char** environ;
 #endif
 
+namespace posix
+{
+namespace this_process
+{
+namespace env
+{
 namespace
 {
 std::mutex& env_guard()
@@ -41,17 +49,7 @@ std::mutex& env_guard()
 }
 }
 
-namespace posix
-{
-Environment::Environment()
-{
-}
-
-Environment::~Environment()
-{
-}
-
-void Environment::for_each(const std::function<void(const std::string&, const std::string&)>& functor) const noexcept
+void for_each(const std::function<void(const std::string&, const std::string&)>& functor) noexcept
 {
     std::lock_guard<std::mutex> lg(env_guard());
     auto it = ::environ;
@@ -67,7 +65,7 @@ void Environment::for_each(const std::function<void(const std::string&, const st
     }
 }
 
-std::string Environment::value_for_key(const std::string& key) const
+std::string get(const std::string& key)
 {
     std::lock_guard<std::mutex> lg(env_guard());
 
@@ -75,7 +73,7 @@ std::string Environment::value_for_key(const std::string& key) const
     return std::string{result ? result : ""};
 }
 
-void Environment::unset_value_for_key(const std::string& key)
+void unset_or_throw(const std::string& key)
 {
     std::lock_guard<std::mutex> lg(env_guard());
 
@@ -85,20 +83,24 @@ void Environment::unset_value_for_key(const std::string& key)
         throw std::system_error(errno, std::system_category());
 }
 
-void Environment::unset_value_for_key(const std::string &key,
-                                      std::system_error& se) noexcept
+bool unset(const std::string& key,
+           std::system_error& se) noexcept(true)
 {
-    try
+    std::lock_guard<std::mutex> lg(env_guard());
+
+    auto rc = ::unsetenv(key.c_str());
+
+    if (rc == -1)
     {
-        unset_value_for_key(key);
-    } catch(const std::system_error& e)
-    {
-        se = e;
+        se = std::system_error(errno, std::system_category());
+        return false;
     }
+
+    return true;
 }
 
-void Environment::set_value_for_key(const std::string& key,
-                                    const std::string& value)
+void set_or_throw(const std::string& key,
+                  const std::string& value)
 {
     std::lock_guard<std::mutex> lg(env_guard());
 
@@ -109,16 +111,43 @@ void Environment::set_value_for_key(const std::string& key,
         throw std::system_error(errno, std::system_category());
 }
 
-void Environment::set_value_for_key(const std::string &key,
-                                    const std::string &value,
-                                    std::system_error& se) noexcept
+bool set(const std::string &key,
+         const std::string &value,
+         std::system_error& se) noexcept(true)
 {
-    try
+    std::lock_guard<std::mutex> lg(env_guard());
+
+    static const int overwrite = 0;
+    auto rc = ::setenv(key.c_str(), value.c_str(), overwrite);
+
+    if (rc == -1)
     {
-        set_value_for_key(key, value);
-    } catch(const std::system_error& e)
-    {
-        se = e;
+        se = std::system_error(errno, std::system_category());
+        return false;
     }
+
+    return true;
+}
+}
+
+const Process& instance()
+{
+    static const Process self{getpid()};
+    return self;
+}
+std::istream& cin()
+{
+    return std::cin;
+}
+
+std::ostream& cout()
+{
+    return std::cout;
+}
+
+std::ostream& cerr()
+{
+    return std::cerr;
+}
 }
 }
