@@ -1,3 +1,4 @@
 usr/include/process-cpp/*
 usr/lib/*/libprocess-cpp.so
+usr/lib/*/pkgconfig/*
 
