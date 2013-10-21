@@ -16,7 +16,6 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <posix/environment.h>
 #include <posix/exec.h>
 #include <posix/fork.h>
 #include <posix/process.h>

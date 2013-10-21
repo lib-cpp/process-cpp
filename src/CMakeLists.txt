@@ -18,7 +18,6 @@ add_library(
   process-cpp SHARED
   
   posix/child_process.cpp
-  posix/environment.cpp
   posix/exec.cpp
   posix/fork.cpp
   posix/process.cpp
