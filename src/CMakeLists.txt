@@ -22,7 +22,6 @@ add_library(
   posix/fork.cpp
   posix/process.cpp
   posix/this_process.cpp
-  posix/linux/process.cpp
 
   posix/linux/proc/process/oom_adj.cpp
   posix/linux/proc/process/oom_score.cpp
