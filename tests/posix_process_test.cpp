@@ -32,8 +32,21 @@ TEST(PosixProcess, this_process_instance_reports_correct_pid)
 
 TEST(PosixProcess, accessing_streams_of_this_process_works)
 {
-    posix::this_process::cout() << "posix::this_process::instance().cout()" << std::endl;
-    posix::this_process::cerr() << "posix::this_process::instance().cerr()" << std::endl;
+    {
+        std::stringstream ss;
+        auto old = posix::this_process::cout().rdbuf(ss.rdbuf());
+        posix::this_process::cout() << "posix::this_process::instance().cout()\n";
+        EXPECT_EQ(ss.str(), "posix::this_process::instance().cout()\n");
+        posix::this_process::cout().rdbuf(old);
+    }
+
+    {
+        std::stringstream ss;
+        auto old = posix::this_process::cerr().rdbuf(ss.rdbuf());
+        posix::this_process::cerr() << "posix::this_process::instance().cerr()" << std::endl;
+        EXPECT_EQ(ss.str(), "posix::this_process::instance().cerr()\n");
+        posix::this_process::cerr().rdbuf(old);
+    }
 }
 
 TEST(Self, non_mutable_access_to_the_environment_returns_correct_results)
