@@ -30,6 +30,11 @@ TEST(PosixProcess, this_process_instance_reports_correct_pid)
     EXPECT_EQ(getpid(), posix::this_process::instance().pid());
 }
 
+TEST(PosixProcess, this_process_instance_reports_correct_parent)
+{
+    EXPECT_EQ(getppid(), posix::this_process::parent().pid());
+}
+
 TEST(PosixProcess, accessing_streams_of_this_process_works)
 {
     {

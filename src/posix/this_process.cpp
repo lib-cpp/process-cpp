@@ -49,7 +49,7 @@ std::mutex& env_guard()
 }
 }
 
-void for_each(const std::function<void(const std::string&, const std::string&)>& functor) noexcept
+void for_each(const std::function<void(const std::string&, const std::string&)>& functor) noexcept(true)
 {
     std::lock_guard<std::mutex> lg(env_guard());
     auto it = ::environ;
@@ -135,17 +135,23 @@ const Process& instance()
     static const Process self{getpid()};
     return self;
 }
-std::istream& cin()
+
+Process parent() noexcept(true)
+{
+    return Process(getppid());
+}
+
+std::istream& cin() noexcept(true)
 {
     return std::cin;
 }
 
-std::ostream& cout()
+std::ostream& cout() noexcept(true)
 {
     return std::cout;
 }
 
-std::ostream& cerr()
+std::ostream& cerr() noexcept(true)
 {
     return std::cerr;
 }

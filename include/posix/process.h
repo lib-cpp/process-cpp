@@ -49,12 +49,6 @@ public:
     virtual pid_t pid() const;
 
     /**
-     * @brief Query the parent of the process.
-     * @return The parent of the process.
-     */
-    Process parent() const;
-
-    /**
      * @brief Sends a signal to the process.
      * @throws std::system_error in case of problems.
      * @param [in] signal The signal to be sent to the process.
@@ -70,6 +64,7 @@ public:
 
 protected:
     friend const Process& posix::this_process::instance();
+    friend Process posix::this_process::parent() noexcept(true);
     explicit Process(pid_t pid);
 
 private:

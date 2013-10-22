@@ -104,18 +104,18 @@ struct OomScoreAdj
 };
 
 /**
- * \brief Read the OomScoreAdj value for a process instance.
- * \throws std::runtime_error in case of errors.
- * \param [in] process The process to read the score for.
- * \param [out] score The destination to store the value in.
+ * @brief Read the OomScoreAdj value for a process instance.
+ * @throw std::runtime_error in case of errors.
+ * @param [in] process The process to read the score for.
+ * @param [out] score_adj The destination to store the value in.
  */
 const posix::Process& operator>>(const posix::Process& process, OomScoreAdj& score_adj);
 
 /**
- * \brief Write the OomScoreAdj value for a process instance.
- * \throws std::runtime_error in case of errors and std::logic_error if score_adj.is_valid() returns false.
- * \param [in] process The process to write the score for.
- * \param [in] score The new value to store.
+ * @brief Write the OomScoreAdj value for a process instance.
+ * @throw std::runtime_error in case of errors and std::logic_error if score_adj.is_valid() returns false.
+ * @param [in] process The process to write the score for.
+ * @param [in] score_adj The new value to store.
  */
 const posix::Process& operator<<(const posix::Process& process,
                                  const OomScoreAdj& score_adj);

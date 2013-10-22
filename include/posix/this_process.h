@@ -33,10 +33,11 @@ namespace env
  * @brief for_each invokes a functor for every key-value pair in the environment.
  * @param [in] functor Invoked for every key-value pair.
  */
-void for_each(const std::function<void(const std::string&, const std::string&)>& functor) noexcept;
+void for_each(const std::function<void(const std::string&, const std::string&)>& functor) noexcept(true);
 
 /**
  * @brief get queries the value of an environment variable.
+ * @throw std::system_error if access to the underlying operating system facilites fails.
  * @param [in] key Name of the variable to query the value for.
  * @return Contents of the variable.
  */
@@ -84,18 +85,24 @@ bool set(const std::string &key,
 const Process& instance();
 
 /**
+ * @brief Query the parent of the process.
+ * @return The parent of the process.
+ */
+Process parent() noexcept(true);
+
+/**
  * @brief Access this process's stdin.
  */
-std::istream& cin();
+std::istream& cin() noexcept(true);
 
 /**
  * @brief Access this process's stdout.
  */
-std::ostream& cout();
+std::ostream& cout() noexcept(true);
 
 /**
  * @brief Access this process's stderr.
  */
-std::ostream& cerr();
+std::ostream& cerr() noexcept(true);
 }
 }

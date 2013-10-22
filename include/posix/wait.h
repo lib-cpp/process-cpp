@@ -24,6 +24,8 @@
 
 #include <bitset>
 
+#include <cstdint>
+
 #include <sys/wait.h>
 
 namespace posix

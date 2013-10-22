@@ -16,7 +16,7 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <posix/linux/process.h>
+#include <posix/this_process.h>
 
 #include <posix/linux/proc/process/stat.h>
 #include <posix/linux/proc/process/oom_adj.h>
