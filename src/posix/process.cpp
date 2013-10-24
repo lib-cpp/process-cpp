@@ -61,7 +61,7 @@ pid_t Process::pid() const
     return d->pid;
 }
 
-void Process::send_signal(const Signal& signal)
+void Process::send_signal_or_throw(const Signal& signal)
 {
     auto result = ::kill(d->pid, static_cast<int>(signal));
 
@@ -69,14 +69,39 @@ void Process::send_signal(const Signal& signal)
         throw std::system_error(errno, std::system_category());
 }
 
-void Process::send_signal(const Signal& signal, std::system_error& e) noexcept
+bool Process::send_signal(const Signal& signal, std::system_error& e) noexcept
 {
-    try
+    auto result = ::kill(d->pid, static_cast<int>(signal));
+
+    if (result == -1)
     {
-        send_signal(signal);
-    } catch(const std::system_error& se)
-    {
-        e = se;
+        e = std::system_error(errno, std::system_category());
+        return false;
     }
+
+    return true;
+}
+
+pid_t Process::process_group_id_or_throw() const
+{
+    pid_t pgid = ::getpgid(pid());
+
+    if (pgid == -1)
+        throw std::system_error(errno, std::system_category());
+
+    return pgid;
+}
+
+std::tuple<pid_t, bool> Process::process_group_id(std::system_error& se) const noexcept(true)
+{
+    pid_t pgid = ::getpgid(pid());
+
+    if (pgid == -1)
+    {
+        se = std::system_error(errno, std::system_category());
+        return std::make_tuple(pgid, false);
+    }
+
+    return std::make_tuple(pgid, true);
 }
 }

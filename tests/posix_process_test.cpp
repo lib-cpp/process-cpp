@@ -35,6 +35,53 @@ TEST(PosixProcess, this_process_instance_reports_correct_parent)
     EXPECT_EQ(getppid(), posix::this_process::parent().pid());
 }
 
+TEST(PosixProcess, throwing_access_to_process_group_id_of_this_process_works)
+{
+    EXPECT_EQ(getpgrp(), posix::this_process::instance().process_group_id_or_throw());
+}
+
+TEST(PosixProcess, throwing_access_to_process_group_id_of_a_forked_process_works)
+{
+    posix::ChildProcess child = posix::fork(
+                []() { std::cout << "Child" << std::endl; while(true) {} return EXIT_FAILURE;},
+                posix::StandardStreamFlags()
+                    .set(posix::StandardStream::stdin)
+                    .set(posix::StandardStream::stdout));
+    EXPECT_TRUE(child.pid() > 0);
+
+    EXPECT_EQ(getpgrp(), child.process_group_id_or_throw());
+
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
+    child.wait_for(posix::wait::Flag::untraced);
+}
+
+TEST(PosixProcess, non_throwing_access_to_process_group_id_of_this_process_works)
+{
+    pid_t pid; bool success; std::system_error se;
+    std::tie(pid, success) = posix::this_process::instance().process_group_id(se);
+    EXPECT_TRUE(success);
+    EXPECT_EQ(getpgrp(), pid);
+
+}
+
+TEST(PosixProcess, non_throwing_access_to_process_group_id_of_a_forked_process_works)
+{
+    posix::ChildProcess child = posix::fork(
+                []() { std::cout << "Child" << std::endl; while(true) {} return EXIT_FAILURE;},
+                posix::StandardStreamFlags()
+                    .set(posix::StandardStream::stdin)
+                    .set(posix::StandardStream::stdout));
+    EXPECT_TRUE(child.pid() > 0);
+
+    pid_t pid; bool success; std::system_error se;
+    std::tie(pid, success) = child.process_group_id(se);
+    EXPECT_TRUE(success);
+    EXPECT_EQ(getpgrp(), pid);
+
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
+    child.wait_for(posix::wait::Flag::untraced);
+}
+
 TEST(PosixProcess, accessing_streams_of_this_process_works)
 {
     {
@@ -131,7 +178,7 @@ TEST(ChildProcess, signalling_a_forked_child_makes_wait_for_return_correct_resul
                     .set(posix::StandardStream::stdout));
     EXPECT_TRUE(child.pid() > 0);
 
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_kill));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
     auto result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
@@ -145,7 +192,7 @@ TEST(ChildProcess, signalling_a_forked_child_makes_wait_for_return_correct_resul
                     .set(posix::StandardStream::stdout));
     EXPECT_TRUE(child.pid() > 0);
 
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_term));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_term));
     result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
@@ -177,14 +224,14 @@ TEST(ChildProcess, stopping_a_forked_child_makes_wait_for_return_correct_result)
 
     EXPECT_EQ(echo_value, line);
 
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_stop));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_stop));
     auto result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::stopped,
               result.status);
     EXPECT_EQ(posix::Signal::sig_stop,
               result.detail.if_stopped.signal);
 
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_kill));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
     result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
@@ -209,7 +256,7 @@ TEST(ChildProcess, exec_returns_process_object_with_valid_pid_and_wait_for_retur
                                                 .set(posix::StandardStream::stdin)
                                                 .set(posix::StandardStream::stdout));
     EXPECT_TRUE(child.pid() > 0);
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_kill));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
     auto result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
@@ -237,7 +284,7 @@ TEST(ChildProcess, signalling_an_execd_child_makes_wait_for_return_correct_resul
 
     EXPECT_TRUE(child.pid() > 0);
 
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_kill));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
     auto result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
@@ -252,7 +299,7 @@ TEST(ChildProcess, signalling_an_execd_child_makes_wait_for_return_correct_resul
                             .set(posix::StandardStream::stdout));
     EXPECT_TRUE(child.pid() > 0);
 
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_term));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_term));
     result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
@@ -278,13 +325,13 @@ TEST(ChildProcess, stopping_an_execd_child_makes_wait_for_return_correct_result)
                                                 .set(posix::StandardStream::stdout));
     EXPECT_TRUE(child.pid() > 0);
 
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_stop));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_stop));
     auto result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::stopped,
               result.status);
     EXPECT_EQ(posix::Signal::sig_stop,
               result.detail.if_signaled.signal);
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_kill));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
     result = child.wait_for(posix::wait::Flag::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
@@ -320,7 +367,7 @@ TEST(StreamRedirect, redirecting_stdin_stdout_stderr_works)
     EXPECT_EQ(echo_value, line);
     EXPECT_NO_THROW(child.cerr() >> line);
     EXPECT_EQ(echo_value, line);
-    EXPECT_NO_THROW(child.send_signal(posix::Signal::sig_kill));
+    EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
     child.wait_for(posix::wait::Flag::untraced);
 }
 

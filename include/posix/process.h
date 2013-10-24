@@ -53,14 +53,30 @@ public:
      * @throws std::system_error in case of problems.
      * @param [in] signal The signal to be sent to the process.
      */
-    virtual void send_signal(const Signal& signal);
+    virtual void send_signal_or_throw(const Signal& signal);
 
     /**
      * @brief Sends a signal to the process.
      * @param [in] signal The signal to be sent to the process.
      * @param [out] e Set to contain an error if an issue arises.
      */
-    virtual void send_signal(const Signal& signal, std::system_error& e) noexcept;
+    virtual bool send_signal(const Signal& signal, std::system_error& e) noexcept(true);
+
+    /**
+     * @brief Queries the id of the process group this process belongs to.
+     * @throw std::system_error in case of errors.
+     * @return The id of the process group this process belongs to.
+     */
+    virtual pid_t process_group_id_or_throw() const;
+
+    /**
+     * @brief Queries the id of the process group this process belongs to.
+     *
+     * @return A tuple with the first element being the id of the process group
+     * this process belongs to and the second element a boolean flag indicating
+     * an error if true.
+     */
+    virtual std::tuple<pid_t, bool> process_group_id(std::system_error& se) const noexcept(true);
 
 protected:
     friend const Process& posix::this_process::instance();
