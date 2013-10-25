@@ -47,6 +47,12 @@ struct Process::Private
     pid_t pid;
 };
 
+Process Process::invalid()
+{
+    static const pid_t invalid_pid = -1;
+    return Process(invalid_pid);
+}
+
 Process::Process(pid_t pid)
     : d(new Private{pid})
 {

@@ -61,7 +61,19 @@ TEST(PosixProcess, non_throwing_access_to_process_group_id_of_this_process_works
     std::tie(pid, success) = posix::this_process::instance().process_group_id(se);
     EXPECT_TRUE(success);
     EXPECT_EQ(getpgrp(), pid);
+}
 
+TEST(PosixProcess, trying_to_access_process_group_of_invalid_process_throws)
+{
+    EXPECT_ANY_THROW(posix::Process::invalid().process_group_id_or_throw());
+}
+
+TEST(PosixProcess, trying_to_access_process_group_of_invalid_process_reports_error)
+{
+    pid_t pid; bool success; std::system_error se;
+    std::tie(pid, success) = posix::Process::invalid().process_group_id(se);
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(static_cast<bool>(se.code()));
 }
 
 TEST(PosixProcess, non_throwing_access_to_process_group_id_of_a_forked_process_works)

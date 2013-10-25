@@ -37,6 +37,13 @@ class WaitFlags;
 class Process
 {
 public:
+
+    /**
+     * @brief Returns an invalid instance for testing purposes.
+     * @return An invalid instance.
+     */
+    static Process invalid();
+
     /**
      * @brief Frees resources associated with the process.
      */
