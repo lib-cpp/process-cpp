@@ -16,26 +16,15 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_STANDARD_STREAM_H_
-#define POSIX_STANDARD_STREAM_H_
-
-#include <cstdint>
+#include <posix/wait.h>
 
 namespace posix
 {
-/**
- * @brief The StandardStream enum wraps the POSIX standard streams.
- */
-enum class StandardStream : std::uint8_t
+namespace wait
 {
-    empty = 0,
-    stdin = 1 << 0,
-    stdout = 1 << 1,
-    stderr = 1 << 2
-};
-
-StandardStream operator|(StandardStream l, StandardStream r);
-StandardStream operator&(StandardStream l, StandardStream r);
+Flags operator|(Flags l, Flags r)
+{
+    return static_cast<Flags>(static_cast<std::uint8_t>(l) | static_cast<std::uint8_t>(r));
 }
-
-#endif // POSIX_STANDARD_STREAM_H_
+}
+}

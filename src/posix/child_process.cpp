@@ -187,7 +187,7 @@ ChildProcess::~ChildProcess()
 wait::Result ChildProcess::wait_for(const wait::Flags& flags)
 {
     int status = -1;
-    pid_t result_pid = ::waitpid(pid(), std::addressof(status), flags);
+    pid_t result_pid = ::waitpid(pid(), std::addressof(status), static_cast<int>(flags));
 
     if (result_pid == -1)
         throw std::system_error(errno, std::system_category());

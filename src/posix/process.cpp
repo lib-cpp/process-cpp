@@ -28,20 +28,6 @@
 namespace posix
 {
 
-namespace
-{
-// We have to cleanup any fork'd children.
-/*struct Cleanup
-{
-    ~Cleanup()
-    {
-        static const pid_t any_child = -1;
-        auto ignored = ::waitpid(any_child, nullptr, 0);
-        (void) ignored;
-    }
-} cleanup;*/
-}
-
 struct Process::Private
 {
     pid_t pid;

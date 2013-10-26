@@ -70,8 +70,8 @@ public:
     std::istream& cout();
 
 private:
-    friend ChildProcess fork(const std::function<int()>&, const StandardStreamFlags&);
-    friend ChildProcess vfork(const std::function<int()>&, const StandardStreamFlags&);
+    friend ChildProcess fork(const std::function<int()>&, const StandardStream&);
+    friend ChildProcess vfork(const std::function<int()>&, const StandardStream&);
 
     class Pipe
     {

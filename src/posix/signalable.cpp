@@ -29,7 +29,7 @@ Signalable::Signalable(pid_t pid) : d(new Private{pid})
 {
 }
 
-void Signalable::send_signal_or_throw(const Signal& signal)
+void Signalable::send_signal_or_throw(Signal signal)
 {
     auto result = ::kill(d->pid, static_cast<int>(signal));
 
@@ -37,7 +37,7 @@ void Signalable::send_signal_or_throw(const Signal& signal)
         throw std::system_error(errno, std::system_category());
 }
 
-void Signalable::send_signal(const Signal& signal, std::error_code& e) noexcept
+void Signalable::send_signal(Signal signal, std::error_code& e) noexcept
 {
     auto result = ::kill(d->pid, static_cast<int>(signal));
 

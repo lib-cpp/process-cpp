@@ -40,22 +40,11 @@ struct ForkedSpinningProcess : public ::testing::Test
     {
         child = posix::fork(
                     []() { std::cout << "Child" << std::endl; while(true) {} return EXIT_FAILURE;},
-                    posix::StandardStreamFlags()
-                        .set(posix::StandardStream::stdin)
-                        .set(posix::StandardStream::stdout));
+                    posix::StandardStream::stdin | posix::StandardStream::stdout);
     }
 
     void TearDown()
     {
-        // We are making sure to clean up no matter what.
-        // TODO: Ideally, this should go to the ChildProcess d'tor.
-        try
-        {
-            child.send_signal_or_throw(posix::Signal::sig_kill);
-            child.wait_for(posix::wait::Flag::untraced);
-        } catch(...)
-        {
-        }
     }
 
     posix::ChildProcess child = posix::ChildProcess::invalid();
@@ -174,12 +163,10 @@ TEST(ChildProcess, fork_returns_process_object_with_valid_pid_and_wait_for_retur
 {
     posix::ChildProcess child = posix::fork(
                 []() { std::cout << "Child" << std::endl; return EXIT_SUCCESS; },
-                posix::StandardStreamFlags()
-                    .set(posix::StandardStream::stdin)
-                    .set(posix::StandardStream::stdout));
+                posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
-    auto result = child.wait_for(posix::wait::Flag::untraced);
+    auto result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::exited,
               result.status);
     EXPECT_EQ(posix::exit::Status::success,
@@ -187,12 +174,10 @@ TEST(ChildProcess, fork_returns_process_object_with_valid_pid_and_wait_for_retur
 
     child = posix::fork(
                 []() { std::cout << "Child" << std::endl; return EXIT_FAILURE; },
-                posix::StandardStreamFlags()
-                    .set(posix::StandardStream::stdin)
-                    .set(posix::StandardStream::stdout));
+                posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
-    result = child.wait_for(posix::wait::Flag::untraced);
+    result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::exited,
               result.status);
     EXPECT_EQ(posix::exit::Status::failure,
@@ -202,7 +187,7 @@ TEST(ChildProcess, fork_returns_process_object_with_valid_pid_and_wait_for_retur
 TEST_F(ForkedSpinningProcess, signalling_a_forked_child_makes_wait_for_return_correct_result)
 {
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
-    auto result = child.wait_for(posix::wait::Flag::untraced);
+    auto result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
     EXPECT_EQ(posix::Signal::sig_kill,
@@ -210,13 +195,11 @@ TEST_F(ForkedSpinningProcess, signalling_a_forked_child_makes_wait_for_return_co
 
     child = posix::fork(
                 []() { std::cout << "Child" << std::endl; while(true) {} return EXIT_FAILURE;},
-                posix::StandardStreamFlags()
-                    .set(posix::StandardStream::stdin)
-                    .set(posix::StandardStream::stdout));
+                posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_term));
-    result = child.wait_for(posix::wait::Flag::untraced);
+    result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
     EXPECT_EQ(posix::Signal::sig_term,
@@ -236,9 +219,7 @@ TEST(ChildProcess, stopping_a_forked_child_makes_wait_for_return_correct_result)
                     }
                     return EXIT_FAILURE;
                 },
-                posix::StandardStreamFlags()
-                    .set(posix::StandardStream::stdin)
-                    .set(posix::StandardStream::stdout));
+                posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
     const std::string echo_value{"42"};
@@ -248,14 +229,14 @@ TEST(ChildProcess, stopping_a_forked_child_makes_wait_for_return_correct_result)
     EXPECT_EQ(echo_value, line);
 
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_stop));
-    auto result = child.wait_for(posix::wait::Flag::untraced);
+    auto result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::stopped,
               result.status);
     EXPECT_EQ(posix::Signal::sig_stop,
               result.detail.if_stopped.signal);
 
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
-    result = child.wait_for(posix::wait::Flag::untraced);
+    result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
     EXPECT_EQ(posix::Signal::sig_kill,
@@ -270,7 +251,9 @@ TEST(ChildProcess, ensure_that_forked_children_are_cleaned_up)
     {
         for (unsigned int i = 0; i < child_process_count; i++)
         {
-            auto child = posix::fork([]() { return EXIT_SUCCESS; }, posix::StandardStreamFlags());
+            auto child = posix::fork(
+                        []() { return EXIT_SUCCESS; },
+                        posix::StandardStream::stdin | posix::StandardStream::stdout);
             // A bit ugly but we have to ensure that no signal is lost.
             // And thus, we keep the process object alive.
             std::this_thread::sleep_for(std::chrono::milliseconds{10});
@@ -294,12 +277,10 @@ TEST(ChildProcess, exec_returns_process_object_with_valid_pid_and_wait_for_retur
     posix::ChildProcess child = posix::exec(program,
                                             argv,
                                             env,
-                                            posix::StandardStreamFlags()
-                                                .set(posix::StandardStream::stdin)
-                                                .set(posix::StandardStream::stdout));
+                                            posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
-    auto result = child.wait_for(posix::wait::Flag::untraced);
+    auto result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
     EXPECT_EQ(posix::Signal::sig_kill,
@@ -320,14 +301,12 @@ TEST(ChildProcess, signalling_an_execd_child_makes_wait_for_return_correct_resul
                 program,
                 argv,
                 env,
-                posix::StandardStreamFlags()
-                    .set(posix::StandardStream::stdin)
-                    .set(posix::StandardStream::stdout));
+                posix::StandardStream::stdin | posix::StandardStream::stdout);
 
     EXPECT_TRUE(child.pid() > 0);
 
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
-    auto result = child.wait_for(posix::wait::Flag::untraced);
+    auto result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
     EXPECT_EQ(posix::Signal::sig_kill,
@@ -336,13 +315,11 @@ TEST(ChildProcess, signalling_an_execd_child_makes_wait_for_return_correct_resul
     child = posix::exec(program,
                         argv,
                         env,
-                        posix::StandardStreamFlags()
-                            .set(posix::StandardStream::stdin)
-                            .set(posix::StandardStream::stdout));
+                        posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_term));
-    result = child.wait_for(posix::wait::Flag::untraced);
+    result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
     EXPECT_EQ(posix::Signal::sig_term,
@@ -362,19 +339,17 @@ TEST(ChildProcess, stopping_an_execd_child_makes_wait_for_return_correct_result)
     posix::ChildProcess child = posix::exec(program,
                                             argv,
                                             env,
-                                            posix::StandardStreamFlags()
-                                                .set(posix::StandardStream::stdin)
-                                                .set(posix::StandardStream::stdout));
+                                            posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_stop));
-    auto result = child.wait_for(posix::wait::Flag::untraced);
+    auto result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::stopped,
               result.status);
     EXPECT_EQ(posix::Signal::sig_stop,
               result.detail.if_signaled.signal);
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
-    result = child.wait_for(posix::wait::Flag::untraced);
+    result = child.wait_for(posix::wait::Flags::untraced);
     EXPECT_EQ(posix::wait::Result::Status::signaled,
               result.status);
     EXPECT_EQ(posix::Signal::sig_kill,
@@ -395,10 +370,7 @@ TEST(StreamRedirect, redirecting_stdin_stdout_stderr_works)
                     }
                     return EXIT_FAILURE;
                 },
-                posix::StandardStreamFlags()
-                    .set(posix::StandardStream::stdin)
-                    .set(posix::StandardStream::stdout)
-                    .set(posix::StandardStream::stderr));
+                posix::StandardStream::stdin | posix::StandardStream::stdout | posix::StandardStream::stderr);
 
     ASSERT_TRUE(child.pid() > 0);
 
@@ -410,7 +382,7 @@ TEST(StreamRedirect, redirecting_stdin_stdout_stderr_works)
     EXPECT_NO_THROW(child.cerr() >> line);
     EXPECT_EQ(echo_value, line);
     EXPECT_NO_THROW(child.send_signal_or_throw(posix::Signal::sig_kill));
-    child.wait_for(posix::wait::Flag::untraced);
+    child.wait_for(posix::wait::Flags::untraced);
 }
 
 TEST(Environment, iterating_the_environment_does_not_throw)

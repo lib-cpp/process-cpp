@@ -23,6 +23,8 @@ add_library(
   posix/process.cpp
   posix/process_group.cpp
   posix/signalable.cpp
+  posix/standard_stream.cpp
+  posix/wait.cpp
   posix/this_process.cpp
 
   posix/linux/proc/process/oom_adj.cpp

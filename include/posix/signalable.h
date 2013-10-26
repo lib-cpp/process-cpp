@@ -37,14 +37,14 @@ public:
      * @throws std::system_error in case of problems.
      * @param [in] signal The signal to be sent to the process.
      */
-    virtual void send_signal_or_throw(const Signal& signal);
+    virtual void send_signal_or_throw(Signal signal);
 
     /**
      * @brief Sends a signal to this signalable object.
      * @param [in] signal The signal to be sent to the process.
      * @param [out] e Set to contain an error if an issue arises.
      */
-    virtual void send_signal(const Signal& signal, std::error_code& e) noexcept(true);
+    virtual void send_signal(Signal signal, std::error_code& e) noexcept(true);
 
 protected:
     explicit Signalable(pid_t pid);
