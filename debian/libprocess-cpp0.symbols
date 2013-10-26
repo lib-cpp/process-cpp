@@ -96,14 +96,11 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"posix::ChildProcess::cout()@Base" 0replaceme
  (c++)"posix::ChildProcess::Private::~Private()@Base" 0replaceme
  (c++)"posix::ChildProcess::Private::~Private()@Base" 0replaceme
- (c++)"posix::ChildProcess::wait_for(unsigned int const&)@Base" 0replaceme
  (c++)"posix::ChildProcess::ChildProcess(int, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&)@Base" 0replaceme
  (c++)"posix::ChildProcess::ChildProcess(int, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&)@Base" 0replaceme
  (c++)"posix::ChildProcess::~ChildProcess()@Base" 0replaceme
  (c++)"posix::ChildProcess::~ChildProcess()@Base" 0replaceme
  (c++)"posix::ChildProcess::~ChildProcess()@Base" 0replaceme
- (c++)"posix::exec(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::map<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&, std::bitset<3ul> const&)@Base" 0replaceme
- (c++)"posix::fork(std::function<int ()> const&, std::bitset<3ul> const&)@Base" 0replaceme
  (c++)"posix::linux::proc::process::OomScoreAdj::max_value()@Base" 0replaceme
  (c++)"posix::linux::proc::process::OomScoreAdj::min_value()@Base" 0replaceme
  (c++)"posix::linux::proc::process::OomAdj::disable_value()@Base" 0replaceme
@@ -117,7 +114,6 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"posix::linux::proc::process::operator>>(posix::Process const&, posix::linux::proc::process::OomScore&)@Base" 0replaceme
  (c++)"posix::linux::proc::process::operator>>(std::basic_istream<char, std::char_traits<char> >&, posix::linux::proc::process::Stat&)@Base" 0replaceme
  (c++)"posix::linux::proc::process::operator>>(std::basic_istream<char, std::char_traits<char> >&, posix::linux::proc::process::State&)@Base" 0replaceme
- (c++)"posix::vfork(std::function<int ()> const&, std::bitset<3ul> const&)@Base" 0replaceme
  (c++)"posix::Process::Process(int)@Base" 0replaceme
  (c++)"posix::Process::Process(int)@Base" 0replaceme
  (c++)"posix::Process::~Process()@Base" 0replaceme
@@ -217,6 +213,48 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"typeinfo name for std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
  (c++)"VTT for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >@Base" 0replaceme
  (c++)"VTT for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >@Base" 0replaceme
+ (c++)"posix::Signalable::send_signal(posix::Signal, std::error_code&)@Base" 0replaceme
+ (c++)"posix::Signalable::send_signal_or_throw(posix::Signal)@Base" 0replaceme
+ (c++)"posix::Signalable::Signalable(int)@Base" 0replaceme
+ (c++)"posix::Signalable::Signalable(int)@Base" 0replaceme
+ (c++)"posix::ChildProcess::Pipe::invalid()@Base" 0replaceme
+ (c++)"posix::ChildProcess::invalid()@Base" 0replaceme
+ (c++)"posix::ChildProcess::wait_for(posix::wait::Flags const&)@Base" 0replaceme
+ (c++)"posix::ProcessGroup::ProcessGroup(int)@Base" 0replaceme
+ (c++)"posix::ProcessGroup::ProcessGroup(int)@Base" 0replaceme
+ (c++)"posix::exec(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::map<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&, posix::StandardStream const&)@Base" 0replaceme
+ (c++)"posix::fork(std::function<int ()> const&, posix::StandardStream const&)@Base" 0replaceme
+ (c++)"posix::wait::operator|(posix::wait::Flags, posix::wait::Flags)@Base" 0replaceme
+ (c++)"posix::vfork(std::function<int ()> const&, posix::StandardStream const&)@Base" 0replaceme
+ (c++)"posix::operator&(posix::StandardStream, posix::StandardStream)@Base" 0replaceme
+ (c++)"posix::operator|(posix::StandardStream, posix::StandardStream)@Base" 0replaceme
+ (c++)"posix::ProcessGroup::id() const@Base" 0replaceme
+ (c++)"posix::Process::process_group(std::error_code&) const@Base" 0replaceme
+ (c++)"posix::Process::process_group_or_throw() const@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>::_M_destroy()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>::_M_dispose()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>::_M_get_deleter(std::type_info const&)@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>::_M_destroy()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>::_M_dispose()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>::_M_get_deleter(std::type_info const&)@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
+ (c++)"std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
+ (c++)"typeinfo for posix::Signalable@Base" 0replaceme
+ (c++)"typeinfo for posix::ProcessGroup@Base" 0replaceme
+ (c++)"typeinfo for std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
+ (c++)"typeinfo for std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
+ (c++)"typeinfo name for posix::Signalable@Base" 0replaceme
+ (c++)"typeinfo name for posix::ProcessGroup@Base" 0replaceme
+ (c++)"typeinfo name for std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
+ (c++)"typeinfo name for std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
+ (c++)"vtable for posix::Signalable@Base" 0replaceme
+ (c++)"vtable for posix::ProcessGroup@Base" 0replaceme
+ (c++)"vtable for std::_Sp_counted_ptr<posix::Signalable::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
+ (c++)"vtable for std::_Sp_counted_ptr<posix::ProcessGroup::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
  (c++)"vtable for boost::exception_detail::clone_base@Base" 0replaceme
  (c++)"vtable for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >@Base" 0replaceme
  (c++)"vtable for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >@Base" 0replaceme
@@ -262,8 +300,4 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"posix::this_process::cout()@Base" 0replaceme
  (c++)"posix::this_process::parent()@Base" 0replaceme
  (c++)"posix::this_process::instance()@Base" 0replaceme
- (c++)"posix::Process::send_signal(posix::Signal const&, std::system_error&)@Base" 0replaceme
- (c++)"posix::Process::send_signal_or_throw(posix::Signal const&)@Base" 0replaceme
  (c++)"posix::Process::invalid()@Base" 0replaceme
- (c++)"posix::Process::process_group_id(std::system_error&) const@Base" 0replaceme
- (c++)"posix::Process::process_group_id_or_throw() const@Base" 0replaceme
