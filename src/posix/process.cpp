@@ -31,7 +31,7 @@ namespace posix
 namespace
 {
 // We have to cleanup any fork'd children.
-struct Cleanup
+/*struct Cleanup
 {
     ~Cleanup()
     {
@@ -39,7 +39,7 @@ struct Cleanup
         auto ignored = ::waitpid(any_child, nullptr, 0);
         (void) ignored;
     }
-} cleanup;
+} cleanup;*/
 }
 
 struct Process::Private
@@ -54,7 +54,8 @@ Process Process::invalid()
 }
 
 Process::Process(pid_t pid)
-    : d(new Private{pid})
+    : Signalable(pid),
+      d(new Private{pid})
 {
 }
 
@@ -67,47 +68,25 @@ pid_t Process::pid() const
     return d->pid;
 }
 
-void Process::send_signal_or_throw(const Signal& signal)
-{
-    auto result = ::kill(d->pid, static_cast<int>(signal));
-
-    if (result == -1)
-        throw std::system_error(errno, std::system_category());
-}
-
-bool Process::send_signal(const Signal& signal, std::system_error& e) noexcept
-{
-    auto result = ::kill(d->pid, static_cast<int>(signal));
-
-    if (result == -1)
-    {
-        e = std::system_error(errno, std::system_category());
-        return false;
-    }
-
-    return true;
-}
-
-pid_t Process::process_group_id_or_throw() const
+ProcessGroup Process::process_group_or_throw() const
 {
     pid_t pgid = ::getpgid(pid());
 
     if (pgid == -1)
         throw std::system_error(errno, std::system_category());
 
-    return pgid;
+    return ProcessGroup(pgid);
 }
 
-std::tuple<pid_t, bool> Process::process_group_id(std::system_error& se) const noexcept(true)
+ProcessGroup Process::process_group(std::error_code& se) const noexcept(true)
 {
     pid_t pgid = ::getpgid(pid());
 
     if (pgid == -1)
     {
-        se = std::system_error(errno, std::system_category());
-        return std::make_tuple(pgid, false);
+        se = std::error_code(errno, std::system_category());
     }
 
-    return std::make_tuple(pgid, true);
+    return ProcessGroup(pgid);
 }
 }

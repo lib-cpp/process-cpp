@@ -20,7 +20,9 @@
 
 #include <boost/iostreams/device/file_descriptor.hpp>
 #include <boost/iostreams/stream.hpp>
+
 #include <fstream>
+#include <mutex>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -29,6 +31,16 @@ namespace io = boost::iostreams;
 
 namespace posix
 {
+ChildProcess::Pipe ChildProcess::Pipe::invalid()
+{
+    static Pipe p;
+    static std::once_flag flag;
+
+    std::call_once(flag, [&]() { p.close_read_fd(); p.close_write_fd(); });
+
+    return p;
+}
+
 ChildProcess::Pipe::Pipe()
 {
     int rc = ::pipe(fds);
@@ -105,7 +117,8 @@ struct ChildProcess::Private
 {
     // stdin and stdout are always "relative" to the childprocess, i.e., we
     // write to stdin of the child process and read from its stdout.
-    Private(const ChildProcess::Pipe& stderr,
+    Private(pid_t pid,
+            const ChildProcess::Pipe& stderr,
             const ChildProcess::Pipe& stdin,
             const ChildProcess::Pipe& stdout)
         : pipes{stderr, stdin, stdout},
@@ -114,8 +127,22 @@ struct ChildProcess::Private
           sout(pipes.stdout.read_fd(), io::never_close_handle),
           cerr(&serr),
           cin(&sin),
-          cout(&sout)
+          cout(&sout),
+          original_parent_pid(::getpid()),
+          original_child_pid(pid)
     {
+    }
+
+    ~Private()
+    {
+        // Check if we are in the original parent process.
+        if (original_parent_pid == getpid())
+        {
+            // If so, check if we are considering a valid pid here.
+            // If so, we kill the original child.
+            if (original_child_pid != -1)
+                ::kill(original_child_pid, SIGKILL);
+        }
     }
 
     struct
@@ -130,14 +157,26 @@ struct ChildProcess::Private
     std::istream cerr;
     std::ostream cin;
     std::istream cout;
+
+    // We need to store the original parent pid as we might have been forked
+    // and with our automatic cleanup in place, it might happen that the d'tor
+    // is called from the child process.
+    pid_t original_parent_pid;
+    pid_t original_child_pid;
 };
+
+ChildProcess ChildProcess::invalid()
+{
+    static const pid_t invalid_pid = -1;
+    return ChildProcess(invalid_pid, Pipe::invalid(), Pipe::invalid(), Pipe::invalid());
+}
 
 ChildProcess::ChildProcess(pid_t pid,
                            const ChildProcess::Pipe& stdin_pipe,
                            const ChildProcess::Pipe& stdout_pipe,
                            const ChildProcess::Pipe& stderr_pipe)
     : Process(pid),
-      d(new Private{stdin_pipe, stdout_pipe, stderr_pipe})
+      d(new Private{pid, stdin_pipe, stdout_pipe, stderr_pipe})
 {
 }
 

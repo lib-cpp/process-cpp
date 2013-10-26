@@ -41,9 +41,16 @@ bool is_child(pid_t pid) { return pid == 0; }
 ChildProcess fork(const std::function<int()>& main,
                   const StandardStreamFlags& flags)
 {
-    ChildProcess::Pipe stdin_pipe;
-    ChildProcess::Pipe stdout_pipe;
-    ChildProcess::Pipe stderr_pipe;
+    ChildProcess::Pipe stdin_pipe{ChildProcess::Pipe::invalid()};
+    ChildProcess::Pipe stdout_pipe{ChildProcess::Pipe::invalid()};
+    ChildProcess::Pipe stderr_pipe{ChildProcess::Pipe::invalid()};
+
+    if (flags.test(StandardStream::stdin))
+        stdin_pipe = ChildProcess::Pipe();
+    if (flags.test(StandardStream::stdout))
+        stdout_pipe = ChildProcess::Pipe();
+    if (flags.test(StandardStream::stderr))
+        stderr_pipe = ChildProcess::Pipe();
 
     pid_t pid = ::fork();
 

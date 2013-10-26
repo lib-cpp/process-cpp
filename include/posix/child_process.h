@@ -38,6 +38,12 @@ namespace posix
 class ChildProcess : public Process
 {
 public:
+    /**
+     * @brief Creates an invalid ChildProcess.
+     * @return An invalid ChildProcess instance.
+     */
+    static ChildProcess invalid();
+
     ~ChildProcess();
 
     /**
