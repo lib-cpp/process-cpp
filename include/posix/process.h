@@ -20,6 +20,7 @@
 #define POSIX_PROCESS_H_
 
 #include <posix/this_process.h>
+#include <posix/visibility.h>
 #include <posix/wait.h>
 
 #include <memory>
@@ -34,7 +35,7 @@ class WaitFlags;
 /**
  * @brief The Process class models a process and possible operations on it.
  */
-class Process
+class POSIX_DLL_PUBLIC Process
 {
 public:
     /**
@@ -65,10 +66,10 @@ public:
 protected:
     friend const Process& posix::this_process::instance();
     friend Process posix::this_process::parent() noexcept(true);
-    explicit Process(pid_t pid);
+    explicit POSIX_DLL_LOCAL Process(pid_t pid);
 
 private:
-    struct Private;
+    struct POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }

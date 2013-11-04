@@ -21,6 +21,7 @@
 
 #include <posix/child_process.h>
 #include <posix/standard_stream.h>
+#include <posix/visibility.h>
 
 #include <functional>
 
@@ -33,7 +34,7 @@ namespace posix
  * @param [in] flags Specify which standard streams should be redirected to the parent process.
  * @return An instance of ChildProcess in case of success.
  */
-ChildProcess fork(const std::function<int()>& main,
+POSIX_DLL_PUBLIC ChildProcess fork(const std::function<int()>& main,
                   const StandardStreamFlags& flags);
 
 /**
@@ -43,7 +44,7 @@ ChildProcess fork(const std::function<int()>& main,
  * @param [in] flags Specify which standard streams should be redirected to the parent process.
  * @return An instance of ChildProcess in case of success.
  */
-ChildProcess vfork(const std::function<int()>& main,
+POSIX_DLL_PUBLIC ChildProcess vfork(const std::function<int()>& main,
                    const StandardStreamFlags& flags);
 }
 

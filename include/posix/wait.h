@@ -21,6 +21,7 @@
 
 #include <posix/exit.h>
 #include <posix/signal.h>
+#include <posix/visibility.h>
 
 #include <bitset>
 
@@ -43,7 +44,7 @@ namespace wait
     /**
      * @brief The Result struct encapsulates the result of waiting for a process state change.
      */
-    struct Result
+    struct POSIX_DLL_PUBLIC Result
     {
         /**
          * @brief The status of the process/wait operation.

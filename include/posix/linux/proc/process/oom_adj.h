@@ -18,6 +18,8 @@
 #ifndef POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_
 #define POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_
 
+#include <posix/visibility.h>
+
 namespace posix
 {
 class Process;
@@ -43,7 +45,7 @@ namespace process
  * Since Linux 2.6.36, use of this file is deprecated in favor of
  * /proc/[pid]/oom_score_adj.
  */
-struct OomAdj
+struct POSIX_DLL_PUBLIC OomAdj
 {
     /**
      * @brief Returns the value that makes a process "invisible" to the oom killer.
@@ -84,7 +86,7 @@ struct OomAdj
  * \param [in] process The process to read the score for.
  * \param [out] adj The destination to store the value in.
  */
-const posix::Process& operator>>(const posix::Process& process, OomAdj& adj);
+POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, OomAdj& adj);
 
 /**
  * \brief Write the OomAdj value for a process instance.
@@ -92,7 +94,7 @@ const posix::Process& operator>>(const posix::Process& process, OomAdj& adj);
  * \param [in] process The process to write the score for.
  * \param [in] adj The new value to store.
  */
-const posix::Process& operator<<(const posix::Process& process,
+POSIX_DLL_PUBLIC const posix::Process& operator<<(const posix::Process& process,
                                  const OomAdj& adj);
 }
 }
