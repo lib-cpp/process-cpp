@@ -20,6 +20,8 @@
 
 #include <posix/linux/proc/process/state.h>
 
+#include <posix/visibility.h>
+
 #include <string>
 
 namespace posix
@@ -34,9 +36,8 @@ namespace process
 /**
  * @brief The Stat struct encapsulates status information about a process.
  */
-struct Stat
+struct POSIX_DLL_PUBLIC Stat
 {
-
     pid_t pid = 1; ///< The process ID
     std::string executable; ///< The filename of the executable, in parentheses.
     State state = State::undefined; ///< State of the process.
@@ -108,7 +109,7 @@ struct Stat
     long unsigned int guest_time_children = 0; ///< Guest time of the process's children, measured in clock ticks.
 };
 
-const posix::Process& operator>>(const posix::Process& process, Stat& stat);
+POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, Stat& stat);
 }
 }
 }

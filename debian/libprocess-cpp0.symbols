@@ -1,131 +1,11 @@
 libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
- (c++)"void boost::throw_exception<boost::bad_function_call>(boost::bad_function_call const&)@Base" 0replaceme
- (c++)"void boost::throw_exception<std::ios_base::failure>(std::ios_base::failure const&)@Base" 0replaceme
- (c++)"boost::exception_detail::clone_base::~clone_base()@Base" 0replaceme
- (c++)"boost::exception_detail::clone_base::~clone_base()@Base" 0replaceme
- (c++)"boost::exception_detail::clone_base::~clone_base()@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::~clone_impl()@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::~clone_impl()@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::~clone_impl()@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::~clone_impl()@Base" 0replaceme
- (c++)"boost::exception_detail::refcount_ptr<boost::exception_detail::error_info_container>::release()@Base" 0replaceme
- (c++)"boost::exception_detail::error_info_injector<boost::bad_function_call>::~error_info_injector()@Base" 0replaceme
- (c++)"boost::exception_detail::error_info_injector<boost::bad_function_call>::~error_info_injector()@Base" 0replaceme
- (c++)"boost::exception_detail::error_info_injector<boost::bad_function_call>::~error_info_injector()@Base" 0replaceme
- (c++)"boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
- (c++)"boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
- (c++)"boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
- (c++)"boost::bad_function_call::bad_function_call()@Base" 0replaceme
- (c++)"boost::bad_function_call::bad_function_call()@Base" 0replaceme
- (c++)"boost::bad_function_call::~bad_function_call()@Base" 0replaceme
- (c++)"boost::bad_function_call::~bad_function_call()@Base" 0replaceme
- (c++)"boost::bad_function_call::~bad_function_call()@Base" 0replaceme
- (c++)"boost::detail::sp_counted_base::release()@Base" 0replaceme
- (c++)"boost::detail::function::functor_manager<boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> > >::manage(boost::detail::function::function_buffer const&, boost::detail::function::function_buffer&, boost::detail::function::functor_manager_operation_type)@Base" 0replaceme
- (c++)"boost::detail::function::has_empty_target(...)@Base" 0replaceme
- (c++)"boost::detail::function::function_obj_invoker2<boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> >, boost::iterator_range<__gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::invoke(boost::detail::function::function_buffer&, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >)@Base" 0replaceme
- (c++)"std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >& boost::algorithm::iter_split<std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> > >(std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&, std::basic_string<char, std::char_traits<char>, std::allocator<char> >&, boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> >)@Base" 0replaceme
- (c++)"boost::algorithm::detail::is_any_ofF<char>::~is_any_ofF()@Base" 0replaceme
- (c++)"boost::algorithm::detail::is_any_ofF<char>::~is_any_ofF()@Base" 0replaceme
- (c++)"boost::function2<boost::iterator_range<__gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::clear()@Base" 0replaceme
- (c++)"boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::~stream_buffer()@Base" 0replaceme
- (c++)"boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::~stream_buffer()@Base" 0replaceme
- (c++)"boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::~stream_buffer()@Base" 0replaceme
- (c++)"boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::~stream_buffer()@Base" 0replaceme
- (c++)"boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::~stream_buffer()@Base" 0replaceme
- (c++)"boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::~stream_buffer()@Base" 0replaceme
- (c++)"boost::iostreams::detail::bad_putback()@Base" 0replaceme
- (c++)"boost::iostreams::detail::execute_traits<boost::iostreams::detail::member_close_operation<boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> > >, boost::result_of<boost::iostreams::detail::member_close_operation<boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> > > ()>::type>::result_type boost::iostreams::detail::execute_all<boost::iostreams::detail::member_close_operation<boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> > >, boost::iostreams::detail::member_close_operation<boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> > > >(boost::iostreams::detail::member_close_operation<boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> > >, boost::iostreams::detail::member_close_operation<boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> > >)@Base" 0replaceme
- (c++)"boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >::set_next(boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >*)@Base" 0replaceme
- (c++)"boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >::~linked_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >::~linked_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >::~linked_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::close_impl(std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::strict_sync()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::init_get_area()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::init_put_area()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::component_impl()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::set_auto_close(bool)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::open(boost::iostreams::file_descriptor_sink const&, long, long)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::sync()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::close()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::imbue(std::locale const&)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::seekoff(long, std::_Ios_Seekdir, std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::seekpos(std::fpos<__mbstate_t>, std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::overflow(int)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::set_next(boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >*)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::pbackfail(int)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::seek_impl(long, std::_Ios_Seekdir, std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::sync_impl()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::underflow()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::~indirect_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::~indirect_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::~indirect_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::close_impl(std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::strict_sync()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::init_get_area()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::init_put_area()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::component_impl()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::set_auto_close(bool)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::sync()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::close()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::imbue(std::locale const&)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::seekoff(long, std::_Ios_Seekdir, std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::seekpos(std::fpos<__mbstate_t>, std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::overflow(int)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::set_next(boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >*)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::pbackfail(int)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::seek_impl(long, std::_Ios_Seekdir, std::_Ios_Openmode)@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::underflow()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::~indirect_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::~indirect_streambuf()@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::~indirect_streambuf()@Base" 0replaceme
- (c++)"void boost::iostreams::detail::close_all<boost::iostreams::file_descriptor_sink>(boost::iostreams::file_descriptor_sink&)@Base" 0replaceme
- (c++)"void boost::iostreams::detail::close_all<boost::iostreams::file_descriptor_source>(boost::iostreams::file_descriptor_source&)@Base" 0replaceme
- (c++)"posix::Environment::set_value_for_key(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
- (c++)"posix::Environment::set_value_for_key(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::system_error&)@Base" 0replaceme
- (c++)"posix::Environment::unset_value_for_key(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
- (c++)"posix::Environment::unset_value_for_key(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::system_error&)@Base" 0replaceme
- (c++)"posix::Environment::Environment()@Base" 0replaceme
- (c++)"posix::Environment::Environment()@Base" 0replaceme
- (c++)"posix::Environment::~Environment()@Base" 0replaceme
- (c++)"posix::Environment::~Environment()@Base" 0replaceme
  (c++)"posix::ChildProcess::cin()@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::close_read_fd()@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::close_write_fd()@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::Pipe(posix::ChildProcess::Pipe const&)@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::Pipe()@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::Pipe(posix::ChildProcess::Pipe const&)@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::Pipe()@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::~Pipe()@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::~Pipe()@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::operator=(posix::ChildProcess::Pipe const&)@Base" 0replaceme
  (c++)"posix::ChildProcess::cerr()@Base" 0replaceme
  (c++)"posix::ChildProcess::cout()@Base" 0replaceme
- (c++)"posix::ChildProcess::Private::~Private()@Base" 0replaceme
- (c++)"posix::ChildProcess::Private::~Private()@Base" 0replaceme
  (c++)"posix::ChildProcess::wait_for(unsigned int const&)@Base" 0replaceme
- (c++)"posix::ChildProcess::ChildProcess(int, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&)@Base" 0replaceme
- (c++)"posix::ChildProcess::ChildProcess(int, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&, posix::ChildProcess::Pipe const&)@Base" 0replaceme
  (c++)"posix::ChildProcess::~ChildProcess()@Base" 0replaceme
- (c++)"posix::ChildProcess::~ChildProcess()@Base" 0replaceme
- (c++)"posix::ChildProcess::~ChildProcess()@Base" 0replaceme
- (c++)"posix::Self::mutable_env()@Base" 0replaceme
- (c++)"posix::Self::cin()@Base" 0replaceme
- (c++)"posix::Self::cerr()@Base" 0replaceme
- (c++)"posix::Self::cout()@Base" 0replaceme
- (c++)"posix::Self::Self()@Base" 0replaceme
- (c++)"posix::Self::Self()@Base" 0replaceme
- (c++)"posix::Self::~Self()@Base" 0replaceme
- (c++)"posix::Self::~Self()@Base" 0replaceme
- (c++)"posix::Self::~Self()@Base" 0replaceme
  (c++)"posix::exec(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::map<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&, std::bitset<3ul> const&)@Base" 0replaceme
  (c++)"posix::fork(std::function<int ()> const&, std::bitset<3ul> const&)@Base" 0replaceme
- (c++)"posix::linux::Self::Self()@Base" 0replaceme
- (c++)"posix::linux::Self::Self()@Base" 0replaceme
- (c++)"posix::linux::Self::~Self()@Base" 0replaceme
- (c++)"posix::linux::Self::~Self()@Base" 0replaceme
- (c++)"posix::linux::Self::~Self()@Base" 0replaceme
  (c++)"posix::linux::proc::process::OomScoreAdj::max_value()@Base" 0replaceme
  (c++)"posix::linux::proc::process::OomScoreAdj::min_value()@Base" 0replaceme
  (c++)"posix::linux::proc::process::OomAdj::disable_value()@Base" 0replaceme
@@ -137,63 +17,13 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"posix::linux::proc::process::operator>>(posix::Process const&, posix::linux::proc::process::Stat&)@Base" 0replaceme
  (c++)"posix::linux::proc::process::operator>>(posix::Process const&, posix::linux::proc::process::OomAdj&)@Base" 0replaceme
  (c++)"posix::linux::proc::process::operator>>(posix::Process const&, posix::linux::proc::process::OomScore&)@Base" 0replaceme
- (c++)"posix::linux::proc::process::operator>>(std::basic_istream<char, std::char_traits<char> >&, posix::linux::proc::process::Stat&)@Base" 0replaceme
- (c++)"posix::linux::proc::process::operator>>(std::basic_istream<char, std::char_traits<char> >&, posix::linux::proc::process::State&)@Base" 0replaceme
- (c++)"posix::linux::Process::mutable_self()@Base" 0replaceme
- (c++)"posix::linux::Process::self()@Base" 0replaceme
- (c++)"posix::linux::Process::Process(int)@Base" 0replaceme
- (c++)"posix::linux::Process::Process(int)@Base" 0replaceme
- (c++)"posix::linux::Process::~Process()@Base" 0replaceme
- (c++)"posix::linux::Process::~Process()@Base" 0replaceme
- (c++)"posix::linux::Process::~Process()@Base" 0replaceme
  (c++)"posix::vfork(std::function<int ()> const&, std::bitset<3ul> const&)@Base" 0replaceme
  (c++)"posix::Process::send_signal(posix::Signal const&)@Base" 0replaceme
  (c++)"posix::Process::send_signal(posix::Signal const&, std::system_error&)@Base" 0replaceme
- (c++)"posix::Process::mutable_self()@Base" 0replaceme
- (c++)"posix::Process::self()@Base" 0replaceme
- (c++)"posix::Process::Process(int)@Base" 0replaceme
- (c++)"posix::Process::Process(int)@Base" 0replaceme
  (c++)"posix::Process::~Process()@Base" 0replaceme
- (c++)"posix::Process::~Process()@Base" 0replaceme
- (c++)"posix::Process::~Process()@Base" 0replaceme
- (c++)"posix::is_child(int)@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::clone() const@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::rethrow() const@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::clone() const@Base" 0replaceme
- (c++)"boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::rethrow() const@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::auto_close() const@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>::component_type() const@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::auto_close() const@Base" 0replaceme
- (c++)"boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>::component_type() const@Base" 0replaceme
- (c++)"posix::Environment::value_for_key(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const@Base" 0replaceme
- (c++)"posix::Environment::for_each(std::function<void (std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)> const&) const@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::read_fd() const@Base" 0replaceme
- (c++)"posix::ChildProcess::Pipe::write_fd() const@Base" 0replaceme
- (c++)"posix::Self::env() const@Base" 0replaceme
- (c++)"posix::linux::Process::parent() const@Base" 0replaceme
  (c++)"posix::Process::pid() const@Base" 0replaceme
  (c++)"std::function<int ()>::operator()() const@Base" 0replaceme
  (c++)"char* std::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag)@Base" 0replaceme
- (c++)"std::system_error::system_error(int, std::error_category const&)@Base" 0replaceme
- (c++)"std::system_error::system_error(int, std::error_category const&)@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>::_M_destroy()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>::_M_dispose()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>::_M_get_deleter(std::type_info const&)@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>::_M_destroy()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>::_M_dispose()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>::_M_get_deleter(std::type_info const&)@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>::_M_destroy()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>::_M_dispose()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>::_M_get_deleter(std::type_info const&)@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
- (c++)"std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_ptr()@Base" 0replaceme
  (c++)"std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf()@Base" 0replaceme
  (c++)"std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf()@Base" 0replaceme
  (c++)"std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf()@Base" 0replaceme
@@ -213,96 +43,39 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"bool std::binary_search<char const*, char>(char const*, char const*, char const&)@Base" 0replaceme
  (c++)"void std::__insertion_sort<char*>(char*, char*)@Base" 0replaceme
  (c++)"void std::__introsort_loop<char*, long>(char*, char*, long)@Base" 0replaceme
- (c++)"__gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > std::__find_if<__gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, boost::algorithm::detail::is_any_ofF<char> >(__gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, boost::algorithm::detail::is_any_ofF<char>, std::random_access_iterator_tag)@Base" 0replaceme
- (c++)"typeinfo for boost::exception_detail::clone_base@Base" 0replaceme
- (c++)"typeinfo for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >@Base" 0replaceme
- (c++)"typeinfo for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >@Base" 0replaceme
- (c++)"typeinfo for boost::exception_detail::error_info_injector<boost::bad_function_call>@Base" 0replaceme
- (c++)"typeinfo for boost::exception_detail::error_info_injector<std::ios_base::failure>@Base" 0replaceme
- (c++)"typeinfo for boost::bad_function_call@Base" 0replaceme
- (c++)"typeinfo for boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> >@Base" 0replaceme
- (c++)"typeinfo for boost::exception@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::file_descriptor@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::file_descriptor_sink@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::file_descriptor_source@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>@Base" 0replaceme
- (c++)"typeinfo for boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>@Base" 0replaceme
  (c++)"typeinfo for posix::ChildProcess@Base" 0replaceme
- (c++)"typeinfo for posix::Self@Base" 0replaceme
- (c++)"typeinfo for posix::linux::Self@Base" 0replaceme
- (c++)"typeinfo for posix::linux::Process@Base" 0replaceme
  (c++)"typeinfo for posix::Process@Base" 0replaceme
  (c++)"typeinfo for std::_Mutex_base<(__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"typeinfo for std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"typeinfo for std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"typeinfo for std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
  (c++)"typeinfo for std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"typeinfo name for boost::exception_detail::clone_base@Base" 0replaceme
- (c++)"typeinfo name for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >@Base" 0replaceme
- (c++)"typeinfo name for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >@Base" 0replaceme
- (c++)"typeinfo name for boost::exception_detail::error_info_injector<boost::bad_function_call>@Base" 0replaceme
- (c++)"typeinfo name for boost::exception_detail::error_info_injector<std::ios_base::failure>@Base" 0replaceme
- (c++)"typeinfo name for boost::bad_function_call@Base" 0replaceme
- (c++)"typeinfo name for boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> >@Base" 0replaceme
- (c++)"typeinfo name for boost::exception@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::file_descriptor@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::file_descriptor_sink@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::file_descriptor_source@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>@Base" 0replaceme
- (c++)"typeinfo name for boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>@Base" 0replaceme
  (c++)"typeinfo name for posix::ChildProcess@Base" 0replaceme
- (c++)"typeinfo name for posix::Self@Base" 0replaceme
- (c++)"typeinfo name for posix::linux::Self@Base" 0replaceme
- (c++)"typeinfo name for posix::linux::Process@Base" 0replaceme
  (c++)"typeinfo name for posix::Process@Base" 0replaceme
  (c++)"typeinfo name for std::_Mutex_base<(__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"typeinfo name for std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"typeinfo name for std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"typeinfo name for std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
  (c++)"typeinfo name for std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"VTT for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >@Base" 0replaceme
- (c++)"VTT for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >@Base" 0replaceme
- (c++)"vtable for boost::exception_detail::clone_base@Base" 0replaceme
- (c++)"vtable for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >@Base" 0replaceme
- (c++)"vtable for boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >@Base" 0replaceme
- (c++)"vtable for boost::exception_detail::error_info_injector<boost::bad_function_call>@Base" 0replaceme
- (c++)"vtable for boost::exception_detail::error_info_injector<std::ios_base::failure>@Base" 0replaceme
- (c++)"vtable for boost::bad_function_call@Base" 0replaceme
- (c++)"vtable for boost::exception@Base" 0replaceme
- (c++)"vtable for boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>@Base" 0replaceme
- (c++)"vtable for boost::iostreams::stream_buffer<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>@Base" 0replaceme
- (c++)"vtable for boost::iostreams::detail::linked_streambuf<char, std::char_traits<char> >@Base" 0replaceme
- (c++)"vtable for boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_sink, std::char_traits<char>, std::allocator<char>, boost::iostreams::output_seekable>@Base" 0replaceme
- (c++)"vtable for boost::iostreams::detail::indirect_streambuf<boost::iostreams::file_descriptor_source, std::char_traits<char>, std::allocator<char>, boost::iostreams::input_seekable>@Base" 0replaceme
  (c++)"vtable for posix::ChildProcess@Base" 0replaceme
- (c++)"vtable for posix::Self@Base" 0replaceme
- (c++)"vtable for posix::linux::Self@Base" 0replaceme
- (c++)"vtable for posix::linux::Process@Base" 0replaceme
  (c++)"vtable for posix::Process@Base" 0replaceme
- (c++)"vtable for std::_Sp_counted_ptr<posix::ChildProcess::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"vtable for std::_Sp_counted_ptr<posix::Self::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"vtable for std::_Sp_counted_ptr<posix::Process::Private*, (__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
  (c++)"vtable for std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>@Base" 0replaceme
- (c++)"non-virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::~clone_impl()@Base" 0replaceme
- (c++)"non-virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::~clone_impl()@Base" 0replaceme
- (c++)"non-virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::~clone_impl()@Base" 0replaceme
- (c++)"non-virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::~clone_impl()@Base" 0replaceme
- (c++)"non-virtual thunk to boost::exception_detail::error_info_injector<boost::bad_function_call>::~error_info_injector()@Base" 0replaceme
- (c++)"non-virtual thunk to boost::exception_detail::error_info_injector<boost::bad_function_call>::~error_info_injector()@Base" 0replaceme
+ (c++)"boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
+ (c++)"boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
+ (c++)"boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
+ (c++)"posix::this_process::cin()@Base" 0replaceme
+ (c++)"posix::this_process::env::set_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
+ (c++)"posix::this_process::env::unset_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
+ (c++)"posix::this_process::env::get(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
+ (c++)"posix::this_process::env::set(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::system_error&)@Base" 0replaceme
+ (c++)"posix::this_process::env::unset(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::system_error&)@Base" 0replaceme
+ (c++)"posix::this_process::env::for_each(std::function<void (std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)> const&)@Base" 0replaceme
+ (c++)"posix::this_process::cerr()@Base" 0replaceme
+ (c++)"posix::this_process::cout()@Base" 0replaceme
+ (c++)"posix::this_process::parent()@Base" 0replaceme
+ (c++)"posix::this_process::instance()@Base" 0replaceme
+ (c++)"typeinfo for boost::exception_detail::clone_base@Base" 0replaceme
+ (c++)"typeinfo for boost::exception_detail::error_info_injector<std::ios_base::failure>@Base" 0replaceme
+ (c++)"typeinfo for boost::exception@Base" 0replaceme
+ (c++)"typeinfo name for boost::exception_detail::clone_base@Base" 0replaceme
+ (c++)"typeinfo name for boost::exception_detail::error_info_injector<std::ios_base::failure>@Base" 0replaceme
+ (c++)"typeinfo name for boost::exception@Base" 0replaceme
+ (c++)"vtable for boost::exception_detail::clone_base@Base" 0replaceme
+ (c++)"vtable for boost::exception_detail::error_info_injector<std::ios_base::failure>@Base" 0replaceme
+ (c++)"vtable for boost::exception@Base" 0replaceme
  (c++)"non-virtual thunk to boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
  (c++)"non-virtual thunk to boost::exception_detail::error_info_injector<std::ios_base::failure>::~error_info_injector()@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::clone() const@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::clone() const@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::rethrow() const@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::rethrow() const@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::~clone_impl()@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::bad_function_call> >::~clone_impl()@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::~clone_impl()@Base" 0replaceme
- (c++)"virtual thunk to boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::ios_base::failure> >::~clone_impl()@Base" 0replaceme
- (c++)"void boost::function2<boost::iterator_range<__gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char*, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::assign_to<boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> > >(boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char> >)::stored_vtable@Base" 0replaceme

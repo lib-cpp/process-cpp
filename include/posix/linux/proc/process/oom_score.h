@@ -18,6 +18,8 @@
 #ifndef POSIX_LINUX_PROC_PROCESS_OOM_SCORE_H_
 #define POSIX_LINUX_PROC_PROCESS_OOM_SCORE_H_
 
+#include <posix/visibility.h>
+
 namespace posix
 {
 class Process;
@@ -43,7 +45,7 @@ namespace process
  * The oom_score also reflects the adjustment specified by the oom_score_adj or
  * oom_adj setting for the process.
  */
-struct OomScore
+struct POSIX_DLL_PUBLIC OomScore
 {
     int value = 0; ///< Current OomScore as calculated by the kernel.
 };
@@ -54,7 +56,7 @@ struct OomScore
  * \param [in] process The process to read the score for.
  * \param [out] score The destination to store the value in.
  */
-const posix::Process& operator>>(const posix::Process& process, OomScore& score);
+POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, OomScore& score);
 }
 }
 }

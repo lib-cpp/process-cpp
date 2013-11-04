@@ -16,6 +16,8 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
+#include <posix/visibility.h>
+
 #include <functional>
 #include <iosfwd>
 #include <string>
@@ -33,7 +35,8 @@ namespace env
  * @brief for_each invokes a functor for every key-value pair in the environment.
  * @param [in] functor Invoked for every key-value pair.
  */
-void for_each(const std::function<void(const std::string&, const std::string&)>& functor) noexcept(true);
+POSIX_DLL_PUBLIC void for_each(
+        const std::function<void(const std::string&, const std::string&)>& functor) noexcept(true);
 
 /**
  * @brief get queries the value of an environment variable.
@@ -41,14 +44,14 @@ void for_each(const std::function<void(const std::string&, const std::string&)>&
  * @param [in] key Name of the variable to query the value for.
  * @return Contents of the variable.
  */
-std::string get(const std::string& key);
+POSIX_DLL_PUBLIC std::string get(const std::string& key);
 
 /**
  * @brief unset_or_throw removes the variable with name key from the environment.
  * @throw std::system_error in case of errors.
  * @param [in] key Name of the variable to unset.
  */
-void unset_or_throw(const std::string& key);
+POSIX_DLL_PUBLIC void unset_or_throw(const std::string& key);
 
 /**
  * @brief unset removes the variable with name key from the environment.
@@ -56,7 +59,7 @@ void unset_or_throw(const std::string& key);
  * @param [in] key Name of the variable to unset.
  * @param [out] se Receives error details if unset returns false.
  */
-bool unset(const std::string& key,
+POSIX_DLL_PUBLIC bool unset(const std::string& key,
            std::system_error& se) noexcept;
 
 /**
@@ -65,7 +68,7 @@ bool unset(const std::string& key,
  * @param [in] key Name of the variable to set the value for.
  * @param [in] value New contents of the variable.
  */
-void set_or_throw(const std::string& key,
+POSIX_DLL_PUBLIC void set_or_throw(const std::string& key,
                   const std::string& value);
 /**
  * @brief set will adjust the contents of the variable identified by key to the provided value.
@@ -74,7 +77,7 @@ void set_or_throw(const std::string& key,
  * @param [in] value New contents of the variable.
  * @param [out] se Receives the details in case of errors.
  */
-bool set(const std::string &key,
+POSIX_DLL_PUBLIC bool set(const std::string &key,
          const std::string &value,
          std::system_error& se) noexcept;
 }
@@ -82,27 +85,27 @@ bool set(const std::string &key,
 /**
   * @brief Returns a Process instance corresponding to this process.
   */
-const Process& instance();
+POSIX_DLL_PUBLIC const Process& instance();
 
 /**
  * @brief Query the parent of the process.
  * @return The parent of the process.
  */
-Process parent() noexcept(true);
+POSIX_DLL_PUBLIC Process parent() noexcept(true);
 
 /**
  * @brief Access this process's stdin.
  */
-std::istream& cin() noexcept(true);
+POSIX_DLL_PUBLIC std::istream& cin() noexcept(true);
 
 /**
  * @brief Access this process's stdout.
  */
-std::ostream& cout() noexcept(true);
+POSIX_DLL_PUBLIC std::ostream& cout() noexcept(true);
 
 /**
  * @brief Access this process's stderr.
  */
-std::ostream& cerr() noexcept(true);
+POSIX_DLL_PUBLIC std::ostream& cerr() noexcept(true);
 }
 }
