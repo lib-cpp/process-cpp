@@ -16,63 +16,34 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <posix/process.h>
-
-#include <posix/signal.h>
-
-#include <sys/types.h>
-#include <unistd.h>
-
-#include <iostream>
+#include <posix/signalable.h>
 
 namespace posix
 {
-
-struct Process::Private
+struct Signalable::Private
 {
     pid_t pid;
 };
 
-Process Process::invalid()
-{
-    static const pid_t invalid_pid = -1;
-    return Process(invalid_pid);
-}
-
-Process::Process(pid_t pid)
-    : Signalable(pid),
-      d(new Private{pid})
+Signalable::Signalable(pid_t pid) : d(new Private{pid})
 {
 }
 
-Process::~Process() noexcept
+void Signalable::send_signal_or_throw(Signal signal)
 {
-}
+    auto result = ::kill(d->pid, static_cast<int>(signal));
 
-pid_t Process::pid() const
-{
-    return d->pid;
-}
-
-ProcessGroup Process::process_group_or_throw() const
-{
-    pid_t pgid = ::getpgid(pid());
-
-    if (pgid == -1)
+    if (result == -1)
         throw std::system_error(errno, std::system_category());
-
-    return ProcessGroup(pgid);
 }
 
-ProcessGroup Process::process_group(std::error_code& se) const noexcept(true)
+void Signalable::send_signal(Signal signal, std::error_code& e) noexcept
 {
-    pid_t pgid = ::getpgid(pid());
+    auto result = ::kill(d->pid, static_cast<int>(signal));
 
-    if (pgid == -1)
+    if (result == -1)
     {
-        se = std::error_code(errno, std::system_category());
+        e = std::error_code(errno, std::system_category());
     }
-
-    return ProcessGroup(pgid);
 }
 }

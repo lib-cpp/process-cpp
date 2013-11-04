@@ -39,6 +39,12 @@ namespace posix
 class POSIX_DLL_PUBLIC ChildProcess : public Process
 {
 public:
+    /**
+     * @brief Creates an invalid ChildProcess.
+     * @return An invalid ChildProcess instance.
+     */
+    static ChildProcess invalid();
+
     ~ChildProcess();
 
     /**
@@ -65,8 +71,8 @@ public:
     std::istream& cout();
 
 private:
-    friend ChildProcess fork(const std::function<int()>&, const StandardStreamFlags&);
-    friend ChildProcess vfork(const std::function<int()>&, const StandardStreamFlags&);
+    friend ChildProcess fork(const std::function<int()>&, const StandardStream&);
+    friend ChildProcess vfork(const std::function<int()>&, const StandardStream&);
 
     class POSIX_DLL_LOCAL Pipe
     {

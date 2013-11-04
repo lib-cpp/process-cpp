@@ -31,7 +31,7 @@ namespace posix
 ChildProcess exec(const std::string& fn,
                   const std::vector<std::string>& argv,
                   const std::map<std::string, std::string>& env,
-                  const StandardStreamFlags& flags)
+                  const StandardStream& flags)
 {
     return posix::fork([fn, argv, env]()
     {

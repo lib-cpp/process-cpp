@@ -43,7 +43,7 @@ enum class RedirectFlags;
 POSIX_DLL_PUBLIC ChildProcess exec(const std::string& fn,
                   const std::vector<std::string>& argv,
                   const std::map<std::string, std::string>& env,
-                  const StandardStreamFlags& flags);
+                  const StandardStream& flags);
 }
 
 #endif // POSIX_EXEC_H_

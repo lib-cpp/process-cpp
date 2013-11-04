@@ -39,11 +39,18 @@ namespace posix
 bool is_child(pid_t pid) { return pid == 0; }
 
 ChildProcess fork(const std::function<int()>& main,
-                  const StandardStreamFlags& flags)
+                  const StandardStream& flags)
 {
-    ChildProcess::Pipe stdin_pipe;
-    ChildProcess::Pipe stdout_pipe;
-    ChildProcess::Pipe stderr_pipe;
+    ChildProcess::Pipe stdin_pipe{ChildProcess::Pipe::invalid()};
+    ChildProcess::Pipe stdout_pipe{ChildProcess::Pipe::invalid()};
+    ChildProcess::Pipe stderr_pipe{ChildProcess::Pipe::invalid()};
+
+    if ((flags & StandardStream::stdin) != StandardStream::empty)
+        stdin_pipe = ChildProcess::Pipe();
+    if ((flags & StandardStream::stdout) != StandardStream::empty)
+        stdout_pipe = ChildProcess::Pipe();
+    if ((flags & StandardStream::stderr) != StandardStream::empty)
+        stderr_pipe = ChildProcess::Pipe();
 
     pid_t pid = ::fork();
 
@@ -60,11 +67,11 @@ ChildProcess fork(const std::function<int()>& main,
             stdout_pipe.close_read_fd();
             stderr_pipe.close_read_fd();
             // We replace stdin and stdout of the child process first:
-            if (flags.test(StandardStream::stdin))
+            if ((flags & StandardStream::stdin) != StandardStream::empty)
                 redirect_stream_to_fd(stdin_pipe.read_fd(), STDIN_FILENO);
-            if (flags.test(StandardStream::stdout))
+            if ((flags & StandardStream::stdout) != StandardStream::empty)
                 redirect_stream_to_fd(stdout_pipe.write_fd(), STDOUT_FILENO);
-            if (flags.test(StandardStream::stderr))
+            if ((flags & StandardStream::stderr) != StandardStream::empty)
                 redirect_stream_to_fd(stderr_pipe.write_fd(), STDERR_FILENO);
 
             result = main();
@@ -90,7 +97,7 @@ ChildProcess fork(const std::function<int()>& main,
 }
 
 ChildProcess vfork(const std::function<int()>& main,
-                   const StandardStreamFlags& flags)
+                   const StandardStream& flags)
 {
     ChildProcess::Pipe stdin_pipe, stdout_pipe, stderr_pipe;
 
@@ -110,11 +117,11 @@ ChildProcess vfork(const std::function<int()>& main,
             stdout_pipe.close_read_fd();
             stderr_pipe.close_read_fd();
             // We replace stdin and stdout of the child process first:
-            if (flags.test(StandardStream::stdin))
+            if ((flags & StandardStream::stdin) != StandardStream::empty)
                 redirect_stream_to_fd(stdin_pipe.read_fd(), STDIN_FILENO);
-            if (flags.test(StandardStream::stdout))
+            if ((flags & StandardStream::stdout) != StandardStream::empty)
                 redirect_stream_to_fd(stdout_pipe.write_fd(), STDOUT_FILENO);
-            if (flags.test(StandardStream::stderr))
+            if ((flags & StandardStream::stderr) != StandardStream::empty)
                 redirect_stream_to_fd(stderr_pipe.write_fd(), STDERR_FILENO);
 
             result = main();

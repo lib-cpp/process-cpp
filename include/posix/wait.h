@@ -33,63 +33,68 @@ namespace posix
 {
 namespace wait
 {
-    enum Flag
+
+/**
+ * @brief Flags enumerates different behavior when waiting for a child process to change state.
+ */
+enum class Flags : std::uint8_t
+{
+    continued = WCONTINUED, ///< Also wait for a child to continue after having been stopped.
+    untraced = WUNTRACED, ///< Also wait for state changes in untraced children.
+    no_hang = WNOHANG ///< Do not block if a child process hasn't changed state.
+};
+
+POSIX_DLL_PUBLIC Flags operator|(Flags l, Flags r);
+
+/**
+ * @brief The Result struct encapsulates the result of waiting for a process state change.
+ */
+struct POSIX_DLL_PUBLIC Result
+{
+    /**
+     * @brief The status of the process/wait operation.
+     */
+    enum class Status
     {
-        continued = WCONTINUED,
-        untraced = WUNTRACED,
-        no_hang = WNOHANG
-    };
-    typedef std::uint32_t Flags;
+        undefined, ///< Marks an undefined state.
+        no_state_change, ///< No state change occured.
+        exited, ///< The process exited normally.
+        signaled, ///< The process was signalled and terminated.
+        stopped, ///< The process was signalled and stopped.
+        continued ///< The process resumed operation.
+    } status = Status::undefined;
 
     /**
-     * @brief The Result struct encapsulates the result of waiting for a process state change.
+     * @brief Union of result-specific details.
      */
-    struct POSIX_DLL_PUBLIC Result
+    union
     {
         /**
-         * @brief The status of the process/wait operation.
+         * Contains the exit status of the process if status == Status::exited.
          */
-        enum class Status
+        struct
         {
-            undefined, ///< Marks an undefined state.
-            no_state_change, ///< No state change occured.
-            exited, ///< The process exited normally.
-            signaled, ///< The process was signalled and terminated.
-            stopped, ///< The process was signalled and stopped.
-            continued ///< The process resumed operation.
-        } status = Status::undefined;
+            exit::Status status; ///< Exit status of the process.
+        } if_exited;
 
         /**
-         * @brief Union of result-specific details.
+         * Contains the signal that caused the process to terminate if status == Status::signaled.
          */
-        union
+        struct
         {
-            /**
-             * Contains the exit status of the process if status == Status::exited.
-             */
-            struct
-            {
-                exit::Status status; ///< Exit status of the process.
-            } if_exited;
+            Signal signal; ///< Signal that caused the process to terminate.
+            bool core_dumped; ///< true if the process termination resulted in a core dump.
+        } if_signaled;
 
-            /**
-             * Contains the signal that caused the process to terminate if status == Status::signaled.
-             */
-            struct
-            {
-                Signal signal; ///< Signal that caused the process to terminate.
-                bool core_dumped; ///< true if the process termination resulted in a core dump.
-            } if_signaled;
-
-            /**
-             * Contains the signal that caused the process to terminate if status == Status::stopped.
-             */
-            struct
-            {
-                Signal signal; ///< Signal that caused the process to terminate.
-            } if_stopped;
-        } detail;
-    };
+        /**
+         * Contains the signal that caused the process to terminate if status == Status::stopped.
+         */
+        struct
+        {
+            Signal signal; ///< Signal that caused the process to terminate.
+        } if_stopped;
+    } detail;
+};
 }
 }
 

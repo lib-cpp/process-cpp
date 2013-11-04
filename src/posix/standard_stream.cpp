@@ -16,28 +16,17 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_STANDARD_STREAM_H_
-#define POSIX_STANDARD_STREAM_H_
-
-#include <posix/visibility.h>
-
-#include <cstdint>
+#include <posix/standard_stream.h>
 
 namespace posix
 {
-/**
- * @brief The StandardStream enum wraps the POSIX standard streams.
- */
-enum class StandardStream : std::uint8_t
+StandardStream operator|(StandardStream l, StandardStream r)
 {
-    empty = 0,
-    stdin = 1 << 0,
-    stdout = 1 << 1,
-    stderr = 1 << 2
-};
-
-POSIX_DLL_PUBLIC StandardStream operator|(StandardStream l, StandardStream r);
-POSIX_DLL_PUBLIC StandardStream operator&(StandardStream l, StandardStream r);
+    return static_cast<StandardStream>(static_cast<std::uint8_t>(l) | static_cast<std::uint8_t>(r));
 }
 
-#endif // POSIX_STANDARD_STREAM_H_
+StandardStream operator&(StandardStream l, StandardStream r)
+{
+    return static_cast<StandardStream>(static_cast<std::uint8_t>(l) & static_cast<std::uint8_t>(r));
+}
+}

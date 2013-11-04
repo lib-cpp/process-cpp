@@ -19,6 +19,8 @@
 #ifndef POSIX_PROCESS_H_
 #define POSIX_PROCESS_H_
 
+#include <posix/process_group.h>
+#include <posix/signalable.h>
 #include <posix/this_process.h>
 #include <posix/visibility.h>
 #include <posix/wait.h>
@@ -35,9 +37,15 @@ class WaitFlags;
 /**
  * @brief The Process class models a process and possible operations on it.
  */
-class POSIX_DLL_PUBLIC Process
+class POSIX_DLL_PUBLIC Process : public Signalable
 {
 public:
+    /**
+     * @brief Returns an invalid instance for testing purposes.
+     * @return An invalid instance.
+     */
+    static Process invalid();
+
     /**
      * @brief Frees resources associated with the process.
      */
@@ -50,18 +58,20 @@ public:
     virtual pid_t pid() const;
 
     /**
-     * @brief Sends a signal to the process.
-     * @throws std::system_error in case of problems.
-     * @param [in] signal The signal to be sent to the process.
+     * @brief Queries the id of the process group this process belongs to.
+     * @throw std::system_error in case of errors.
+     * @return The id of the process group this process belongs to.
      */
-    virtual void send_signal(const Signal& signal);
+    virtual ProcessGroup process_group_or_throw() const;
 
     /**
-     * @brief Sends a signal to the process.
-     * @param [in] signal The signal to be sent to the process.
-     * @param [out] e Set to contain an error if an issue arises.
+     * @brief Queries the id of the process group this process belongs to.
+     *
+     * @return A tuple with the first element being the id of the process group
+     * this process belongs to and the second element a boolean flag indicating
+     * an error if true.
      */
-    virtual void send_signal(const Signal& signal, std::system_error& e) noexcept;
+    virtual ProcessGroup process_group(std::error_code& se) const noexcept(true);
 
 protected:
     friend const Process& posix::this_process::instance();

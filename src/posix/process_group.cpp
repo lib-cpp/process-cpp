@@ -16,28 +16,24 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_STANDARD_STREAM_H_
-#define POSIX_STANDARD_STREAM_H_
-
-#include <posix/visibility.h>
-
-#include <cstdint>
+#include <posix/process_group.h>
 
 namespace posix
 {
-/**
- * @brief The StandardStream enum wraps the POSIX standard streams.
- */
-enum class StandardStream : std::uint8_t
+struct ProcessGroup::Private
 {
-    empty = 0,
-    stdin = 1 << 0,
-    stdout = 1 << 1,
-    stderr = 1 << 2
+    pid_t id;
 };
 
-POSIX_DLL_PUBLIC StandardStream operator|(StandardStream l, StandardStream r);
-POSIX_DLL_PUBLIC StandardStream operator&(StandardStream l, StandardStream r);
+pid_t ProcessGroup::id() const
+{
+    return d->id;
 }
 
-#endif // POSIX_STANDARD_STREAM_H_
+ProcessGroup::ProcessGroup(pid_t id)
+    : Signalable(-id), // We rely on ::kill to deliver signals, thus negate the id (see man 2 kill).
+      d(new Private{id})
+{
+}
+}
+

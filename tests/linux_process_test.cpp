@@ -65,7 +65,10 @@ namespace
 
 TEST(LinuxProcess, adjusting_proc_oom_score_adj_works)
 {
-    posix::linux::proc::process::OomScoreAdj oom_score_adj{posix::linux::proc::process::OomScoreAdj::max_value()};
+    posix::linux::proc::process::OomScoreAdj oom_score_adj
+    {
+        posix::linux::proc::process::OomScoreAdj::max_value()
+    };
     EXPECT_NO_THROW(posix::this_process::instance() << oom_score_adj);
     EXPECT_NO_THROW(posix::this_process::instance() >> oom_score_adj);
     EXPECT_EQ(posix::linux::proc::process::OomScoreAdj::max_value(),
@@ -79,8 +82,10 @@ TEST(LinuxProcess, adjusting_proc_oom_score_adj_works)
 // does not have CAP_SYS_RESOURCE capabilities.
 TEST(LinuxProcess, adjusting_proc_oom_score_adj_to_privileged_values_throws)
 {
-    posix::linux::proc::process::OomScoreAdj oom_score_adj{
-        posix::linux::proc::process::OomScoreAdj::min_value()};
+    posix::linux::proc::process::OomScoreAdj oom_score_adj
+    {
+        posix::linux::proc::process::OomScoreAdj::min_value()
+    };
     EXPECT_NO_THROW(posix::this_process::instance() << oom_score_adj);
     EXPECT_NO_THROW(posix::this_process::instance() >> oom_score_adj);
     EXPECT_NE(posix::linux::proc::process::OomScoreAdj::min_value(),
@@ -89,15 +94,20 @@ TEST(LinuxProcess, adjusting_proc_oom_score_adj_to_privileged_values_throws)
 
 TEST(LinuxProcess, trying_to_write_an_invalid_oom_score_adj_throws)
 {
-    posix::linux::proc::process::OomScoreAdj invalid_adj{
-        posix::linux::proc::process::OomScoreAdj::min_value() -1000};
+    posix::linux::proc::process::OomScoreAdj invalid_adj
+    {
+        posix::linux::proc::process::OomScoreAdj::min_value() -1000
+    };
 
     EXPECT_ANY_THROW(posix::this_process::instance() << invalid_adj);
 }
 
 TEST(LinuxProcess, adjusting_proc_oom_adj_works)
 {
-    posix::linux::proc::process::OomAdj oom_adj{posix::linux::proc::process::OomAdj::max_value()};
+    posix::linux::proc::process::OomAdj oom_adj
+    {
+        posix::linux::proc::process::OomAdj::max_value()
+    };
     EXPECT_NO_THROW(posix::this_process::instance() << oom_adj);
     EXPECT_NO_THROW(posix::this_process::instance() >> oom_adj);
     EXPECT_EQ(posix::linux::proc::process::OomAdj::max_value(),
@@ -114,8 +124,10 @@ TEST(LinuxProcess, adjusting_proc_oom_adj_works)
 // does not have CAP_SYS_RESOURCE capabilities.
 TEST(LinuxProcess, adjusting_proc_oom_adj_to_privileged_values_does_not_work)
 {
-    posix::linux::proc::process::OomAdj oom_adj{
-        posix::linux::proc::process::OomAdj::min_value()};
+    posix::linux::proc::process::OomAdj oom_adj
+    {
+        posix::linux::proc::process::OomAdj::min_value()
+    };
     EXPECT_NO_THROW(posix::this_process::instance() << oom_adj);
     EXPECT_NO_THROW(posix::this_process::instance() >> oom_adj);
 
@@ -132,8 +144,10 @@ TEST(LinuxProcess, adjusting_proc_oom_adj_to_privileged_values_does_not_work)
 
 TEST(LinuxProcess, trying_to_write_an_invalid_oom_adj_throws)
 {
-    posix::linux::proc::process::OomAdj invalid_adj{
-        posix::linux::proc::process::OomAdj::min_value() -1000};
+    posix::linux::proc::process::OomAdj invalid_adj
+    {
+        posix::linux::proc::process::OomAdj::min_value() - 1000
+    };
 
     EXPECT_ANY_THROW(posix::this_process::instance() << invalid_adj);
 }

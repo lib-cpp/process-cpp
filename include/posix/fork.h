@@ -35,7 +35,7 @@ namespace posix
  * @return An instance of ChildProcess in case of success.
  */
 POSIX_DLL_PUBLIC ChildProcess fork(const std::function<int()>& main,
-                  const StandardStreamFlags& flags);
+                                   const StandardStream& flags);
 
 /**
  * @brief fork vforks a new process and executes the provided main function in the newly forked process.
@@ -45,7 +45,7 @@ POSIX_DLL_PUBLIC ChildProcess fork(const std::function<int()>& main,
  * @return An instance of ChildProcess in case of success.
  */
 POSIX_DLL_PUBLIC ChildProcess vfork(const std::function<int()>& main,
-                   const StandardStreamFlags& flags);
+                   const StandardStream& flags);
 }
 
 #endif // POSIX_FORK_H_
