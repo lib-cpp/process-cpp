@@ -21,6 +21,7 @@
 
 #include <posix/process.h>
 #include <posix/standard_stream.h>
+#include <posix/visibility.h>
 
 #include <iosfwd>
 #include <functional>
@@ -35,7 +36,7 @@ namespace posix
  * process and to access the child process's standard streams if they have been
  * redirected when forking or exec'ing.
  */
-class ChildProcess : public Process
+class POSIX_DLL_PUBLIC ChildProcess : public Process
 {
 public:
     /**
@@ -73,7 +74,7 @@ private:
     friend ChildProcess fork(const std::function<int()>&, const StandardStream&);
     friend ChildProcess vfork(const std::function<int()>&, const StandardStream&);
 
-    class Pipe
+    class POSIX_DLL_LOCAL Pipe
     {
     public:
         static Pipe invalid();
@@ -95,12 +96,12 @@ private:
         int fds[2];
     };
 
-    ChildProcess(pid_t pid,
-                 const Pipe& stdin,
-                 const Pipe& stdout,
-                 const Pipe& stderr);
+    POSIX_DLL_LOCAL ChildProcess(pid_t pid,
+                                 const Pipe& stdin,
+                                 const Pipe& stdout,
+                                 const Pipe& stderr);
 
-    struct Private;
+    struct POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }

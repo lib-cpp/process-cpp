@@ -20,6 +20,7 @@
 #define POSIX_PROCESS_GROUP_H_
 
 #include <posix/signalable.h>
+#include <posix/visibility.h>
 
 #include <memory>
 
@@ -37,7 +38,7 @@ class Process;
  * of signals. A signal directed to a process group is delivered individually to
  * all of the processes that are members of the group.
  */
-class ProcessGroup : public Signalable
+class POSIX_DLL_PUBLIC ProcessGroup : public Signalable
 {
 public:
     /**
@@ -48,10 +49,10 @@ public:
 
 protected:
     friend class Process;
-    ProcessGroup(pid_t id);
+    POSIX_DLL_LOCAL ProcessGroup(pid_t id);
 
 private:
-    struct Private;
+    struct POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }

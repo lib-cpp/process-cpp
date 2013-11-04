@@ -20,6 +20,7 @@
 #define POSIX_SIGNALABLE_H_
 
 #include <posix/signal.h>
+#include <posix/visibility.h>
 
 #include <memory>
 #include <system_error>
@@ -29,7 +30,7 @@ namespace posix
 /**
  * @brief The Signalable class abstracts the ability of an entity to be delivered a posix signal.
  */
-class Signalable
+class POSIX_DLL_PUBLIC Signalable
 {
 public:
     /**
@@ -47,10 +48,10 @@ public:
     virtual void send_signal(Signal signal, std::error_code& e) noexcept(true);
 
 protected:
-    explicit Signalable(pid_t pid);
+    POSIX_DLL_LOCAL explicit Signalable(pid_t pid);
 
 private:
-    struct Private;
+    struct POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }

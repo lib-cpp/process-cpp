@@ -21,6 +21,7 @@
 
 #include <posix/exit.h>
 #include <posix/signal.h>
+#include <posix/visibility.h>
 
 #include <bitset>
 
@@ -43,12 +44,12 @@ enum class Flags : std::uint8_t
     no_hang = WNOHANG ///< Do not block if a child process hasn't changed state.
 };
 
-Flags operator|(Flags l, Flags r);
+POSIX_DLL_PUBLIC Flags operator|(Flags l, Flags r);
 
 /**
  * @brief The Result struct encapsulates the result of waiting for a process state change.
  */
-struct Result
+struct POSIX_DLL_PUBLIC Result
 {
     /**
      * @brief The status of the process/wait operation.

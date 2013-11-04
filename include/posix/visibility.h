@@ -16,28 +16,15 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_STANDARD_STREAM_H_
-#define POSIX_STANDARD_STREAM_H_
+#ifndef POSIX_VISIBILITY_H_
+#define POSIX_VISIBILITY_H_
 
-#include <posix/visibility.h>
+#if __GNUC__ >= 4
+#define POSIX_DLL_PUBLIC __attribute__ ((visibility ("default")))
+#define POSIX_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+#else
+#define POSIX_DLL_PUBLIC
+#define POSIX_DLL_LOCAL
+#endif
 
-#include <cstdint>
-
-namespace posix
-{
-/**
- * @brief The StandardStream enum wraps the POSIX standard streams.
- */
-enum class StandardStream : std::uint8_t
-{
-    empty = 0,
-    stdin = 1 << 0,
-    stdout = 1 << 1,
-    stderr = 1 << 2
-};
-
-POSIX_DLL_PUBLIC StandardStream operator|(StandardStream l, StandardStream r);
-POSIX_DLL_PUBLIC StandardStream operator&(StandardStream l, StandardStream r);
-}
-
-#endif // POSIX_STANDARD_STREAM_H_
+#endif // POSIX_VISIBILITY_H_
