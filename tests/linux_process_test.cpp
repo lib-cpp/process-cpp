@@ -80,7 +80,15 @@ TEST(LinuxProcess, adjusting_proc_oom_score_adj_works)
 
 // For this test we assume that we are not privileged and that the test binary
 // does not have CAP_SYS_RESOURCE capabilities.
-TEST(LinuxProcess, adjusting_proc_oom_score_adj_to_privileged_values_throws)
+namespace
+{
+bool i_am_root()
+{
+    static const uid_t root = 0;
+    return ::getuid() == root;
+}
+}
+TEST(LinuxProcess, adjusting_proc_oom_score_adj_to_privileged_values_only_works_if_root)
 {
     posix::linux::proc::process::OomScoreAdj oom_score_adj
     {
@@ -88,8 +96,13 @@ TEST(LinuxProcess, adjusting_proc_oom_score_adj_to_privileged_values_throws)
     };
     EXPECT_NO_THROW(posix::this_process::instance() << oom_score_adj);
     EXPECT_NO_THROW(posix::this_process::instance() >> oom_score_adj);
-    EXPECT_NE(posix::linux::proc::process::OomScoreAdj::min_value(),
-              oom_score_adj.value);
+    
+    if (i_am_root())
+        EXPECT_EQ(posix::linux::proc::process::OomScoreAdj::min_value(),
+                  oom_score_adj.value);
+    else
+        EXPECT_NE(posix::linux::proc::process::OomScoreAdj::min_value(),
+                  oom_score_adj.value);
 }
 
 TEST(LinuxProcess, trying_to_write_an_invalid_oom_score_adj_throws)
