@@ -1,6 +1,35 @@
-process-cpp (0.0.1-ubuntu1) UNRELEASED; urgency=low
+process-cpp (0.0.1+14.04.20131105.1-0ubuntu1) trusty; urgency=low
 
   [ Thomas Voß ]
   * Initial package
 
- -- Thomas Voß <thomas.voss@canonical.com>  Mon, 21 Oct 2013 02:10:21 +0000
+  [ thomas-voss ]
+  * Initial push.
+  * Add packaging setup.
+  * Incorporate feedback from first round of packaging review.
+  * Clean up copyright and add COPYING files.
+  * Add pkgconfig setup.
+  * Remove unneccessary COPYING.GPL.
+  * Fine-tune packaging setup.
+  * * Add initial symbols file * Adjust package description to be < 80
+    characters.
+  * Add initial set of doxygen documentation.
+  * Refactor Self to namespace as we do not hold state.
+  * Purge remaining references to environment.h/cpp
+  * Enhance test to check if access to this_process's streams work
+    correctly.
+  * Add a README.
+  * Remove posix::linux::Process, not needed right now.
+  * * Add noexcept(true) specifiers where appropriate. * Add
+    documentation from man proc for posix::linux::proc::process::Stat.
+  * Add missing graphviz build dep.
+  * fix-test-if-executed-with-root.
+  * * Refactor flags to rely on enum classes and operator overloads. *
+    Add handling of process groups.
+  * Fix failing test if test suite is run as root.
+  * Remove flaky test cases.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 20
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 05 Nov 2013 10:55:57 +0000
