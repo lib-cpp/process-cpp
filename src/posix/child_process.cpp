@@ -167,7 +167,8 @@ struct ChildProcess::Private
 
 ChildProcess ChildProcess::invalid()
 {
-    static const pid_t invalid_pid = -1;
+    // We take the init process as child.
+    static const pid_t invalid_pid = 1;
     return ChildProcess(invalid_pid, Pipe::invalid(), Pipe::invalid(), Pipe::invalid());
 }
 

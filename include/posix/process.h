@@ -36,10 +36,19 @@ class WaitFlags;
 
 /**
  * @brief The Process class models a process and possible operations on it.
+ *
+ * The process class is implicitly shared.
  */
 class POSIX_DLL_PUBLIC Process : public Signalable
 {
 public:
+    /**
+     * @brief Creates a process instance wrapping an existing process.
+     * @throw Throw std::system_error if pid is invalid, i.e., pid < 0.
+     * @param pid The process identifier of the existing process.
+     */
+    explicit Process(pid_t pid);
+
     /**
      * @brief Returns an invalid instance for testing purposes.
      * @return An invalid instance.
@@ -72,11 +81,6 @@ public:
      * an error if true.
      */
     virtual ProcessGroup process_group(std::error_code& se) const noexcept(true);
-
-protected:
-    friend const Process& posix::this_process::instance();
-    friend Process posix::this_process::parent() noexcept(true);
-    explicit POSIX_DLL_LOCAL Process(pid_t pid);
 
 private:
     struct POSIX_DLL_LOCAL Private;

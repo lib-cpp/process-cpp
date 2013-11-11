@@ -40,11 +40,18 @@ POSIX_DLL_PUBLIC void for_each(
 
 /**
  * @brief get queries the value of an environment variable.
- * @throw std::system_error if access to the underlying operating system facilites fails.
+ * @throw std::runtime_error if there is no variable with the given key defined in the env.
  * @param [in] key Name of the variable to query the value for.
  * @return Contents of the variable.
  */
-POSIX_DLL_PUBLIC std::string get(const std::string& key);
+POSIX_DLL_PUBLIC std::string get_or_throw(const std::string& key);
+
+/**
+ * @brief get queries the value of an environment variable.
+ * @param [in] key Name of the variable to query the value for.
+ * @return Contents of the variable or an empty string if the variable is not defined.
+ */
+POSIX_DLL_PUBLIC std::string get(const std::string& key) noexcept(true);
 
 /**
  * @brief unset_or_throw removes the variable with name key from the environment.
@@ -60,7 +67,7 @@ POSIX_DLL_PUBLIC void unset_or_throw(const std::string& key);
  * @param [out] se Receives error details if unset returns false.
  */
 POSIX_DLL_PUBLIC bool unset(const std::string& key,
-           std::system_error& se) noexcept;
+                            std::error_code& se) noexcept(true);
 
 /**
  * @brief set_or_throw will adjust the contents of the variable identified by key to the provided value.
@@ -69,7 +76,7 @@ POSIX_DLL_PUBLIC bool unset(const std::string& key,
  * @param [in] value New contents of the variable.
  */
 POSIX_DLL_PUBLIC void set_or_throw(const std::string& key,
-                  const std::string& value);
+                                   const std::string& value);
 /**
  * @brief set will adjust the contents of the variable identified by key to the provided value.
  * @return false in case of errors, true otherwise.
@@ -78,14 +85,14 @@ POSIX_DLL_PUBLIC void set_or_throw(const std::string& key,
  * @param [out] se Receives the details in case of errors.
  */
 POSIX_DLL_PUBLIC bool set(const std::string &key,
-         const std::string &value,
-         std::system_error& se) noexcept;
+                          const std::string &value,
+                          std::error_code& se) noexcept(true);
 }
 
 /**
   * @brief Returns a Process instance corresponding to this process.
   */
-POSIX_DLL_PUBLIC const Process& instance();
+POSIX_DLL_PUBLIC const Process& instance() noexcept(true);
 
 /**
  * @brief Query the parent of the process.

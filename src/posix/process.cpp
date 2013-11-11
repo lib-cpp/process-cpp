@@ -35,14 +35,19 @@ struct Process::Private
 
 Process Process::invalid()
 {
-    static const pid_t invalid_pid = -1;
-    return Process(invalid_pid);
+    static const pid_t invalid_pid = 0;
+    Process p(invalid_pid);
+    p.d->pid = -1;
+
+    return p;
 }
 
 Process::Process(pid_t pid)
     : Signalable(pid),
       d(new Private{pid})
 {
+    if (pid < 0)
+        throw std::runtime_error("Cannot construct instance for invalid pid.");
 }
 
 Process::~Process() noexcept

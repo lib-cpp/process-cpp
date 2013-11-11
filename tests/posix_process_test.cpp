@@ -51,6 +51,12 @@ struct ForkedSpinningProcess : public ::testing::Test
 };
 }
 
+TEST(PosixProcess, ctor_throws_for_invalid_pid)
+{
+    pid_t invalid_pid{-1};
+    EXPECT_ANY_THROW(posix::Process{invalid_pid});
+}
+
 TEST(PosixProcess, this_process_instance_reports_correct_pid)
 {
     EXPECT_EQ(getpid(), posix::this_process::instance().pid());
