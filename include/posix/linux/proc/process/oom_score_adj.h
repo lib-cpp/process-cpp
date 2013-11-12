@@ -63,7 +63,7 @@ namespace process
  *
  * Consequently, it is very simple for user space to define the amount of
  * memory to consider for each task. Setting a oom_score_adj value of +500, for
- * example, is roughly equiv‐ alent to allowing the remainder of tasks sharing
+ * example, is roughly equivalent to allowing the remainder of tasks sharing
  * the same system, cpuset, mempolicy, or memory controller resources to use at
  * least 50% more memory. A value of -500, on the other hand, would be roughly
  * equivalent to discounting 50% of the task's allowed memory from being

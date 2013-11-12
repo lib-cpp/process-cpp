@@ -32,9 +32,9 @@ namespace process
 /**
  * This file can be used to adjust the score used to select which process
  * should be killed in an out-of-memory (OOM) situation. The kernel uses this
- * value for a bit-shift opera‐ tion of the process's oom_score value: valid
+ * value for a bit-shift operation of the process's oom_score value: valid
  * values are in the range -16 to +15, plus the special value -17, which disables
- * OOM-killing altogether for this process. A posi‐ tive score increases the
+ * OOM-killing altogether for this process. A positive score increases the
  * likelihood of this process being killed by the OOM-killer; a negative score
  * decreases the likelihood.
  *
