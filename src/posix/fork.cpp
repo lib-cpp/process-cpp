@@ -16,6 +16,7 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
+#include <posix/exit.h>
 #include <posix/fork.h>
 
 #include <iostream>
@@ -38,7 +39,7 @@ namespace posix
 
 bool is_child(pid_t pid) { return pid == 0; }
 
-ChildProcess fork(const std::function<int()>& main,
+ChildProcess fork(const std::function<posix::exit::Status()>& main,
                   const StandardStream& flags)
 {
     ChildProcess::Pipe stdin_pipe{ChildProcess::Pipe::invalid()};
@@ -59,7 +60,7 @@ ChildProcess fork(const std::function<int()>& main,
 
     if (is_child(pid))
     {
-        int result = EXIT_FAILURE;
+        posix::exit::Status result = posix::exit::Status::failure;
 
         try
         {
@@ -81,7 +82,7 @@ ChildProcess fork(const std::function<int()>& main,
 
         // We have to ensure that we exit here. Otherwise, we run into
         // all sorts of weird issues.
-        ::exit(result);
+        ::exit(static_cast<int>(result));
     }
 
     // We are in the parent process, and create a process object
@@ -96,7 +97,7 @@ ChildProcess fork(const std::function<int()>& main,
                         stderr_pipe);
 }
 
-ChildProcess vfork(const std::function<int()>& main,
+ChildProcess vfork(const std::function<posix::exit::Status()>& main,
                    const StandardStream& flags)
 {
     ChildProcess::Pipe stdin_pipe, stdout_pipe, stderr_pipe;
@@ -108,7 +109,7 @@ ChildProcess vfork(const std::function<int()>& main,
 
     if (is_child(pid))
     {
-        int result = EXIT_FAILURE;
+        posix::exit::Status result = posix::exit::Status::failure;
 
         try
         {
@@ -131,7 +132,7 @@ ChildProcess vfork(const std::function<int()>& main,
 
         // We have to ensure that we exit here. Otherwise, we run into
         // all sorts of weird issues.
-        ::exit(result);
+        ::exit(static_cast<int>(result));
     }
 
     // We are in the parent process, and create a process object

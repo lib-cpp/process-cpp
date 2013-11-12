@@ -31,6 +31,8 @@ add_library(
   posix/linux/proc/process/oom_score.cpp
   posix/linux/proc/process/oom_score_adj.cpp
   posix/linux/proc/process/stat.cpp
+
+  testing/fork_and_run.cpp
 )
 
 target_link_libraries(

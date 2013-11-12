@@ -39,7 +39,7 @@ struct ForkedSpinningProcess : public ::testing::Test
     void SetUp()
     {
         child = posix::fork(
-                    []() { std::cout << "Child" << std::endl; while(true) {} return EXIT_FAILURE;},
+                    []() { std::cout << "Child" << std::endl; while(true) {} return posix::exit::Status::failure;},
                     posix::StandardStream::stdin | posix::StandardStream::stdout);
     }
 
@@ -168,7 +168,7 @@ TEST(Self, setting_env_var_for_empty_key_throws)
 TEST(ChildProcess, fork_returns_process_object_with_valid_pid_and_wait_for_returns_correct_result)
 {
     posix::ChildProcess child = posix::fork(
-                []() { std::cout << "Child" << std::endl; return EXIT_SUCCESS; },
+                []() { std::cout << "Child" << std::endl; return posix::exit::Status::success; },
                 posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
@@ -179,7 +179,7 @@ TEST(ChildProcess, fork_returns_process_object_with_valid_pid_and_wait_for_retur
               result.detail.if_exited.status);
 
     child = posix::fork(
-                []() { std::cout << "Child" << std::endl; return EXIT_FAILURE; },
+                []() { std::cout << "Child" << std::endl; return posix::exit::Status::failure; },
                 posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
@@ -200,7 +200,7 @@ TEST_F(ForkedSpinningProcess, signalling_a_forked_child_makes_wait_for_return_co
               result.detail.if_signaled.signal);
 
     child = posix::fork(
-                []() { std::cout << "Child" << std::endl; while(true) {} return EXIT_FAILURE;},
+                []() { std::cout << "Child" << std::endl; while(true) {} return posix::exit::Status::failure;},
                 posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
 
@@ -223,7 +223,7 @@ TEST(ChildProcess, stopping_a_forked_child_makes_wait_for_return_correct_result)
                         std::cin >> line;
                         std::cout << line << std::endl;
                     }
-                    return EXIT_FAILURE;
+                    return posix::exit::Status::failure;
                 },
                 posix::StandardStream::stdin | posix::StandardStream::stdout);
     EXPECT_TRUE(child.pid() > 0);
@@ -258,7 +258,7 @@ TEST(ChildProcess, ensure_that_forked_children_are_cleaned_up)
         for (unsigned int i = 0; i < child_process_count; i++)
         {
             auto child = posix::fork(
-                        []() { return EXIT_SUCCESS; },
+                        []() { return posix::exit::Status::success; },
                         posix::StandardStream::stdin | posix::StandardStream::stdout);
             // A bit ugly but we have to ensure that no signal is lost.
             // And thus, we keep the process object alive.
@@ -374,7 +374,7 @@ TEST(StreamRedirect, redirecting_stdin_stdout_stderr_works)
                         std::cout << line << std::endl;
                         std::cerr << line << std::endl;
                     }
-                    return EXIT_FAILURE;
+                    return posix::exit::Status::failure;
                 },
                 posix::StandardStream::stdin | posix::StandardStream::stdout | posix::StandardStream::stderr);
 
