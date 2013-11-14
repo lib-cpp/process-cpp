@@ -18,7 +18,40 @@
 
 #include <testing/fork_and_run.h>
 
+#include <posix/signal.h>
+
 #include <gtest/gtest.h>
+
+namespace
+{
+::testing::AssertionResult ClientFailed(testing::ForkAndRunResult result)
+{
+    return
+            (result & testing::ForkAndRunResult::client_failed) == testing::ForkAndRunResult::empty ?
+              ::testing::AssertionFailure() :
+              ::testing::AssertionSuccess();
+}
+
+::testing::AssertionResult ServiceFailed(testing::ForkAndRunResult result)
+{
+    return
+            (result & testing::ForkAndRunResult::service_failed) == testing::ForkAndRunResult::empty ?
+              ::testing::AssertionFailure() :
+              ::testing::AssertionSuccess();
+}
+struct SigTermCatcher
+{
+    static void sig_term_handler(int)
+    {
+        std::cout << "Received sigterm." << std::endl;
+    }
+
+    SigTermCatcher()
+    {
+        signal(static_cast<int>(posix::Signal::sig_term), sig_term_handler);
+    }
+} sig_term_catcher;
+}
 
 TEST(ForkAndRun, succeeding_client_and_service_result_in_correct_return_value)
 {
@@ -27,8 +60,8 @@ TEST(ForkAndRun, succeeding_client_and_service_result_in_correct_return_value)
 
     auto result = testing::fork_and_run(service, client);
 
-    EXPECT_EQ(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::client_failed);
-    EXPECT_EQ(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::service_failed);
+    ASSERT_FALSE(ClientFailed(result));
+    ASSERT_FALSE(ServiceFailed(result));
 }
 
 TEST(ForkAndRun, succeeding_client_and_failing_service_result_in_correct_return_value)
@@ -38,8 +71,8 @@ TEST(ForkAndRun, succeeding_client_and_failing_service_result_in_correct_return_
 
     auto result = testing::fork_and_run(service, client);
 
-    EXPECT_EQ(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::client_failed);
-    EXPECT_NE(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::service_failed);
+    EXPECT_FALSE(ClientFailed(result));
+    EXPECT_TRUE(ServiceFailed(result));
 }
 
 TEST(ForkAndRun, failing_client_and_failing_service_result_in_correct_return_value)
@@ -49,8 +82,8 @@ TEST(ForkAndRun, failing_client_and_failing_service_result_in_correct_return_val
 
     auto result = testing::fork_and_run(service, client);
 
-    EXPECT_NE(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::client_failed);
-    EXPECT_NE(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::service_failed);
+    EXPECT_TRUE(ClientFailed(result));
+    EXPECT_TRUE(ServiceFailed(result));
 }
 
 TEST(ForkAndRun, throwing_client_is_reported_as_failing)
@@ -60,8 +93,8 @@ TEST(ForkAndRun, throwing_client_is_reported_as_failing)
 
     auto result = testing::fork_and_run(service, client);
 
-    EXPECT_NE(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::client_failed);
-    EXPECT_EQ(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::service_failed);
+    EXPECT_TRUE(ClientFailed(result));
+    EXPECT_FALSE(ServiceFailed(result));
 }
 
 TEST(ForkAndRun, exiting_with_failure_client_is_reported_as_failing)
@@ -71,8 +104,8 @@ TEST(ForkAndRun, exiting_with_failure_client_is_reported_as_failing)
 
     auto result = testing::fork_and_run(service, client);
 
-    EXPECT_NE(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::client_failed);
-    EXPECT_EQ(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::service_failed);
+    EXPECT_TRUE(ClientFailed(result));
+    EXPECT_FALSE(ServiceFailed(result));
 }
 
 TEST(ForkAndRun, aborting_client_is_reported_as_failing)
@@ -82,7 +115,7 @@ TEST(ForkAndRun, aborting_client_is_reported_as_failing)
 
     auto result = testing::fork_and_run(service, client);
 
-    EXPECT_NE(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::client_failed);
-    EXPECT_EQ(testing::ForkAndRunResult::empty, result & testing::ForkAndRunResult::service_failed);
+    EXPECT_TRUE(ClientFailed(result));
+    EXPECT_FALSE(ServiceFailed(result));
 }
 

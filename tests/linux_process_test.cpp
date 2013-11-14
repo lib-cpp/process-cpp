@@ -31,7 +31,7 @@ TEST(LinuxProcess, accessing_proc_stats_works)
 {
     posix::linux::proc::process::Stat stat;
     EXPECT_NO_THROW(posix::this_process::instance() >> stat);
-    EXPECT_EQ(posix::linux::proc::process::State::running, stat.state);
+    ASSERT_EQ(posix::linux::proc::process::State::running, stat.state);
 }
 
 TEST(LinuxProcess, accessing_proc_oom_score_works)

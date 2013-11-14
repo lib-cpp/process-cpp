@@ -399,3 +399,10 @@ TEST(Environment, iterating_the_environment_does_not_throw)
                             std::cout << key << " -> " << value << std::endl;
                         }););
 }
+
+TEST(Environment, specifying_default_value_for_get_returns_correct_result)
+{
+    const std::string expected_value{"42"};
+    EXPECT_EQ(expected_value,
+              posix::this_process::env::get("totally_non_existant_key_in_env_blubb", expected_value));
+}
