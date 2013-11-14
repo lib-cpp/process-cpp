@@ -16,6 +16,7 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
+#include <posix/fork.h>
 #include <posix/this_process.h>
 
 #include <posix/linux/proc/process/stat.h>
@@ -29,8 +30,12 @@
 
 TEST(LinuxProcess, accessing_proc_stats_works)
 {
+    auto child = posix::fork(
+                [](){ while(true); return posix::exit::Status::success;},
+                posix::StandardStream::empty);
+
     posix::linux::proc::process::Stat stat;
-    EXPECT_NO_THROW(posix::this_process::instance() >> stat);
+    EXPECT_NO_THROW(child >> stat);
     ASSERT_EQ(posix::linux::proc::process::State::running, stat.state);
 }
 
