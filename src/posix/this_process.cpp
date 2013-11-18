@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <mutex>
+#include <sstream>
 #include <vector>
 
 #include <cerrno>
@@ -65,7 +66,23 @@ void for_each(const std::function<void(const std::string&, const std::string&)>&
     }
 }
 
-std::string get(const std::string& key)
+std::string get_or_throw(const std::string& key)
+{
+    std::lock_guard<std::mutex> lg(env_guard());
+
+    auto result = ::getenv(key.c_str());
+
+    if (result == nullptr)
+    {
+        std::stringstream ss;
+        ss << "Variable with name " << key << " is not defined in the environment";
+        throw std::runtime_error(ss.str());
+    }
+
+    return std::string{result};
+}
+
+std::string get(const std::string& key) noexcept(true)
 {
     std::lock_guard<std::mutex> lg(env_guard());
 
@@ -84,7 +101,7 @@ void unset_or_throw(const std::string& key)
 }
 
 bool unset(const std::string& key,
-           std::system_error& se) noexcept(true)
+           std::error_code& se) noexcept(true)
 {
     std::lock_guard<std::mutex> lg(env_guard());
 
@@ -92,7 +109,7 @@ bool unset(const std::string& key,
 
     if (rc == -1)
     {
-        se = std::system_error(errno, std::system_category());
+        se = std::error_code(errno, std::system_category());
         return false;
     }
 
@@ -113,7 +130,7 @@ void set_or_throw(const std::string& key,
 
 bool set(const std::string &key,
          const std::string &value,
-         std::system_error& se) noexcept(true)
+         std::error_code& se) noexcept(true)
 {
     std::lock_guard<std::mutex> lg(env_guard());
 
@@ -122,7 +139,7 @@ bool set(const std::string &key,
 
     if (rc == -1)
     {
-        se = std::system_error(errno, std::system_category());
+        se = std::error_code(errno, std::system_category());
         return false;
     }
 
@@ -130,7 +147,7 @@ bool set(const std::string &key,
 }
 }
 
-const Process& instance()
+const Process& instance() noexcept(true)
 {
     static const Process self{getpid()};
     return self;

@@ -61,11 +61,11 @@ struct POSIX_DLL_PUBLIC Stat
     /**
      * (Explanation for Linux 2.6) For processes running a real-time scheduling
      * policy (policy below; see sched_setscheduler(2)), this is the negated
-     * scheduling pri‐ ority, minus one; that is, a number in the range -2 to
+     * scheduling priority, minus one; that is, a number in the range -2 to
      * -100, corresponding to real-time priorities 1 to 99. For processes running
      * under a non-real-time scheduling policy, this is the raw nice value
      * (setpriority(2)) as represented in the kernel. The kernel stores nice
-     * values as numbers in the range 0 (high) to 39 (low), cor‐ responding to
+     * values as numbers in the range 0 (high) to 39 (low), corresponding to
      * the user-visible nice range of -20 to 19.
      *
      *Before Linux 2.6, this was a scaled value based on the scheduler
