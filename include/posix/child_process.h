@@ -71,8 +71,8 @@ public:
     std::istream& cout();
 
 private:
-    friend ChildProcess fork(const std::function<int()>&, const StandardStream&);
-    friend ChildProcess vfork(const std::function<int()>&, const StandardStream&);
+    friend ChildProcess fork(const std::function<posix::exit::Status()>&, const StandardStream&);
+    friend ChildProcess vfork(const std::function<posix::exit::Status()>&, const StandardStream&);
 
     class POSIX_DLL_LOCAL Pipe
     {

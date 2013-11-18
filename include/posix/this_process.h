@@ -16,6 +16,9 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
+#ifndef POSIX_THIS_PROCESS_H_
+#define POSIX_THIS_PROCESS_H_
+
 #include <posix/visibility.h>
 
 #include <functional>
@@ -30,7 +33,6 @@ namespace this_process
 {
 namespace env
 {
-
 /**
  * @brief for_each invokes a functor for every key-value pair in the environment.
  * @param [in] functor Invoked for every key-value pair.
@@ -49,9 +51,12 @@ POSIX_DLL_PUBLIC std::string get_or_throw(const std::string& key);
 /**
  * @brief get queries the value of an environment variable.
  * @param [in] key Name of the variable to query the value for.
+ * @param [in] default_value Default value to return when key is not present in the environment.
  * @return Contents of the variable or an empty string if the variable is not defined.
  */
-POSIX_DLL_PUBLIC std::string get(const std::string& key) noexcept(true);
+POSIX_DLL_PUBLIC std::string get(
+        const std::string& key,
+        const std::string& default_value = std::string()) noexcept(true);
 
 /**
  * @brief unset_or_throw removes the variable with name key from the environment.
@@ -116,3 +121,5 @@ POSIX_DLL_PUBLIC std::ostream& cout() noexcept(true);
 POSIX_DLL_PUBLIC std::ostream& cerr() noexcept(true);
 }
 }
+
+#endif // POSIX_THIS_PROCESS_H_

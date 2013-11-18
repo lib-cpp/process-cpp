@@ -4,9 +4,9 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"posix::ChildProcess::invalid()@Base" 0replaceme
  (c++)"posix::ChildProcess::wait_for(posix::wait::Flags const&)@Base" 0replaceme
  (c++)"posix::exec(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::map<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&, posix::StandardStream const&)@Base" 0replaceme
- (c++)"posix::fork(std::function<int ()> const&, posix::StandardStream const&)@Base" 0replaceme
+ (c++)"posix::fork(std::function<posix::exit::Status ()> const&, posix::StandardStream const&)@Base" 0replaceme
  (c++)"posix::wait::operator|(posix::wait::Flags, posix::wait::Flags)@Base" 0replaceme
- (c++)"posix::vfork(std::function<int ()> const&, posix::StandardStream const&)@Base" 0replaceme
+ (c++)"posix::vfork(std::function<posix::exit::Status ()> const&, posix::StandardStream const&)@Base" 0replaceme
  (c++)"posix::Process::Process(int)@Base" 0replaceme
  (c++)"posix::Process::invalid()@Base" 0replaceme
  (c++)"posix::operator&(posix::StandardStream, posix::StandardStream)@Base" 0replaceme
@@ -37,7 +37,10 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"posix::linux::proc::process::operator>>(posix::Process const&, posix::linux::proc::process::OomScore&)@Base" 0replaceme
  (c++)"posix::Process::~Process()@Base" 0replaceme
  (c++)"posix::Process::pid() const@Base" 0replaceme
- (c++)"std::function<int ()>::operator()() const@Base" 0replaceme
+ (c++)"testing::fork_and_run(std::function<posix::exit::Status ()> const&, std::function<posix::exit::Status ()> const&)@Base" 0replaceme
+ (c++)"testing::operator&(testing::ForkAndRunResult, testing::ForkAndRunResult)@Base" 0replaceme
+ (c++)"testing::operator|(testing::ForkAndRunResult, testing::ForkAndRunResult)@Base" 0replaceme
+ (c++)"std::function<posix::exit::Status ()>::operator()() const@Base" 0replaceme
  (c++)"char* std::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag)@Base" 0replaceme
  (c++)"std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf()@Base" 0replaceme
  (c++)"std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf()@Base" 0replaceme
@@ -77,7 +80,7 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"posix::this_process::env::set_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
  (c++)"posix::this_process::env::unset_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
  (c++)"posix::this_process::env::get_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
- (c++)"posix::this_process::env::get(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
+ (c++)"posix::this_process::env::get(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
  (c++)"posix::this_process::env::set(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::error_code&)@Base" 0replaceme
  (c++)"posix::this_process::env::unset(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::error_code&)@Base" 0replaceme
  (c++)"posix::this_process::env::for_each(std::function<void (std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)> const&)@Base" 0replaceme

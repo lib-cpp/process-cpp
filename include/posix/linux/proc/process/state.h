@@ -18,6 +18,8 @@
 #ifndef POSIX_LINUX_PROC_PROCESS_STATE_H_
 #define POSIX_LINUX_PROC_PROCESS_STATE_H_
 
+#include <posix/visibility.h>
+
 #include <iosfwd>
 
 namespace posix

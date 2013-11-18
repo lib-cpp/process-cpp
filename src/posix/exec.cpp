@@ -56,7 +56,7 @@ ChildProcess exec(const std::string& fn,
         }
         *it = nullptr;
 
-        return execve(fn.c_str(), pargv, penv);
+        return static_cast<posix::exit::Status>(execve(fn.c_str(), pargv, penv));
     }, flags);
 }
 }
