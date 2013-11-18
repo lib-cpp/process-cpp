@@ -82,12 +82,13 @@ std::string get_or_throw(const std::string& key)
     return std::string{result};
 }
 
-std::string get(const std::string& key) noexcept(true)
+std::string get(const std::string& key,
+                const std::string& default_value) noexcept(true)
 {
     std::lock_guard<std::mutex> lg(env_guard());
 
     auto result = ::getenv(key.c_str());
-    return std::string{result ? result : ""};
+    return std::string{result ? result : default_value};
 }
 
 void unset_or_throw(const std::string& key)

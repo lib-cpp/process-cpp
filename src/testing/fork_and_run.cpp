@@ -60,7 +60,7 @@ testing::ForkAndRunResult testing::fork_and_run(
         break;
     }
 
-    service_process.send_signal_or_throw(posix::Signal::sig_kill);
+    service_process.send_signal_or_throw(posix::Signal::sig_term);
     auto service_result = service_process.wait_for(posix::wait::Flags::untraced);
 
     switch (service_result.status)
