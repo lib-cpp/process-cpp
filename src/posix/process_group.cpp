@@ -18,6 +18,8 @@
 
 #include <posix/process_group.h>
 
+namespace core
+{
 namespace posix
 {
 struct ProcessGroup::Private
@@ -36,4 +38,4 @@ ProcessGroup::ProcessGroup(pid_t id)
 {
 }
 }
-
+}

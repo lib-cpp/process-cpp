@@ -16,8 +16,8 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_FORK_H_
-#define POSIX_FORK_H_
+#ifndef CORE_POSIX_FORK_H_
+#define CORE_POSIX_FORK_H_
 
 #include <posix/child_process.h>
 #include <posix/standard_stream.h>
@@ -25,6 +25,8 @@
 
 #include <functional>
 
+namespace core
+{
 namespace posix
 {
 /**
@@ -34,7 +36,7 @@ namespace posix
  * @param [in] flags Specify which standard streams should be redirected to the parent process.
  * @return An instance of ChildProcess in case of success.
  */
-POSIX_DLL_PUBLIC ChildProcess fork(const std::function<posix::exit::Status()>& main,
+CORE_POSIX_DLL_PUBLIC ChildProcess fork(const std::function<posix::exit::Status()>& main,
                                    const StandardStream& flags);
 
 /**
@@ -44,8 +46,9 @@ POSIX_DLL_PUBLIC ChildProcess fork(const std::function<posix::exit::Status()>& m
  * @param [in] flags Specify which standard streams should be redirected to the parent process.
  * @return An instance of ChildProcess in case of success.
  */
-POSIX_DLL_PUBLIC ChildProcess vfork(const std::function<posix::exit::Status()>& main,
+CORE_POSIX_DLL_PUBLIC ChildProcess vfork(const std::function<posix::exit::Status()>& main,
                    const StandardStream& flags);
 }
+}
 
-#endif // POSIX_FORK_H_
+#endif // CORE_POSIX_FORK_H_

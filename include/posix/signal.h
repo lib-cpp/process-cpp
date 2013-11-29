@@ -16,11 +16,13 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_SIGNAL_H_
-#define POSIX_SIGNAL_H_
+#ifndef CORE_POSIX_SIGNAL_H_
+#define CORE_POSIX_SIGNAL_H_
 
 #include <signal.h>
 
+namespace core
+{
 namespace posix
 {
 /**
@@ -48,6 +50,7 @@ enum class Signal
     sig_ttin = SIGTTIN,
     sig_ttou = SIGTTOU
 };
+}
 }
 
 #endif

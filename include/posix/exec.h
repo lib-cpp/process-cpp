@@ -16,8 +16,8 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_EXEC_H_
-#define POSIX_EXEC_H_
+#ifndef CORE_POSIX_EXEC_H_
+#define CORE_POSIX_EXEC_H_
 
 #include <posix/child_process.h>
 #include <posix/visibility.h>
@@ -27,6 +27,8 @@
 #include <string>
 #include <vector>
 
+namespace core
+{
 namespace posix
 {
 enum class RedirectFlags;
@@ -40,10 +42,11 @@ enum class RedirectFlags;
  * @param flags Specifies which standard streams should be redirected.
  * @return An instance of ChildProcess corresponding to the newly exec'd process.
  */
-POSIX_DLL_PUBLIC ChildProcess exec(const std::string& fn,
+CORE_POSIX_DLL_PUBLIC ChildProcess exec(const std::string& fn,
                   const std::vector<std::string>& argv,
                   const std::map<std::string, std::string>& env,
                   const StandardStream& flags);
 }
+}
 
-#endif // POSIX_EXEC_H_
+#endif // CORE_POSIX_EXEC_H_

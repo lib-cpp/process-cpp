@@ -15,13 +15,15 @@
  *
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
-#ifndef POSIX_LINUX_PROC_PROCESS_STATE_H_
-#define POSIX_LINUX_PROC_PROCESS_STATE_H_
+#ifndef CORE_POSIX_LINUX_PROC_PROCESS_STATE_H_
+#define CORE_POSIX_LINUX_PROC_PROCESS_STATE_H_
 
 #include <posix/visibility.h>
 
 #include <iosfwd>
 
+namespace core
+{
 namespace posix
 {
 namespace linux
@@ -44,5 +46,6 @@ enum class State
 }
 }
 }
+}
 
-#endif // POSIX_LINUX_PROC_PROCESS_STATE_H_
+#endif // CORE_POSIX_LINUX_PROC_PROCESS_STATE_H_

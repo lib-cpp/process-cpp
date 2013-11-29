@@ -16,15 +16,15 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_VISIBILITY_H_
-#define POSIX_VISIBILITY_H_
+#ifndef CORE_POSIX_VISIBILITY_H_
+#define CORE_POSIX_VISIBILITY_H_
 
 #if __GNUC__ >= 4
-#define POSIX_DLL_PUBLIC __attribute__ ((visibility ("default")))
-#define POSIX_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+#define CORE_POSIX_DLL_PUBLIC __attribute__ ((visibility ("default")))
+#define CORE_POSIX_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
 #else
-#define POSIX_DLL_PUBLIC
-#define POSIX_DLL_LOCAL
+#define CORE_POSIX_DLL_PUBLIC
+#define CORE_POSIX_DLL_LOCAL
 #endif
 
-#endif // POSIX_VISIBILITY_H_
+#endif // CORE_POSIX_VISIBILITY_H_

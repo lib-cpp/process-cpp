@@ -16,14 +16,16 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_PROCESS_GROUP_H_
-#define POSIX_PROCESS_GROUP_H_
+#ifndef CORE_POSIX_PROCESS_GROUP_H_
+#define CORE_POSIX_PROCESS_GROUP_H_
 
 #include <posix/signalable.h>
 #include <posix/visibility.h>
 
 #include <memory>
 
+namespace core
+{
 namespace posix
 {
 class Process;
@@ -38,7 +40,7 @@ class Process;
  * of signals. A signal directed to a process group is delivered individually to
  * all of the processes that are members of the group.
  */
-class POSIX_DLL_PUBLIC ProcessGroup : public Signalable
+class CORE_POSIX_DLL_PUBLIC ProcessGroup : public Signalable
 {
 public:
     /**
@@ -49,12 +51,13 @@ public:
 
 protected:
     friend class Process;
-    POSIX_DLL_LOCAL ProcessGroup(pid_t id);
+    CORE_POSIX_DLL_LOCAL ProcessGroup(pid_t id);
 
 private:
-    struct POSIX_DLL_LOCAL Private;
+    struct CORE_POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }
+}
 
-#endif // POSIX_PROCESS_GROUP_H_
+#endif // CORE_POSIX_PROCESS_GROUP_H_

@@ -15,11 +15,13 @@
  *
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
-#ifndef POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_
-#define POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_
+#ifndef CORE_POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_
+#define CORE_POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_
 
 #include <posix/visibility.h>
 
+namespace core
+{
 namespace posix
 {
 class Process;
@@ -45,7 +47,7 @@ namespace process
  * Since Linux 2.6.36, use of this file is deprecated in favor of
  * /proc/[pid]/oom_score_adj.
  */
-struct POSIX_DLL_PUBLIC OomAdj
+struct CORE_POSIX_DLL_PUBLIC OomAdj
 {
     /**
      * @brief Returns the value that makes a process "invisible" to the oom killer.
@@ -86,7 +88,7 @@ struct POSIX_DLL_PUBLIC OomAdj
  * \param [in] process The process to read the score for.
  * \param [out] adj The destination to store the value in.
  */
-POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, OomAdj& adj);
+CORE_POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, OomAdj& adj);
 
 /**
  * \brief Write the OomAdj value for a process instance.
@@ -94,10 +96,11 @@ POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process,
  * \param [in] process The process to write the score for.
  * \param [in] adj The new value to store.
  */
-POSIX_DLL_PUBLIC const posix::Process& operator<<(const posix::Process& process,
+CORE_POSIX_DLL_PUBLIC const posix::Process& operator<<(const posix::Process& process,
                                  const OomAdj& adj);
 }
 }
 }
 }
-#endif // POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_
+}
+#endif // CORE_POSIX_LINUX_PROC_PROCESS_OOM_ADJ_H_

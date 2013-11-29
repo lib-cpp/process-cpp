@@ -15,14 +15,16 @@
  *
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
-#ifndef TESTING_FORK_AND_RUN_H_
-#define TESTING_FORK_AND_RUN_H_
+#ifndef CORE_TESTING_FORK_AND_RUN_H_
+#define CORE_TESTING_FORK_AND_RUN_H_
 
 #include <posix/exit.h>
 #include <posix/visibility.h>
 
 #include <functional>
 
+namespace core
+{
 namespace testing
 {
 /**
@@ -35,8 +37,8 @@ enum class ForkAndRunResult
     service_failed = 1 << 1 ///< The service failed.
 };
 
-POSIX_DLL_PUBLIC ForkAndRunResult operator|(ForkAndRunResult lhs, ForkAndRunResult rhs);
-POSIX_DLL_PUBLIC ForkAndRunResult operator&(ForkAndRunResult lhs, ForkAndRunResult rhs);
+CORE_POSIX_DLL_PUBLIC ForkAndRunResult operator|(ForkAndRunResult lhs, ForkAndRunResult rhs);
+CORE_POSIX_DLL_PUBLIC ForkAndRunResult operator&(ForkAndRunResult lhs, ForkAndRunResult rhs);
 
 /**
  * @brief Forks two processes for both the service and the client.
@@ -46,9 +48,9 @@ POSIX_DLL_PUBLIC ForkAndRunResult operator&(ForkAndRunResult lhs, ForkAndRunResu
  * @param [in] client The client to be executed in a child process.
  * @return ForkAndRunResult indicating if either of service or client failed.
  */
-POSIX_DLL_PUBLIC ForkAndRunResult fork_and_run(
-        const std::function<posix::exit::Status()>& service,
-        const std::function<posix::exit::Status()>& client);
+CORE_POSIX_DLL_PUBLIC ForkAndRunResult fork_and_run(
+        const std::function<core::posix::exit::Status()>& service,
+        const std::function<core::posix::exit::Status()>& client);
 }
-
-#endif // TESTING_FORK_AND_RUN_H_
+}
+#endif // CORE_TESTING_FORK_AND_RUN_H_

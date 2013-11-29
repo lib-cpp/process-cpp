@@ -23,6 +23,8 @@
 #include <fstream>
 #include <sstream>
 
+namespace core
+{
 namespace posix
 {
 namespace linux
@@ -39,6 +41,7 @@ const posix::Process& operator>>(const posix::Process& process, OomScore& score)
     in >> score.value;
 
     return process;
+}
 }
 }
 }

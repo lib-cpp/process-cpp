@@ -16,8 +16,8 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_CHILD_PROCESS_H_
-#define POSIX_CHILD_PROCESS_H_
+#ifndef CORE_POSIX_CHILD_PROCESS_H_
+#define CORE_POSIX_CHILD_PROCESS_H_
 
 #include <posix/process.h>
 #include <posix/standard_stream.h>
@@ -26,6 +26,8 @@
 #include <iosfwd>
 #include <functional>
 
+namespace core
+{
 namespace posix
 {
 /**
@@ -36,7 +38,7 @@ namespace posix
  * process and to access the child process's standard streams if they have been
  * redirected when forking or exec'ing.
  */
-class POSIX_DLL_PUBLIC ChildProcess : public Process
+class CORE_POSIX_DLL_PUBLIC ChildProcess : public Process
 {
 public:
     /**
@@ -74,7 +76,7 @@ private:
     friend ChildProcess fork(const std::function<posix::exit::Status()>&, const StandardStream&);
     friend ChildProcess vfork(const std::function<posix::exit::Status()>&, const StandardStream&);
 
-    class POSIX_DLL_LOCAL Pipe
+    class CORE_POSIX_DLL_LOCAL Pipe
     {
     public:
         static Pipe invalid();
@@ -96,14 +98,15 @@ private:
         int fds[2];
     };
 
-    POSIX_DLL_LOCAL ChildProcess(pid_t pid,
+    CORE_POSIX_DLL_LOCAL ChildProcess(pid_t pid,
                                  const Pipe& stdin,
                                  const Pipe& stdout,
                                  const Pipe& stderr);
 
-    struct POSIX_DLL_LOCAL Private;
+    struct CORE_POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }
+}
 
-#endif // POSIX_CHILD_PROCESS_H_
+#endif // CORE_POSIX_CHILD_PROCESS_H_

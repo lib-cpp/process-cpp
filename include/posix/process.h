@@ -16,8 +16,8 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_PROCESS_H_
-#define POSIX_PROCESS_H_
+#ifndef CORE_POSIX_PROCESS_H_
+#define CORE_POSIX_PROCESS_H_
 
 #include <posix/process_group.h>
 #include <posix/signalable.h>
@@ -28,6 +28,8 @@
 #include <memory>
 #include <system_error>
 
+namespace core
+{
 namespace posix
 {
 enum class Signal;
@@ -39,7 +41,7 @@ class WaitFlags;
  *
  * The process class is implicitly shared.
  */
-class POSIX_DLL_PUBLIC Process : public Signalable
+class CORE_POSIX_DLL_PUBLIC Process : public Signalable
 {
 public:
     /**
@@ -83,8 +85,9 @@ public:
     virtual ProcessGroup process_group(std::error_code& se) const noexcept(true);
 
 private:
-    struct POSIX_DLL_LOCAL Private;
+    struct CORE_POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }
-#endif // POSIX_PROCESS_H_
+}
+#endif // CORE_POSIX_PROCESS_H_

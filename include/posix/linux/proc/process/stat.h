@@ -15,8 +15,8 @@
  *
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
-#ifndef POSIX_LINUX_PROC_PROCESS_STAT_H_
-#define POSIX_LINUX_PROC_PROCESS_STAT_H_
+#ifndef CORE_POSIX_LINUX_PROC_PROCESS_STAT_H_
+#define CORE_POSIX_LINUX_PROC_PROCESS_STAT_H_
 
 #include <posix/linux/proc/process/state.h>
 
@@ -24,6 +24,8 @@
 
 #include <string>
 
+namespace core
+{
 namespace posix
 {
 class Process;
@@ -36,7 +38,7 @@ namespace process
 /**
  * @brief The Stat struct encapsulates status information about a process.
  */
-struct POSIX_DLL_PUBLIC Stat
+struct CORE_POSIX_DLL_PUBLIC Stat
 {
     pid_t pid = 1; ///< The process ID
     std::string executable; ///< The filename of the executable, in parentheses.
@@ -109,9 +111,10 @@ struct POSIX_DLL_PUBLIC Stat
     long unsigned int guest_time_children = 0; ///< Guest time of the process's children, measured in clock ticks.
 };
 
-POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, Stat& stat);
+CORE_POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, Stat& stat);
 }
 }
 }
 }
-#endif // POSIX_LINUX_PROC_PROCESS_STAT_H_
+}
+#endif // CORE_POSIX_LINUX_PROC_PROCESS_STAT_H_

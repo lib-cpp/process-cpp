@@ -18,6 +18,8 @@
 
 #include <posix/signalable.h>
 
+namespace core
+{
 namespace posix
 {
 struct Signalable::Private
@@ -45,5 +47,6 @@ void Signalable::send_signal(Signal signal, std::error_code& e) noexcept
     {
         e = std::error_code(errno, std::system_category());
     }
+}
 }
 }

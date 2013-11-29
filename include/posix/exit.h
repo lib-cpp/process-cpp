@@ -16,11 +16,13 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_EXIT_H_
-#define POSIX_EXIT_H_
+#ifndef CORE_POSIX_EXIT_H_
+#define CORE_POSIX_EXIT_H_
 
 #include <cstdlib>
 
+namespace core
+{
 namespace posix
 {
 namespace exit
@@ -35,5 +37,6 @@ namespace exit
     };
 }
 }
+}
 
-#endif // POSIX_EXIT_H_
+#endif // CORE_POSIX_EXIT_H_

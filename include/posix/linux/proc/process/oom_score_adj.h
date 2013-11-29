@@ -15,11 +15,13 @@
  *
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
-#ifndef POSIX_LINUX_PROC_PROCESS_OOM_SCORE_ADJ_H_
-#define POSIX_LINUX_PROC_PROCESS_OOM_SCORE_ADJ_H_
+#ifndef CORE_POSIX_LINUX_PROC_PROCESS_OOM_SCORE_ADJ_H_
+#define CORE_POSIX_LINUX_PROC_PROCESS_OOM_SCORE_ADJ_H_
 
 #include <posix/visibility.h>
 
+namespace core
+{
 namespace posix
 {
 class Process;
@@ -76,7 +78,7 @@ namespace process
  * Writing to /proc/[pid]/oom_score_adj or /proc/[pid]/oom_adj will change the
  * other with its scaled value.
  */
-struct POSIX_DLL_PUBLIC OomScoreAdj
+struct CORE_POSIX_DLL_PUBLIC OomScoreAdj
 {
     /**
      * @brief Returns the minimum valid value.
@@ -111,7 +113,7 @@ struct POSIX_DLL_PUBLIC OomScoreAdj
  * @param [in] process The process to read the score for.
  * @param [out] score_adj The destination to store the value in.
  */
-POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, OomScoreAdj& score_adj);
+CORE_POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process, OomScoreAdj& score_adj);
 
 /**
  * @brief Write the OomScoreAdj value for a process instance.
@@ -119,10 +121,11 @@ POSIX_DLL_PUBLIC const posix::Process& operator>>(const posix::Process& process,
  * @param [in] process The process to write the score for.
  * @param [in] score_adj The new value to store.
  */
-POSIX_DLL_PUBLIC const posix::Process& operator<<(const posix::Process& process,
+CORE_POSIX_DLL_PUBLIC const posix::Process& operator<<(const posix::Process& process,
                                  const OomScoreAdj& score_adj);
 }
 }
 }
 }
-#endif // POSIX_LINUX_PROC_PROCESS_OOM_SCORE_ADJ_H_
+}
+#endif // CORE_POSIX_LINUX_PROC_PROCESS_OOM_SCORE_ADJ_H_

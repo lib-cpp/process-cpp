@@ -16,8 +16,8 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_SIGNALABLE_H_
-#define POSIX_SIGNALABLE_H_
+#ifndef CORE_POSIX_SIGNALABLE_H_
+#define CORE_POSIX_SIGNALABLE_H_
 
 #include <posix/signal.h>
 #include <posix/visibility.h>
@@ -25,12 +25,14 @@
 #include <memory>
 #include <system_error>
 
+namespace core
+{
 namespace posix
 {
 /**
  * @brief The Signalable class abstracts the ability of an entity to be delivered a posix signal.
  */
-class POSIX_DLL_PUBLIC Signalable
+class CORE_POSIX_DLL_PUBLIC Signalable
 {
 public:
     /**
@@ -48,12 +50,13 @@ public:
     virtual void send_signal(Signal signal, std::error_code& e) noexcept(true);
 
 protected:
-    POSIX_DLL_LOCAL explicit Signalable(pid_t pid);
+    CORE_POSIX_DLL_LOCAL explicit Signalable(pid_t pid);
 
 private:
-    struct POSIX_DLL_LOCAL Private;
+    struct CORE_POSIX_DLL_LOCAL Private;
     std::shared_ptr<Private> d;
 };
 }
+}
 
-#endif // POSIX_SIGNALABLE_H_
+#endif // CORE_POSIX_SIGNALABLE_H_

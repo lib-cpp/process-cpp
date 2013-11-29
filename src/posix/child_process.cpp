@@ -29,6 +29,8 @@
 
 namespace io = boost::iostreams;
 
+namespace core
+{
 namespace posix
 {
 ChildProcess::Pipe ChildProcess::Pipe::invalid()
@@ -235,5 +237,6 @@ std::ostream& ChildProcess::cin()
 std::istream& ChildProcess::cout()
 {
     return d->cout;
+}
 }
 }

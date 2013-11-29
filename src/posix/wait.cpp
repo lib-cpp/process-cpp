@@ -18,6 +18,8 @@
 
 #include <posix/wait.h>
 
+namespace core
+{
 namespace posix
 {
 namespace wait
@@ -25,6 +27,7 @@ namespace wait
 Flags operator|(Flags l, Flags r)
 {
     return static_cast<Flags>(static_cast<std::uint8_t>(l) | static_cast<std::uint8_t>(r));
+}
 }
 }
 }

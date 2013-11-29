@@ -18,6 +18,8 @@
 
 #include <posix/standard_stream.h>
 
+namespace core
+{
 namespace posix
 {
 StandardStream operator|(StandardStream l, StandardStream r)
@@ -28,5 +30,6 @@ StandardStream operator|(StandardStream l, StandardStream r)
 StandardStream operator&(StandardStream l, StandardStream r)
 {
     return static_cast<StandardStream>(static_cast<std::uint8_t>(l) & static_cast<std::uint8_t>(r));
+}
 }
 }

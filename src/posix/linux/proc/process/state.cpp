@@ -22,6 +22,8 @@
 
 #include <istream>
 
+namespace core
+{
 namespace posix
 {
 namespace linux
@@ -31,6 +33,7 @@ namespace proc
 namespace process
 {
 
+}
 }
 }
 }

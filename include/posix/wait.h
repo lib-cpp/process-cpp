@@ -16,8 +16,8 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_WAIT_H_
-#define POSIX_WAIT_H_
+#ifndef CORE_POSIX_WAIT_H_
+#define CORE_POSIX_WAIT_H_
 
 #include <posix/exit.h>
 #include <posix/signal.h>
@@ -29,6 +29,8 @@
 
 #include <sys/wait.h>
 
+namespace core
+{
 namespace posix
 {
 namespace wait
@@ -44,12 +46,12 @@ enum class Flags : std::uint8_t
     no_hang = WNOHANG ///< Do not block if a child process hasn't changed state.
 };
 
-POSIX_DLL_PUBLIC Flags operator|(Flags l, Flags r);
+CORE_POSIX_DLL_PUBLIC Flags operator|(Flags l, Flags r);
 
 /**
  * @brief The Result struct encapsulates the result of waiting for a process state change.
  */
-struct POSIX_DLL_PUBLIC Result
+struct CORE_POSIX_DLL_PUBLIC Result
 {
     /**
      * @brief The status of the process/wait operation.
@@ -97,5 +99,6 @@ struct POSIX_DLL_PUBLIC Result
 };
 }
 }
+}
 
-#endif // POSIX_WAIT_H_
+#endif // CORE_POSIX_WAIT_H_

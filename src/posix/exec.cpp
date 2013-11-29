@@ -26,6 +26,8 @@
 
 #include <unistd.h>
 
+namespace core
+{
 namespace posix
 {
 ChildProcess exec(const std::string& fn,
@@ -58,5 +60,6 @@ ChildProcess exec(const std::string& fn,
 
         return static_cast<posix::exit::Status>(execve(fn.c_str(), pargv, penv));
     }, flags);
+}
 }
 }

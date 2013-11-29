@@ -25,6 +25,8 @@
 
 #include <iostream>
 
+namespace core
+{
 namespace posix
 {
 
@@ -79,5 +81,6 @@ ProcessGroup Process::process_group(std::error_code& se) const noexcept(true)
     }
 
     return ProcessGroup(pgid);
+}
 }
 }

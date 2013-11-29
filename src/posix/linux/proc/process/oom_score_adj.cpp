@@ -26,6 +26,8 @@
 
 #include <linux/oom.h>
 
+namespace core
+{
 namespace posix
 {
 namespace linux
@@ -66,6 +68,7 @@ const posix::Process& operator<<(const posix::Process& process, const OomScoreAd
     out << score_adj.value;
 
     return process;
+}
 }
 }
 }

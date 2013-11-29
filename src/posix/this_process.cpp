@@ -35,6 +35,8 @@
 extern char** environ;
 #endif
 
+namespace core
+{
 namespace posix
 {
 namespace this_process
@@ -172,6 +174,7 @@ std::ostream& cout() noexcept(true)
 std::ostream& cerr() noexcept(true)
 {
     return std::cerr;
+}
 }
 }
 }

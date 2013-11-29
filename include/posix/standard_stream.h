@@ -16,13 +16,15 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#ifndef POSIX_STANDARD_STREAM_H_
-#define POSIX_STANDARD_STREAM_H_
+#ifndef CORE_POSIX_STANDARD_STREAM_H_
+#define CORE_POSIX_STANDARD_STREAM_H_
 
 #include <posix/visibility.h>
 
 #include <cstdint>
 
+namespace core
+{
 namespace posix
 {
 /**
@@ -36,8 +38,9 @@ enum class StandardStream : std::uint8_t
     stderr = 1 << 2
 };
 
-POSIX_DLL_PUBLIC StandardStream operator|(StandardStream l, StandardStream r);
-POSIX_DLL_PUBLIC StandardStream operator&(StandardStream l, StandardStream r);
+CORE_POSIX_DLL_PUBLIC StandardStream operator|(StandardStream l, StandardStream r);
+CORE_POSIX_DLL_PUBLIC StandardStream operator&(StandardStream l, StandardStream r);
+}
 }
 
-#endif // POSIX_STANDARD_STREAM_H_
+#endif // CORE_POSIX_STANDARD_STREAM_H_

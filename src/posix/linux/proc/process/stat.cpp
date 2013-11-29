@@ -24,6 +24,8 @@
 #include <istream>
 #include <sstream>
 
+namespace core
+{
 namespace posix
 {
 namespace linux
@@ -96,6 +98,7 @@ const posix::Process& operator>>(const posix::Process& process, Stat& stat)
     in >> stat;
 
     return process;
+}
 }
 }
 }

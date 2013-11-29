@@ -26,6 +26,8 @@
 
 #include <linux/oom.h>
 
+namespace core
+{
 namespace posix
 {
 namespace linux
@@ -71,6 +73,7 @@ const posix::Process& operator<<(const posix::Process& process, const OomAdj& ad
     out << adj.value;
 
     return process;
+}
 }
 }
 }

@@ -34,6 +34,8 @@ void redirect_stream_to_fd(int fd, int stream)
 }
 }
 
+namespace core
+{
 namespace posix
 {
 
@@ -146,5 +148,6 @@ ChildProcess vfork(const std::function<posix::exit::Status()>& main,
                         stdin_pipe,
                         stdout_pipe,
                         stderr_pipe);
+}
 }
 }
