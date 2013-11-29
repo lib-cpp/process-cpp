@@ -17,22 +17,22 @@
 add_library(
   process-cpp SHARED
   
-  posix/child_process.cpp
-  posix/exec.cpp
-  posix/fork.cpp
-  posix/process.cpp
-  posix/process_group.cpp
-  posix/signalable.cpp
-  posix/standard_stream.cpp
-  posix/wait.cpp
-  posix/this_process.cpp
+  core/posix/child_process.cpp
+  core/posix/exec.cpp
+  core/posix/fork.cpp
+  core/posix/process.cpp
+  core/posix/process_group.cpp
+  core/posix/signalable.cpp
+  core/posix/standard_stream.cpp
+  core/posix/wait.cpp
+  core/posix/this_process.cpp
 
-  posix/linux/proc/process/oom_adj.cpp
-  posix/linux/proc/process/oom_score.cpp
-  posix/linux/proc/process/oom_score_adj.cpp
-  posix/linux/proc/process/stat.cpp
+  core/posix/linux/proc/process/oom_adj.cpp
+  core/posix/linux/proc/process/oom_score.cpp
+  core/posix/linux/proc/process/oom_score_adj.cpp
+  core/posix/linux/proc/process/stat.cpp
 
-  testing/fork_and_run.cpp
+  core/testing/fork_and_run.cpp
 )
 
 target_link_libraries(

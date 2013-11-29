@@ -16,9 +16,9 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <testing/fork_and_run.h>
+#include <core/testing/fork_and_run.h>
 
-#include <posix/signal.h>
+#include <core/posix/signal.h>
 
 #include <gtest/gtest.h>
 

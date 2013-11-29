@@ -16,10 +16,10 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <posix/exec.h>
-#include <posix/fork.h>
-#include <posix/process.h>
-#include <posix/signal.h>
+#include <core/posix/exec.h>
+#include <core/posix/fork.h>
+#include <core/posix/process.h>
+#include <core/posix/signal.h>
 
 #include <gtest/gtest.h>
 

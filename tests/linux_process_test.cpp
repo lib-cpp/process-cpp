@@ -16,13 +16,13 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <posix/fork.h>
-#include <posix/this_process.h>
+#include <core/posix/fork.h>
+#include <core/posix/this_process.h>
 
-#include <posix/linux/proc/process/stat.h>
-#include <posix/linux/proc/process/oom_adj.h>
-#include <posix/linux/proc/process/oom_score.h>
-#include <posix/linux/proc/process/oom_score_adj.h>
+#include <core/posix/linux/proc/process/stat.h>
+#include <core/posix/linux/proc/process/oom_adj.h>
+#include <core/posix/linux/proc/process/oom_score.h>
+#include <core/posix/linux/proc/process/oom_score_adj.h>
 
 #include <gtest/gtest.h>
 
