@@ -16,13 +16,13 @@
  * Authored by: Thomas Voß <thomas.voss@canonical.com>
  */
 
-#include <posix/fork.h>
-#include <posix/this_process.h>
+#include <core/posix/fork.h>
+#include <core/posix/this_process.h>
 
-#include <posix/linux/proc/process/stat.h>
-#include <posix/linux/proc/process/oom_adj.h>
-#include <posix/linux/proc/process/oom_score.h>
-#include <posix/linux/proc/process/oom_score_adj.h>
+#include <core/posix/linux/proc/process/stat.h>
+#include <core/posix/linux/proc/process/oom_adj.h>
+#include <core/posix/linux/proc/process/oom_score.h>
+#include <core/posix/linux/proc/process/oom_score_adj.h>
 
 #include <gtest/gtest.h>
 
@@ -30,25 +30,25 @@
 
 TEST(LinuxProcess, accessing_proc_stats_works)
 {
-    auto child = posix::fork(
-                [](){ while(true); return posix::exit::Status::success;},
-                posix::StandardStream::empty);
+    auto child = core::posix::fork(
+                [](){ while(true); return core::posix::exit::Status::success;},
+                core::posix::StandardStream::empty);
 
-    posix::linux::proc::process::Stat stat;
+    core::posix::linux::proc::process::Stat stat;
     EXPECT_NO_THROW(child >> stat);
-    ASSERT_EQ(posix::linux::proc::process::State::running, stat.state);
+    ASSERT_EQ(core::posix::linux::proc::process::State::running, stat.state);
 }
 
 TEST(LinuxProcess, accessing_proc_oom_score_works)
 {
-    posix::linux::proc::process::OomScore oom_score;
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_score);
+    core::posix::linux::proc::process::OomScore oom_score;
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_score);
 }
 
 TEST(LinuxProcess, accessing_proc_oom_score_adj_works)
 {
-    posix::linux::proc::process::OomScoreAdj oom_score_adj;
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_score_adj);
+    core::posix::linux::proc::process::OomScoreAdj oom_score_adj;
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_score_adj);
 }
 
 namespace
@@ -70,89 +70,89 @@ namespace
 
 TEST(LinuxProcess, adjusting_proc_oom_score_adj_works)
 {
-    posix::linux::proc::process::OomScoreAdj oom_score_adj
+    core::posix::linux::proc::process::OomScoreAdj oom_score_adj
     {
-        posix::linux::proc::process::OomScoreAdj::max_value()
+        core::posix::linux::proc::process::OomScoreAdj::max_value()
     };
-    EXPECT_NO_THROW(posix::this_process::instance() << oom_score_adj);
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_score_adj);
-    EXPECT_EQ(posix::linux::proc::process::OomScoreAdj::max_value(),
+    EXPECT_NO_THROW(core::posix::this_process::instance() << oom_score_adj);
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_score_adj);
+    EXPECT_EQ(core::posix::linux::proc::process::OomScoreAdj::max_value(),
               oom_score_adj.value);
-    posix::linux::proc::process::OomScore oom_score;
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_score);
-    EXPECT_TRUE(is_approximately_equal(oom_score.value, posix::linux::proc::process::OomScoreAdj::max_value()));
+    core::posix::linux::proc::process::OomScore oom_score;
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_score);
+    EXPECT_TRUE(is_approximately_equal(oom_score.value, core::posix::linux::proc::process::OomScoreAdj::max_value()));
 }
 
 // For this test we assume that we are not privileged and that the test binary
 // does not have CAP_SYS_RESOURCE capabilities.
 TEST(LinuxProcess, adjusting_proc_oom_score_adj_to_privileged_values_only_works_if_root)
 {
-    posix::linux::proc::process::OomScoreAdj oom_score_adj
+    core::posix::linux::proc::process::OomScoreAdj oom_score_adj
     {
-        posix::linux::proc::process::OomScoreAdj::min_value()
+        core::posix::linux::proc::process::OomScoreAdj::min_value()
     };
-    EXPECT_NO_THROW(posix::this_process::instance() << oom_score_adj);
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_score_adj);
+    EXPECT_NO_THROW(core::posix::this_process::instance() << oom_score_adj);
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_score_adj);
     
     // If we are running on virtualized builders or buildds we are running under a fakeroot environment.
     // However, that environment does not give us the required privileges and capabilities to adjust OOM values
     // as we like. At any rate, this check seems to be flaky and we just comment it out.
-    // EXPECT_NE(posix::linux::proc::process::OomScoreAdj::min_value(),
+    // EXPECT_NE(core::posix::linux::proc::process::OomScoreAdj::min_value(),
     //          oom_score_adj.value);
 }
 
 TEST(LinuxProcess, trying_to_write_an_invalid_oom_score_adj_throws)
 {
-    posix::linux::proc::process::OomScoreAdj invalid_adj
+    core::posix::linux::proc::process::OomScoreAdj invalid_adj
     {
-        posix::linux::proc::process::OomScoreAdj::min_value() -1000
+        core::posix::linux::proc::process::OomScoreAdj::min_value() -1000
     };
 
-    EXPECT_ANY_THROW(posix::this_process::instance() << invalid_adj);
+    EXPECT_ANY_THROW(core::posix::this_process::instance() << invalid_adj);
 }
 
 TEST(LinuxProcess, adjusting_proc_oom_adj_works)
 {
-    posix::linux::proc::process::OomAdj oom_adj
+    core::posix::linux::proc::process::OomAdj oom_adj
     {
-        posix::linux::proc::process::OomAdj::max_value()
+        core::posix::linux::proc::process::OomAdj::max_value()
     };
-    EXPECT_NO_THROW(posix::this_process::instance() << oom_adj);
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_adj);
-    EXPECT_EQ(posix::linux::proc::process::OomAdj::max_value(),
+    EXPECT_NO_THROW(core::posix::this_process::instance() << oom_adj);
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_adj);
+    EXPECT_EQ(core::posix::linux::proc::process::OomAdj::max_value(),
               oom_adj.value);
-    posix::linux::proc::process::OomScore oom_score;
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_score);
+    core::posix::linux::proc::process::OomScore oom_score;
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_score);
     // This looks weird as we are comparing to OomScoreAdj as opposed to OomAdj.
     // However, /proc/pid/oom_adj is deprecated as of linux 2.6.36 and the value
     // reported in oom_score is in the scale of /proc/pid/oom_score_adj, i.e.,  [-1000, 1000].
-    EXPECT_TRUE(is_approximately_equal(oom_score.value, posix::linux::proc::process::OomScoreAdj::max_value()));
+    EXPECT_TRUE(is_approximately_equal(oom_score.value, core::posix::linux::proc::process::OomScoreAdj::max_value()));
 }
 
 // For this test we assume that we are not privileged and that the test binary
 // does not have CAP_SYS_RESOURCE capabilities.
 TEST(LinuxProcess, adjusting_proc_oom_adj_to_privileged_values_does_not_work)
 {
-    posix::linux::proc::process::OomAdj oom_adj
+    core::posix::linux::proc::process::OomAdj oom_adj
     {
-        posix::linux::proc::process::OomAdj::min_value()
+        core::posix::linux::proc::process::OomAdj::min_value()
     };
-    EXPECT_NO_THROW(posix::this_process::instance() << oom_adj);
-    EXPECT_NO_THROW(posix::this_process::instance() >> oom_adj);
+    EXPECT_NO_THROW(core::posix::this_process::instance() << oom_adj);
+    EXPECT_NO_THROW(core::posix::this_process::instance() >> oom_adj);
 
     // If we are running on virtualized builders or buildds we are running under a fakeroot environment.
     // However, that environment does not give us the required privileges and capabilities to adjust OOM values
     // as we like. At any rate, this check seems to be flaky and we just comment it out.
-    // EXPECT_NE(posix::linux::proc::process::OomAdj::min_value(),
+    // EXPECT_NE(core::posix::linux::proc::process::OomAdj::min_value(),
     //          oom_adj.value);
 }
 
 TEST(LinuxProcess, trying_to_write_an_invalid_oom_adj_throws)
 {
-    posix::linux::proc::process::OomAdj invalid_adj
+    core::posix::linux::proc::process::OomAdj invalid_adj
     {
-        posix::linux::proc::process::OomAdj::min_value() - 1000
+        core::posix::linux::proc::process::OomAdj::min_value() - 1000
     };
 
-    EXPECT_ANY_THROW(posix::this_process::instance() << invalid_adj);
+    EXPECT_ANY_THROW(core::posix::this_process::instance() << invalid_adj);
 }
