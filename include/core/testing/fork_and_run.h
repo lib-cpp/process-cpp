@@ -19,6 +19,7 @@
 #define CORE_TESTING_FORK_AND_RUN_H_
 
 #include <core/posix/exit.h>
+#include <core/posix/fork.h>
 #include <core/posix/visibility.h>
 
 #include <functional>
@@ -59,4 +60,56 @@ CORE_POSIX_DLL_PUBLIC ForkAndRunResult fork_and_run(
         const std::function<core::posix::exit::Status()>& client);
 }
 }
+
+/**
+ * Test definition macro which runs a TEST in a forked process.
+ * Note that you can only use EXPECT_*, not
+ * ASSERT_*!
+ *
+ * Usage:
+ * TESTP(test_suite, test_name, {
+ *      test code ...
+ *      EXPECT_* ...
+ * })
+ */
+#define TESTP(test_suite, test_name, CODE)                                             \
+    TEST(test_suite, test_name) {                                                       \
+        auto test = [&]() {                                                             \
+            CODE                                                                        \
+            return HasFailure() ? core::posix::exit::Status::failure                    \
+                            : core::posix::exit::Status::success;                       \
+        };                                                                              \
+        auto child = core::posix::fork(                                                 \
+            test,                                                                       \
+            core::posix::StandardStream::empty);                                        \
+        auto result = child.wait_for(core::posix::wait::Flags::untraced);               \
+        EXPECT_EQ(core::posix::wait::Result::Status::exited, result.status);            \
+        EXPECT_EQ(core::posix::exit::Status::success, result.detail.if_exited.status);  \
+    } \
+
+/**
+ * Test definition macro which runs a TEST_F in a forked process.
+ * Note that you can only use EXPECT_*, not ASSERT_*!
+ *
+ * Usage:
+ * TESTP_F(FixtureName, TestName, {
+ *    ... test code ...
+ *    EXPECT_* ...
+ *  })
+ */
+#define TESTP_F(test_fixture, test_name, CODE)                                          \
+    TEST_F(test_fixture, test_name) {                                                   \
+        auto test = [&]() {                                                             \
+            CODE                                                                        \
+            return HasFailure() ? core::posix::exit::Status::failure                    \
+                            : core::posix::exit::Status::success;                       \
+        };                                                                              \
+        auto child = core::posix::fork(                                                 \
+            test,                                                                       \
+            core::posix::StandardStream::empty);                                        \
+        auto result = child.wait_for(core::posix::wait::Flags::untraced);               \
+        EXPECT_EQ(core::posix::wait::Result::Status::exited, result.status);            \
+        EXPECT_EQ(core::posix::exit::Status::success, result.detail.if_exited.status);  \
+    } \
+
 #endif // CORE_TESTING_FORK_AND_RUN_H_

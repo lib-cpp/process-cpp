@@ -24,6 +24,11 @@
 
 namespace
 {
+struct TestingMacrosFixture : public ::testing::Test
+{
+    TestingMacrosFixture() = default;
+};
+
 ::testing::AssertionResult ClientFailed(core::testing::ForkAndRunResult result)
 {
     return
@@ -119,3 +124,24 @@ TEST(ForkAndRun, aborting_client_is_reported_as_failing)
     EXPECT_FALSE(ServiceFailed(result));
 }
 
+TESTP(TestingMacros, test_fp_macro_reports_success_for_passing_test,
+    {
+        return core::posix::exit::Status::success;
+    })
+
+TESTP_F(TestingMacrosFixture, test_fp_macro_reports_success_for_passing_test,
+    {
+        return core::posix::exit::Status::success;
+    })
+
+// The following two tests fail, and rightly so. However, translating this
+// failing behavior to success is really difficult and we omit it for now.
+TESTP(TestingMacros, DISABLED_test_fp_macro_reports_success_for_failing_test,
+    {
+        return core::posix::exit::Status::failure;
+    })
+
+TESTP_F(TestingMacrosFixture, DISABLED_test_fp_macro_reports_success_for_failing_test,
+    {
+        return core::posix::exit::Status::failure;
+    })
