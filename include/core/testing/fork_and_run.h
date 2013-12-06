@@ -42,6 +42,12 @@ CORE_POSIX_DLL_PUBLIC ForkAndRunResult operator&(ForkAndRunResult lhs, ForkAndRu
 
 /**
  * @brief Forks two processes for both the service and the client.
+ *
+ * The function does the following:
+ *   - Forks a process for the service and runs the respective closure.
+ *   - Forks a process for the client and runs the respective closure.
+ *   - After the client has finished, the service is signalled with sigterm.
+ *
  * @throw std::system_error if an error occured during process interaction.
  * @throw std::runtime_error for signalling all other error conditions.
  * @param [in] service The service to be executed in a child process.
