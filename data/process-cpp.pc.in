@@ -7,4 +7,4 @@ Name: @CMAKE_PROJECT_NAME@
 Description: A simple and lightweight C++11 wrapper around process control
 Version: @PROCESS_CPP_VERSION_MAJOR@.@PROCESS_CPP_VERSION_MINOR@.@PROCESS_CPP_VERSION_PATCH@
 Libs: -L${libdir} -lprocess-cpp
-Cflags: -I${includedir}/process-cpp
+Cflags: -I${includedir}
