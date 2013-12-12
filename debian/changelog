@@ -1,3 +1,27 @@
+process-cpp (0.0.1+14.04.20131212-0ubuntu1) trusty; urgency=low
+
+  [ thomas-voss ]
+  * Adjust throw specifiers for environment accessors. Adjust
+    std::system_error to std::error_code for non-throwing overloads in
+    this_process. Make c'tor of Process public to be able to "attach" to
+    existing processes.
+  * Introduce a testing namespace and a utility function fork_and_run
+    forcross-process testing of services and clients. Refactor function
+    object signatures to return a posix::exit::Status type instead of an
+    int.
+  * Refactor to namespace core.
+  * Fix pkgconfig setup to account for new namespace and include
+    structure. Add helper macros for cross-process testing.
+
+  [ Timo Jyrinki ]
+  * Add 2012, extend pkg descriptions, remove unneeded 'Section', add
+    one Suggests, run wrap-and-sort -a -t.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 26
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 12 Dec 2013 09:57:27 +0000
+
 process-cpp (0.0.1+14.04.20131105.1-0ubuntu1) trusty; urgency=low
 
   [ Thomas Voß ]
