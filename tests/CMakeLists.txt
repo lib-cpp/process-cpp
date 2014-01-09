@@ -40,6 +40,11 @@ add_executable(
   fork_and_run_test.cpp
 )
 
+add_executable(
+  cross_process_sync_test
+  cross_process_sync_test.cpp
+)
+
 target_link_libraries(
   posix_process_test
 
@@ -64,6 +69,15 @@ target_link_libraries(
   ${GTEST_BOTH_LIBRARIES}
 )
 
+target_link_libraries(
+  cross_process_sync_test
+
+  process-cpp
+
+  ${GTEST_BOTH_LIBRARIES}
+)
+
 add_test(posix_process_test ${CMAKE_CURRENT_BINARY_DIR}/posix_process_test)
 add_test(linux_process_test ${CMAKE_CURRENT_BINARY_DIR}/linux_process_test)
 add_test(fork_and_run_test ${CMAKE_CURRENT_BINARY_DIR}/fork_and_run_test)
+add_test(cross_process_sync_test ${CMAKE_CURRENT_BINARY_DIR}/cross_process_sync_test)

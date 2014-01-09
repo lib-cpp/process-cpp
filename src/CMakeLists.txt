@@ -32,6 +32,7 @@ add_library(
   core/posix/linux/proc/process/oom_score_adj.cpp
   core/posix/linux/proc/process/stat.cpp
 
+  core/testing/cross_process_sync.cpp
   core/testing/fork_and_run.cpp
 )
 

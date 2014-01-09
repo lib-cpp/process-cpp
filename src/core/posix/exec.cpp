@@ -44,7 +44,6 @@ ChildProcess exec(const std::string& fn,
         for (auto element : argv)
         {
             *it = ::strdup(element.c_str());
-            std::cout << *it << std::endl;
             it++;
         }
         *it = nullptr;
@@ -53,7 +52,6 @@ ChildProcess exec(const std::string& fn,
         for (auto pair : env)
         {
             *it = ::strdup((pair.first + "=" + pair.second).c_str());
-            std::cout << *it << std::endl;
             it++;
         }
         *it = nullptr;
