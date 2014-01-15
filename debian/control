@@ -6,11 +6,9 @@ Build-Depends: cmake,
                doxygen,
                google-mock,
                graphviz,
-               lcov,
                libboost-dev,
                libboost-iostreams-dev,
                libboost-system-dev,
-               libgtest-dev,
 Standards-Version: 3.9.4
 Section: libs
 Homepage: https://launchpad.net/process-cpp

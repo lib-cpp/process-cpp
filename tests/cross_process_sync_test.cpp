@@ -32,7 +32,7 @@ TEST(CrossProcessSync, signalling_the_sync_object_results_in_correct_count)
         {
             EXPECT_NO_THROW(cps.try_signal_ready_for(std::chrono::milliseconds{500}));
         }
-        return ::testing::Test::HasFatalFailure() || ::testing::Test::HasFailure() ?
+        return ::testing::Test::HasFailure() ?
             core::posix::exit::Status::failure : core::posix::exit::Status::success;
     };
 
@@ -44,7 +44,8 @@ TEST(CrossProcessSync, signalling_the_sync_object_results_in_correct_count)
             EXPECT_NO_THROW(counter = cps.wait_for_signal_ready_for(std::chrono::milliseconds{500}));
             EXPECT_EQ(i, counter);
         }
-        return ::testing::Test::HasFatalFailure() || ::testing::Test::HasFailure() ?
+
+        return ::testing::Test::HasFailure() ?
             core::posix::exit::Status::failure : core::posix::exit::Status::success;
     };
 

@@ -19,16 +19,24 @@ cmake_minimum_required(VERSION 2.8)
 project(process-cpp)
 
 find_package(Boost COMPONENTS iostreams system REQUIRED)
+find_package(Threads REQUIRED)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include(cmake/EnableCoverageReport.cmake)
-include(cmake/PrePush.cmake)
 include(GNUInstallDirs)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wall -pedantic -Wextra -fPIC -fvisibility=hidden -pthread")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Werror -Wall -fno-strict-aliasing -fvisibility=hidden -fvisibility-inlines-hidden -pedantic -Wextra -fPIC -pthread")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wextra -fvisibility=hidden")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -fno-strict-aliasing -fvisibility=hidden -fvisibility-inlines-hidden -pedantic -Wextra")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
+
+option(PROCESS_CPP_WERROR "Treat warnings as errors" ON)
+
+if(PROCESS_CPP_WERROR)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wno-error=format")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wno-error=format")
+endif(PROCESS_CPP_WERROR)
+
+string(TOLOWER "${CMAKE_BUILD_TYPE}" cmake_build_type_lower)
 
 #####################################################################
 # Enable code coverage calculation with gcov/gcovr/lcov
@@ -38,12 +46,12 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 #  * Find html report in subdir coveragereport
 #  * Find xml report feasible for jenkins in coverage.xml
 #####################################################################
-IF(CMAKE_BUILD_TYPE MATCHES [cC][oO][vV][eE][rR][aA][gG][eE])
+IF(cmake_build_type_lower MATCHES coverage)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage -fprofile-arcs" )
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ftest-coverage -fprofile-arcs" )
   SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -ftest-coverage -fprofile-arcs" )
   SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -ftest-coverage -fprofile-arcs" )
-ENDIF(CMAKE_BUILD_TYPE MATCHES [cC][oO][vV][eE][rR][aA][gG][eE])
+ENDIF(cmake_build_type_lower MATCHES coverage)
 
 set(PROCESS_CPP_VERSION_MAJOR 0)
 set(PROCESS_CPP_VERSION_MINOR 0)
@@ -62,5 +70,3 @@ add_subdirectory(data)
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tests)
-
-enable_coverage_report(posix_process_test linux_process_test)
