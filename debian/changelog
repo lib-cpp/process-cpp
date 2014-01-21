@@ -1,8 +1,21 @@
-process-cpp (0.0.1+14.04.20131212-0ubuntu2) UNRELEASED; urgency=low
+process-cpp (0.0.1+14.04.20140121-0ubuntu1) trusty; urgency=low
 
+  [ Ubuntu daily release ]
   * debian/*symbols: auto-update new symbols to released version
 
- -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 21 Jan 2014 15:21:26 +0000
+  [ thomas-voss ]
+  * Added a cross-process synchronization primitive.
+  * Remove lcov as a build dependency. Remove unneeded cmake modules.
+    Adjust and clean up cmake setup.
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Get rid of the per-architecture symbols files, make some symbols
+    arch-conditional. Bump the standards version.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 30
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 21 Jan 2014 15:21:28 +0000
 
 process-cpp (0.0.1+14.04.20131212-0ubuntu1) trusty; urgency=low
 
