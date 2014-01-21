@@ -9,7 +9,7 @@ Build-Depends: cmake,
                libboost-dev,
                libboost-iostreams-dev,
                libboost-system-dev,
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Section: libs
 Homepage: https://launchpad.net/process-cpp
 # If you aren't a member of ~phablet-team but need to upload packaging changes,
