@@ -1,3 +1,14 @@
+process-cpp (0.0.1+14.04.20140122-0ubuntu1) trusty; urgency=low
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add conditional symbols for other 64-bit architectures which we
+    build in the archive.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 32
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 22 Jan 2014 14:18:23 +0000
+
 process-cpp (0.0.1+14.04.20140121-0ubuntu1) trusty; urgency=low
 
   [ Ubuntu daily release ]
