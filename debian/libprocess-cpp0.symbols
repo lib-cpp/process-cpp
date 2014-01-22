@@ -1,8 +1,8 @@
 libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
- (c++|arch=!amd64)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0.0.1+14.04.20140121
- (c++|arch=amd64)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0.0.1+14.04.20140121
- (c++|arch=!amd64)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0.0.1+14.04.20140121
- (c++|arch=amd64)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0.0.1+14.04.20140121
+ (c++|arch=!amd64 !arm64 !ppc64el)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0.0.1+14.04.20140121
+ (c++|arch=amd64 arm64 ppc64el)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0.0.1+14.04.20140121
+ (c++|arch=!amd64 !arm64 !ppc64el)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0.0.1+14.04.20140121
+ (c++|arch=amd64 arm64 ppc64el)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0.0.1+14.04.20140121
  (c++)"core::testing::CrossProcessSync::Error::Timeout::~Timeout()@Base" 0.0.1+14.04.20140121
  (c++)"core::testing::CrossProcessSync::Error::Timeout::~Timeout()@Base" 0.0.1+14.04.20140121
  (c++)"core::testing::CrossProcessSync::Error::Timeout::~Timeout()@Base" 0.0.1+14.04.20140121
@@ -75,12 +75,12 @@ libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
  (c++)"std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~vector()@Base" 0.0.1+14.04.20140121
  (c++)"std::_Rb_tree<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::_Select1st<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::_M_copy(std::_Rb_tree_node<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const*, std::_Rb_tree_node<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >*)@Base" 0.0.1+14.04.20140121
  (c++)"std::_Rb_tree<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::_Select1st<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::_M_erase(std::_Rb_tree_node<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >*)@Base" 0.0.1+14.04.20140121
- (c++|arch=!amd64)"void std::__adjust_heap<char*, int, char>(char*, int, int, char)@Base" 0.0.1+14.04.20140121
- (c++|arch=amd64)"void std::__adjust_heap<char*, long, char>(char*, long, long, char)@Base" 0.0.1+14.04.20140121
+ (c++|arch=!amd64 !arm64 !ppc64el)"void std::__adjust_heap<char*, int, char>(char*, int, int, char)@Base" 0.0.1+14.04.20140121
+ (c++|arch=amd64 arm64 ppc64el)"void std::__adjust_heap<char*, long, char>(char*, long, long, char)@Base" 0.0.1+14.04.20140121
  (c++)"bool std::binary_search<char const*, char>(char const*, char const*, char const&)@Base" 0.0.1+14.04.20140121
  (c++)"void std::__insertion_sort<char*>(char*, char*)@Base" 0.0.1+14.04.20140121
- (c++|arch=!amd64)"void std::__introsort_loop<char*, int>(char*, char*, int)@Base" 0.0.1+14.04.20140121
- (c++|arch=amd64)"void std::__introsort_loop<char*, long>(char*, char*, long)@Base" 0.0.1+14.04.20140121
+ (c++|arch=!amd64 !arm64 !ppc64el)"void std::__introsort_loop<char*, int>(char*, char*, int)@Base" 0.0.1+14.04.20140121
+ (c++|arch=amd64 arm64 ppc64el)"void std::__introsort_loop<char*, long>(char*, char*, long)@Base" 0.0.1+14.04.20140121
  (c++)"typeinfo for core::posix::ChildProcess@Base" 0.0.1+14.04.20140121
  (c++)"typeinfo for core::posix::Process@Base" 0.0.1+14.04.20140121
  (c++)"typeinfo for std::_Mutex_base<(__gnu_cxx::_Lock_policy)2>@Base" 0.0.1+14.04.20140121
