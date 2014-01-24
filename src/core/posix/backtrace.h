@@ -34,17 +34,17 @@ namespace backtrace
 /**
  * @brief The Frame class models an individual frame of a backtrace.
  */
-class CORE_POSIX_DLL_PUBLIC Frame
+class Frame
 {
 public:
     /**
      * @brief The Symbol class models the symbolic representation of a frame pointer.
      */
-    class CORE_POSIX_DLL_PUBLIC Symbol
+    class Symbol
     {
     public:
 
-        CORE_POSIX_DLL_PUBLIC static std::shared_ptr<Symbol> for_testing_from_raw_symbol(const char* symbol);
+        static std::shared_ptr<Symbol> for_testing_from_raw_symbol(const char* symbol);
 
         Symbol(const Symbol&) = delete;
         virtual ~Symbol() = default;

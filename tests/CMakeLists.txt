@@ -39,6 +39,10 @@ add_executable(
 add_executable(
   fork_and_run_test
   fork_and_run_test.cpp
+
+  # We include an external source file to prevent from leaking
+  # symbols to the outside world
+  ${CMAKE_SOURCE_DIR}/src/core/posix/backtrace.cpp
 )
 
 add_executable(
