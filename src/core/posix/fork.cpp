@@ -22,6 +22,7 @@
 #include <iostream>
 #include <system_error>
 
+#include <execinfo.h>
 #include <unistd.h>
 
 namespace
@@ -31,6 +32,20 @@ void redirect_stream_to_fd(int fd, int stream)
     auto rc = ::dup2(fd, stream);
     if (rc == -1)
         throw std::system_error(errno, std::system_category());
+}
+
+void print_backtrace(std::ostream& out)
+{
+    static const unsigned int max_frames=100;
+    void *frames[max_frames];
+
+    auto frame_count = ::backtrace(frames, max_frames);
+    auto symbols = ::backtrace_symbols(frames, frame_count);
+
+    for (int i = 0; i < frame_count; i++)
+    {
+        out << "\t" << std::hex << frames[i] << ": " << symbols[i] << std::endl;
+    }
 }
 }
 
@@ -78,8 +93,14 @@ ChildProcess fork(const std::function<posix::exit::Status()>& main,
                 redirect_stream_to_fd(stderr_pipe.write_fd(), STDERR_FILENO);
 
             result = main();
+        } catch(const std::exception& e)
+        {
+            std::cerr << "core::posix::fork(): An unhandled std::exception occured in the child process:"
+                      << "\t" << e.what() << std::endl;
         } catch(...)
         {
+            std::cerr << "core::posix::fork(): An unhandled exception occured in the child process." << std::endl;
+            print_backtrace(std::cerr);
         }
 
         // We have to ensure that we exit here. Otherwise, we run into
@@ -128,8 +149,14 @@ ChildProcess vfork(const std::function<posix::exit::Status()>& main,
                 redirect_stream_to_fd(stderr_pipe.write_fd(), STDERR_FILENO);
 
             result = main();
+        } catch(const std::exception& e)
+        {
+            std::cerr << "core::posix::fork(): An unhandled std::exception occured in the child process:"
+                      << "\t" << e.what() << std::endl;
         } catch(...)
         {
+            std::cerr << "core::posix::fork(): An unhandled exception occured in the child process." << std::endl;
+            print_backtrace(std::cerr);
         }
 
         // We have to ensure that we exit here. Otherwise, we run into
