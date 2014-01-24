@@ -21,7 +21,10 @@ find_package(Gtest REQUIRED)
 include_directories(${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
 set (CMAKE_CXX_FLAGS ${OLD_CMAKE_CXX_FLAGS})
 
-include_directories(${GTEST_INCLUDE_DIR})
+include_directories(
+  ${CMAKE_SOURCE_DIR}/src
+  ${GTEST_INCLUDE_DIR}
+)
 
 add_executable(
   posix_process_test

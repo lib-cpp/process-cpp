@@ -19,12 +19,12 @@
 #include <core/posix/exit.h>
 #include <core/posix/fork.h>
 
+#include "backtrace.h"
+
+#include <iomanip>
 #include <iostream>
 #include <system_error>
 
-#include <cxxabi.h>
-
-#include <execinfo.h>
 #include <unistd.h>
 
 namespace
@@ -36,62 +36,14 @@ void redirect_stream_to_fd(int fd, int stream)
         throw std::system_error(errno, std::system_category());
 }
 
-std::tuple<std::string, bool> demangle(const std::string& symbol)
+void print_backtrace(std::ostream& out, const std::string& line_prefix)
 {
-    int status = 1;
-    auto result = abi::__cxa_demangle(symbol.c_str(),
-                                      nullptr,
-                                      nullptr,
-                                      &status);
-
-    if (!result || status != 0)
+    core::posix::backtrace::visit_with_handler([&out, line_prefix](const core::posix::backtrace::Frame& frame)
     {
-        return std::make_tuple(std::string(), false);
-    }
-
-    std::string s{result};
-    ::free(result);
-
-    return std::make_tuple(s, true);
-}
-
-void print_backtrace(std::ostream& out)
-{
-    static const unsigned int max_frames=100;
-    void *frames[max_frames];
-
-    auto frame_count = ::backtrace(frames, max_frames);
-    auto symbols = ::backtrace_symbols(frames, frame_count);
-
-    for (int i = 0; i < frame_count; i++)
-    {
-        std::string symbol(symbols[i]);
-
-        auto first = symbol.find_first_of("(");
-        auto last = symbol.find_last_of(")");
-
-        if (first != std::string::npos && last != std::string::npos)
-        {
-            auto mangled_symbol = symbol.substr(first+1,
-                                                (last-1) - (first+1));
-
-            auto plus = mangled_symbol.find_first_of("+");
-            if (plus != std::string::npos)
-                mangled_symbol.erase(plus);
-
-            std::string demangled_symbol;
-            bool successful;
-
-            std::tie(demangled_symbol, successful) = demangle(mangled_symbol);
-
-            if (successful)
-                symbol = demangled_symbol;
-        }
-
-        out << "\t" << std::hex << frames[i] << ": " << symbol << std::endl;
-    }
-
-    ::free(symbols);
+        out << line_prefix << std::dec << std::setw(2) << frame.depth() << "@" << std::hex << std::setw(14) << frame.frame_pointer() << ": "
+            << (frame.symbol().is_cxx() ? frame.symbol().demangled() : frame.symbol().raw()) << std::endl;
+        return true;
+    });
 }
 }
 
@@ -142,12 +94,12 @@ ChildProcess fork(const std::function<posix::exit::Status()>& main,
         } catch(const std::exception& e)
         {
             std::cerr << "core::posix::fork(): An unhandled std::exception occured in the child process:" << std::endl
-                      << "\t" << e.what() << std::endl;
-            print_backtrace(std::cerr);
+                      << "  what(): " << e.what() << std::endl;
+            print_backtrace(std::cerr, "  ");
         } catch(...)
         {
             std::cerr << "core::posix::fork(): An unhandled exception occured in the child process." << std::endl;
-            print_backtrace(std::cerr);
+            print_backtrace(std::cerr, "  ");
         }
 
         // We have to ensure that we exit here. Otherwise, we run into
@@ -199,12 +151,12 @@ ChildProcess vfork(const std::function<posix::exit::Status()>& main,
         } catch(const std::exception& e)
         {
             std::cerr << "core::posix::fork(): An unhandled std::exception occured in the child process:" << std::endl
-                      << "\t" << e.what() << std::endl;
-            print_backtrace(std::cerr);
+                      << "  what(): " << e.what() << std::endl;
+            print_backtrace(std::cerr, "  ");
         } catch(...)
         {
             std::cerr << "core::posix::fork(): An unhandled exception occured in the child process." << std::endl;
-            print_backtrace(std::cerr);
+            print_backtrace(std::cerr, "  ");
         }
 
         // We have to ensure that we exit here. Otherwise, we run into

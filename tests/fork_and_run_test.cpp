@@ -145,3 +145,16 @@ TESTP_F(TestingMacrosFixture, DISABLED_test_fp_macro_reports_success_for_failing
     {
         return core::posix::exit::Status::failure;
     })
+
+#include <core/posix/backtrace.h>
+
+TEST(BacktraceSymbolDemangling, demangling_a_cpp_symbol_works)
+{
+    const char* ref = "tests/fork_and_run_test(_ZN7testing8internal35HandleExceptionsInMethodIfSupportedINS0_12UnitTestImplEbEET0_PT_MS4_FS3_vEPKc+0x4b) [0x4591f8]";
+    const char* ref_demangled = "bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*)";
+    auto symbol = core::posix::backtrace::Frame::Symbol::for_testing_from_raw_symbol(ref);
+
+    EXPECT_TRUE(symbol->is_cxx());
+    EXPECT_EQ(ref, symbol->raw());
+    EXPECT_EQ(ref_demangled, symbol->demangled());
+}

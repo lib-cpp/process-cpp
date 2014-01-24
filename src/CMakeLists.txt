@@ -17,6 +17,9 @@
 add_library(
   process-cpp SHARED
   
+  core/posix/backtrace.h
+  core/posix/backtrace.cpp
+
   core/posix/child_process.cpp
   core/posix/exec.cpp
   core/posix/fork.cpp
