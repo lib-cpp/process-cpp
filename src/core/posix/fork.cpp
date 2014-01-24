@@ -22,6 +22,8 @@
 #include <iostream>
 #include <system_error>
 
+#include <cxxabi.h>
+
 #include <execinfo.h>
 #include <unistd.h>
 
@@ -34,6 +36,25 @@ void redirect_stream_to_fd(int fd, int stream)
         throw std::system_error(errno, std::system_category());
 }
 
+std::tuple<std::string, bool> demangle(const std::string& symbol)
+{
+    int status = 1;
+    auto result = abi::__cxa_demangle(symbol.c_str(),
+                                      nullptr,
+                                      nullptr,
+                                      &status);
+
+    if (!result || status != 0)
+    {
+        return std::make_tuple(std::string(), false);
+    }
+
+    std::string s{result};
+    ::free(result);
+
+    return std::make_tuple(s, true);
+}
+
 void print_backtrace(std::ostream& out)
 {
     static const unsigned int max_frames=100;
@@ -44,8 +65,33 @@ void print_backtrace(std::ostream& out)
 
     for (int i = 0; i < frame_count; i++)
     {
-        out << "\t" << std::hex << frames[i] << ": " << symbols[i] << std::endl;
+        std::string symbol(symbols[i]);
+
+        auto first = symbol.find_first_of("(");
+        auto last = symbol.find_last_of(")");
+
+        if (first != std::string::npos && last != std::string::npos)
+        {
+            auto mangled_symbol = symbol.substr(first+1,
+                                                (last-1) - (first+1));
+
+            auto plus = mangled_symbol.find_first_of("+");
+            if (plus != std::string::npos)
+                mangled_symbol.erase(plus);
+
+            std::string demangled_symbol;
+            bool successful;
+
+            std::tie(demangled_symbol, successful) = demangle(mangled_symbol);
+
+            if (successful)
+                symbol = demangled_symbol;
+        }
+
+        out << "\t" << std::hex << frames[i] << ": " << symbol << std::endl;
     }
+
+    ::free(symbols);
 }
 }
 
