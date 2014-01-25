@@ -21,7 +21,10 @@ find_package(Gtest REQUIRED)
 include_directories(${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
 set (CMAKE_CXX_FLAGS ${OLD_CMAKE_CXX_FLAGS})
 
-include_directories(${GTEST_INCLUDE_DIR})
+include_directories(
+  ${CMAKE_SOURCE_DIR}/src
+  ${GTEST_INCLUDE_DIR}
+)
 
 add_executable(
   posix_process_test
@@ -36,6 +39,10 @@ add_executable(
 add_executable(
   fork_and_run_test
   fork_and_run_test.cpp
+
+  # We include an external source file to prevent from leaking
+  # symbols to the outside world
+  ${CMAKE_SOURCE_DIR}/src/core/posix/backtrace.cpp
 )
 
 add_executable(

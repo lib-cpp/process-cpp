@@ -19,6 +19,9 @@
 #include <core/posix/exit.h>
 #include <core/posix/fork.h>
 
+#include "backtrace.h"
+
+#include <iomanip>
 #include <iostream>
 #include <system_error>
 
@@ -31,6 +34,16 @@ void redirect_stream_to_fd(int fd, int stream)
     auto rc = ::dup2(fd, stream);
     if (rc == -1)
         throw std::system_error(errno, std::system_category());
+}
+
+void print_backtrace(std::ostream& out, const std::string& line_prefix)
+{
+    core::posix::backtrace::visit_with_handler([&out, line_prefix](const core::posix::backtrace::Frame& frame)
+    {
+        out << line_prefix << std::dec << std::setw(2) << frame.depth() << "@" << std::hex << std::setw(14) << frame.frame_pointer() << ": "
+            << (frame.symbol().is_cxx() ? frame.symbol().demangled() : frame.symbol().raw()) << std::endl;
+        return true;
+    });
 }
 }
 
@@ -78,8 +91,15 @@ ChildProcess fork(const std::function<posix::exit::Status()>& main,
                 redirect_stream_to_fd(stderr_pipe.write_fd(), STDERR_FILENO);
 
             result = main();
+        } catch(const std::exception& e)
+        {
+            std::cerr << "core::posix::fork(): An unhandled std::exception occured in the child process:" << std::endl
+                      << "  what(): " << e.what() << std::endl;
+            print_backtrace(std::cerr, "  ");
         } catch(...)
         {
+            std::cerr << "core::posix::fork(): An unhandled exception occured in the child process." << std::endl;
+            print_backtrace(std::cerr, "  ");
         }
 
         // We have to ensure that we exit here. Otherwise, we run into
@@ -128,8 +148,15 @@ ChildProcess vfork(const std::function<posix::exit::Status()>& main,
                 redirect_stream_to_fd(stderr_pipe.write_fd(), STDERR_FILENO);
 
             result = main();
+        } catch(const std::exception& e)
+        {
+            std::cerr << "core::posix::fork(): An unhandled std::exception occured in the child process:" << std::endl
+                      << "  what(): " << e.what() << std::endl;
+            print_backtrace(std::cerr, "  ");
         } catch(...)
         {
+            std::cerr << "core::posix::fork(): An unhandled exception occured in the child process." << std::endl;
+            print_backtrace(std::cerr, "  ");
         }
 
         // We have to ensure that we exit here. Otherwise, we run into
