@@ -21,18 +21,209 @@
 #include <boost/iostreams/device/file_descriptor.hpp>
 #include <boost/iostreams/stream.hpp>
 
+#include <atomic>
 #include <fstream>
 #include <mutex>
+#include <unordered_map>
 
 #include <fcntl.h>
+#include <poll.h>
 #include <unistd.h>
 
+#include <sys/eventfd.h>
+#include <sys/signalfd.h>
+
 namespace io = boost::iostreams;
+
+namespace
+{
+struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
+{
+    enum class State
+    {
+        not_running,
+        running
+    };
+
+    SignalFdDeathObserver()
+        : signal_fd(-1),
+          wakeup_fd(-1),
+          state(State::not_running)
+    {
+        sigemptyset(&mask);
+        sigaddset(&mask, SIGCHLD);
+
+        if (-1 == sigprocmask(SIG_BLOCK, &mask, &old_process_mask))
+            throw std::system_error(errno, std::system_category());
+
+        static const int empty_flags = 0;
+        signal_fd = ::signalfd(signal_fd, &mask, empty_flags);
+
+        if (-1 == signal_fd)
+            throw std::system_error(errno, std::system_category());
+
+        static const unsigned int initial_value = 0;
+        wakeup_fd = ::eventfd(initial_value, empty_flags);
+
+        if (-1 == wakeup_fd)
+            throw std::system_error(errno, std::system_category());
+    }
+
+    ~SignalFdDeathObserver()
+    {
+        sigprocmask(SIG_SETMASK, &old_process_mask, nullptr);
+        ::close(signal_fd);
+        ::close(wakeup_fd);
+    }
+
+    bool add(const core::posix::ChildProcess& process)
+    {
+        if (process.pid() == -1)
+            return false;
+
+        std::lock_guard<std::mutex> lg(guard);
+
+        bool added = false;
+        std::tie(std::ignore, added) = children.insert(std::make_pair(process.pid(), process));
+
+        return added;
+    }
+
+    bool has(const core::posix::ChildProcess& process) const
+    {
+        std::lock_guard<std::mutex> lg(guard);
+        return children.count(process.pid()) > 0;
+    }
+
+    const core::Signal<core::posix::ChildProcess>& child_died() const
+    {
+        return signals.child_died;
+    }
+
+    void run(std::error_code& ec)
+    {
+        if (state.load() == State::running)
+            return;
+
+        state.store(State::running);
+
+        sigset_t old_mask;
+
+        if (-1 == pthread_sigmask(SIG_SETMASK, &mask, &old_mask))
+        {
+            ec = std::error_code(errno, std::system_category());
+            return;
+        }
+
+        signalfd_siginfo signal_info;
+        ::memset(&signal_info, 0, sizeof(signal_info));
+
+        static const int signal_fd_idx = 0;
+        static const int wakeup_fd_idx = 1;
+
+        pollfd fds[2];
+        fds[0] = {signal_fd, POLLIN, 0};
+        fds[1] = {wakeup_fd, POLLIN, 0};
+
+        while (true)
+        {
+            auto rc = ::poll(fds, sizeof(fds), -1);
+
+            if (rc == -1)
+            {
+                ec = std::error_code(errno, std::system_category());
+                break;
+            }
+
+            if (rc == 0)
+                continue;
+
+            if (fds[signal_fd_idx].revents == POLLIN)
+            {
+                auto result = ::read(signal_fd, &signal_info, sizeof(signal_info));
+                if (result != sizeof(signal_info))
+                {
+                    ec = std::error_code(errno, std::system_category());
+                }
+
+                switch(signal_info.ssi_signo)
+                {
+                case SIGCHLD:
+                {
+                    pid_t pid{-1}; int status{-1};
+                    while (true)
+                    {
+                        pid = ::waitpid(-1, &status, WNOHANG);
+
+                        if (pid <= 0 && errno == ECHILD) // No more children
+                            break;
+
+                        {
+                            std::lock_guard<std::mutex> lg(guard);
+                            auto it = children.find(pid);
+
+                            if (it != children.end())
+                            {
+                                if (WIFSIGNALED(status) || WIFEXITED(status))
+                                {
+                                    signals.child_died(it->second);
+                                    children.erase(it);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
+
+            if (fds[wakeup_fd_idx].revents == POLLIN)
+            {
+                std::int64_t value{1};
+                ::read(wakeup_fd, &value, sizeof(value));
+                break;
+            }
+        }
+
+        if (-1 == pthread_sigmask(SIG_SETMASK, &old_mask, nullptr))
+            ec = std::error_code(errno, std::system_category());
+
+        state.store(State::not_running);
+    }
+
+    void quit()
+    {
+        static const std::int64_t value = {1};
+        if (sizeof(value) != ::write(wakeup_fd, &value, sizeof(value)))
+            throw std::system_error(errno, std::system_category());
+    }
+
+    sigset_t mask;
+    sigset_t old_process_mask;
+    int signal_fd;
+    int wakeup_fd;
+    std::atomic<State> state;
+    mutable std::mutex guard;
+    std::unordered_map<pid_t, core::posix::ChildProcess> children;
+    struct
+    {
+        core::Signal<core::posix::ChildProcess> child_died;
+    } signals;
+};
+}
 
 namespace core
 {
 namespace posix
 {
+ChildProcess::DeathObserver& ChildProcess::DeathObserver::instance()
+{
+    static SignalFdDeathObserver observer;
+    return observer;
+}
+
 ChildProcess::Pipe ChildProcess::Pipe::invalid()
 {
     static Pipe p;

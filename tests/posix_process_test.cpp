@@ -21,6 +21,7 @@
 #include <core/posix/process.h>
 #include <core/posix/signal.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <chrono>
@@ -249,27 +250,6 @@ TEST(ChildProcess, stopping_a_forked_child_makes_wait_for_return_correct_result)
               result.detail.if_signaled.signal);
 }
 
-TEST(ChildProcess, ensure_that_forked_children_are_cleaned_up)
-{
-    static const unsigned int child_process_count = 100;
-    static unsigned int counter = 0; counter = 0;
-    auto old = ::signal(SIGCHLD, [](int) { counter++; });
-    {
-        for (unsigned int i = 0; i < child_process_count; i++)
-        {
-            auto child = core::posix::fork(
-                        []() { return core::posix::exit::Status::success; },
-                        core::posix::StandardStream::stdin | core::posix::StandardStream::stdout);
-            // A bit ugly but we have to ensure that no signal is lost.
-            // And thus, we keep the process object alive.
-            std::this_thread::sleep_for(std::chrono::milliseconds{10});
-        }
-    }
-    ::signal(SIGCHLD, old);
-    EXPECT_EQ(child_process_count, counter);
-
-}
-
 TEST(ChildProcess, exec_returns_process_object_with_valid_pid_and_wait_for_returns_correct_result)
 {
     const std::string program{"/usr/bin/sleep"};
@@ -360,6 +340,90 @@ TEST(ChildProcess, stopping_an_execd_child_makes_wait_for_return_correct_result)
               result.status);
     EXPECT_EQ(core::posix::Signal::sig_kill,
               result.detail.if_signaled.signal);
+}
+
+namespace
+{
+struct ChildDeathObserverSignalTrap
+{
+    MOCK_METHOD1(on_child_died,void(const core::posix::Process&));
+};
+}
+
+TEST_F(ForkedSpinningProcess, observing_child_processes_for_death_works_if_child_is_signalled)
+{
+    using namespace ::testing;
+
+    ChildDeathObserverSignalTrap signal_trap;
+
+    auto& death_observer = core::posix::ChildProcess::DeathObserver::instance();
+
+    EXPECT_TRUE(death_observer.add(child));
+
+    core::ScopedConnection sc
+    {
+        death_observer.child_died().connect([&signal_trap](const core::posix::ChildProcess& child)
+        {
+            signal_trap.on_child_died(child);
+        })
+    };
+
+    EXPECT_CALL(signal_trap, on_child_died(_))
+            .Times(1)
+            .WillOnce(
+                InvokeWithoutArgs(
+                    &death_observer,
+                    &core::posix::ChildProcess::DeathObserver::quit));
+
+    std::error_code ec;
+    std::thread worker{[&death_observer, &ec]() { death_observer.run(ec); }};
+
+    child.send_signal_or_throw(core::posix::Signal::sig_kill);
+
+    if (worker.joinable())
+        worker.join();
+
+    EXPECT_FALSE(ec);
+}
+
+TEST(ChildProcess, ensure_that_forked_children_are_cleaned_up)
+{
+    static const unsigned int child_process_count = 100;
+    static unsigned int counter = 0;
+
+    auto& death_observer = core::posix::ChildProcess::DeathObserver::instance();
+    core::ScopedConnection sc
+    {
+        death_observer.child_died().connect([&death_observer](const core::posix::ChildProcess&)
+        {
+            counter++;
+
+            if (counter == child_process_count)
+            {
+                death_observer.quit();
+            }
+        })
+    };
+
+    std::error_code ec;
+    std::thread t([&death_observer, &ec]() {death_observer.run(ec);});
+
+    for (unsigned int i = 0; i < child_process_count; i++)
+    {
+        auto child = core::posix::fork(
+                    []() { return core::posix::exit::Status::success; },
+        core::posix::StandardStream::stdin | core::posix::StandardStream::stdout);
+        death_observer.add(child);
+        // A bit ugly but we have to ensure that no signal is lost.
+        // And thus, we keep the process object alive.
+        std::this_thread::sleep_for(std::chrono::milliseconds{10});
+    }
+
+    if (t.joinable())
+        t.join();
+
+    EXPECT_FALSE(ec);
+    EXPECT_EQ(child_process_count, counter);
 }
 
 TEST(StreamRedirect, redirecting_stdin_stdout_stderr_works)

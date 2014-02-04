@@ -23,6 +23,8 @@
 #include <core/posix/standard_stream.h>
 #include <core/posix/visibility.h>
 
+#include <core/signal.h>
+
 #include <iosfwd>
 #include <functional>
 
@@ -41,6 +43,29 @@ namespace posix
 class CORE_POSIX_DLL_PUBLIC ChildProcess : public Process
 {
 public:
+    class DeathObserver
+    {
+    public:
+        static DeathObserver& instance();
+
+        DeathObserver(const DeathObserver&) = delete;
+        virtual ~DeathObserver() = default;
+
+        DeathObserver& operator=(const DeathObserver&) = delete;
+        bool operator==(const DeathObserver&) const = delete;
+
+        virtual bool add(const ChildProcess& child) = 0;
+        virtual bool has(const ChildProcess& child) const = 0;
+
+        virtual const core::Signal<ChildProcess>& child_died() const = 0;
+
+        virtual void run(std::error_code& ec) = 0;
+        virtual void quit() = 0;
+
+    protected:
+        DeathObserver() = default;
+    };
+
     /**
      * @brief Creates an invalid ChildProcess.
      * @return An invalid ChildProcess instance.
