@@ -50,28 +50,28 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
           wakeup_fd(-1),
           state(State::not_running)
     {
-        sigemptyset(&mask);
-        sigaddset(&mask, SIGCHLD);
+        ::sigemptyset(&mask);
+        ::sigaddset(&mask, SIGCHLD);
 
-        if (-1 == sigprocmask(SIG_BLOCK, &mask, &old_process_mask))
+        if (::sigprocmask(SIG_BLOCK, &mask, &old_process_mask) == -1)
             throw std::system_error(errno, std::system_category());
 
         static const int empty_flags = 0;
         signal_fd = ::signalfd(signal_fd, &mask, empty_flags);
 
-        if (-1 == signal_fd)
+        if (signal_fd == -1)
             throw std::system_error(errno, std::system_category());
 
         static const unsigned int initial_value = 0;
         wakeup_fd = ::eventfd(initial_value, empty_flags);
 
-        if (-1 == wakeup_fd)
+        if (wakeup_fd == -1)
             throw std::system_error(errno, std::system_category());
     }
 
     ~SignalFdDeathObserver()
     {
-        sigprocmask(SIG_SETMASK, &old_process_mask, nullptr);
+        ::sigprocmask(SIG_SETMASK, &old_process_mask, nullptr);
         ::close(signal_fd);
         ::close(wakeup_fd);
     }
@@ -103,13 +103,13 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
     void run(std::error_code& ec)
     {
         if (state.load() == State::running)
-            return;
+            throw std::runtime_error("DeathObserver::run can only be run once.");
 
         state.store(State::running);
 
         sigset_t old_mask;
 
-        if (-1 == pthread_sigmask(SIG_SETMASK, &mask, &old_mask))
+        if (::pthread_sigmask(SIG_SETMASK, &mask, &old_mask) == -1)
         {
             ec = std::error_code(errno, std::system_category());
             return;
@@ -131,6 +131,9 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
 
             if (rc == -1)
             {
+                if (errno == EINTR)
+                    continue;
+
                 ec = std::error_code(errno, std::system_category());
                 break;
             }
@@ -187,7 +190,7 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
             }
         }
 
-        if (-1 == pthread_sigmask(SIG_SETMASK, &old_mask, nullptr))
+        if (pthread_sigmask(SIG_SETMASK, &old_mask, nullptr) == -1)
             ec = std::error_code(errno, std::system_category());
 
         state.store(State::not_running);
