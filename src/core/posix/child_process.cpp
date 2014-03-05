@@ -76,7 +76,7 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
         ::close(wakeup_fd);
     }
 
-    bool add(const core::posix::ChildProcess& process)
+    bool add(const core::posix::ChildProcess& process) override
     {
         if (process.pid() == -1)
             return false;
@@ -89,18 +89,18 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
         return added;
     }
 
-    bool has(const core::posix::ChildProcess& process) const
+    bool has(const core::posix::ChildProcess& process) const override
     {
         std::lock_guard<std::mutex> lg(guard);
         return children.count(process.pid()) > 0;
     }
 
-    const core::Signal<core::posix::ChildProcess>& child_died() const
+    const core::Signal<core::posix::ChildProcess>& child_died() const override
     {
         return signals.child_died;
     }
 
-    void run(std::error_code& ec)
+    void run(std::error_code& ec) override
     {
         if (state.load() == State::running)
             throw std::runtime_error("DeathObserver::run can only be run once.");
@@ -127,7 +127,7 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
 
         while (true)
         {
-            auto rc = ::poll(fds, sizeof(fds), -1);
+            auto rc = ::poll(fds, 2, -1);
 
             if (rc == -1)
             {
@@ -185,7 +185,8 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
             if (fds[wakeup_fd_idx].revents == POLLIN)
             {
                 std::int64_t value{1};
-                ::read(wakeup_fd, &value, sizeof(value));
+                if (::read(wakeup_fd, &value, sizeof(value)) != sizeof(value))
+                    ec = std::error_code(errno, std::system_category());
                 break;
             }
         }
@@ -196,7 +197,7 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
         state.store(State::not_running);
     }
 
-    void quit()
+    void quit() override
     {
         static const std::int64_t value = {1};
         if (sizeof(value) != ::write(wakeup_fd, &value, sizeof(value)))
