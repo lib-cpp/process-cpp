@@ -10,6 +10,7 @@ Build-Depends: cmake,
                libboost-iostreams-dev,
                libboost-system-dev,
                libproperties-cpp-dev,
+               pkg-config,
 Standards-Version: 3.9.5
 Section: libs
 Homepage: https://launchpad.net/process-cpp
