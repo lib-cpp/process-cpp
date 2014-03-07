@@ -176,7 +176,7 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
                     {
                         pid = ::waitpid(-1, &status, WNOHANG);
 
-                        if (pid <= 0 && errno == ECHILD) // No more children
+                        if (pid <= 0 && errno != EINTR) // No more children
                             break;
 
                         {
