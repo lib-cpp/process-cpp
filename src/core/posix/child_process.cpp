@@ -92,9 +92,7 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
             // The process may have died between it's instantiation and it
             // being added to the children map. Check that it's still alive.
             int status{-1};
-            pid_t pid = ::waitpid(process.pid(), &status, WNOHANG);
-
-            if (pid != 0) // child no longer alive
+            if (::waitpid(process.pid(), &status, WNOHANG) != 0) // child no longer alive
             {
                 // we missed the SIGCHLD signal so we must now manually
                 // inform our subscribers.
