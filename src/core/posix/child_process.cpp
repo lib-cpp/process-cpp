@@ -84,7 +84,25 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
         std::lock_guard<std::mutex> lg(guard);
 
         bool added = false;
-        std::tie(std::ignore, added) = children.insert(std::make_pair(process.pid(), process));
+        auto new_process = std::make_pair(process.pid(), process);
+        std::tie(std::ignore, added) = children.insert(new_process);
+
+        if (added)
+        {
+            // The process may have died between it's instantiation and it
+            // being added to the children map. Check that it's still alive.
+            int status{-1};
+            pid_t pid = ::waitpid(process.pid(), &status, WNOHANG);
+
+            if (pid != 0) // child no longer alive
+            {
+                // we missed the SIGCHLD signal so we must now manually
+                // inform our subscribers.
+                signals.child_died(new_process.second);
+                children.erase(new_process.first);
+                return false;
+            }
+        }
 
         return added;
     }
