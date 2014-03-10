@@ -174,9 +174,19 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
                     {
                         pid = ::waitpid(-1, &status, WNOHANG);
 
-                        if (pid <= 0 && errno != EINTR) // No more children
-                            break;
-
+                        if (pid == -1)
+                        {
+                            if (errno == ECHILD)
+                            {
+                                break; // No more children
+                            }
+                            continue; // Ignore stray SIGCHLD signals
+                        }
+                        else if (pid == 0)
+                        {
+                            break; // No more children
+                        }
+                        else
                         {
                             std::lock_guard<std::mutex> lg(guard);
                             auto it = children.find(pid);
