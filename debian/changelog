@@ -1,3 +1,16 @@
+process-cpp (0.0.1+14.04.20140311-0ubuntu1) trusty; urgency=low
+
+  [ thomas-voss ]
+  * Print issues with the forked child to std::cerr.
+  * Add a class DeathObserver for child processes that emits a signal
+    whenever a child process goes away (either signal'd or exit'd).
+
+  [ Marcus Tomlinson ]
+  * Check that processes added to children are alive, and stop reaping
+    dead processes on any error (except EINTR).
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 11 Mar 2014 11:03:13 +0000
+
 process-cpp (0.0.1+14.04.20140122-0ubuntu1) trusty; urgency=low
 
   [ Łukasz 'sil2100' Zemczak ]
