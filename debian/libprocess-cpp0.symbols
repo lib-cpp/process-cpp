@@ -1,76 +1,76 @@
 libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
- (c++|arch=!amd64 !arm64 !ppc64el)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0replaceme
- (c++|arch=amd64 arm64 ppc64el)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0replaceme
- (c++|arch=!amd64 !arm64 !ppc64el)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0replaceme
- (c++|arch=amd64 arm64 ppc64el)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0replaceme
- (c++)"core::posix::ChildProcess::cerr()@Base" 0replaceme
- (c++)"core::posix::ChildProcess::~ChildProcess()@Base" 0replaceme
- (c++)"core::posix::ChildProcess::cin()@Base" 0replaceme
- (c++)"core::posix::ChildProcess::cout()@Base" 0replaceme
- (c++)"core::posix::ChildProcess::DeathObserver::instance()@Base" 0replaceme
- (c++)"core::posix::ChildProcess::invalid()@Base" 0replaceme
- (c++)"core::posix::ChildProcess::wait_for(core::posix::wait::Flags const&)@Base" 0replaceme
- (c++)"core::posix::exec(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::map<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&, core::posix::StandardStream const&)@Base" 0replaceme
- (c++)"core::posix::fork(std::function<core::posix::exit::Status ()> const&, core::posix::StandardStream const&)@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::OomAdj::disable_value()@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::OomAdj::max_value()@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::OomAdj::min_value()@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::OomScoreAdj::max_value()@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::OomScoreAdj::min_value()@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::OomAdj&)@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::operator<<(core::posix::Process const&, core::posix::linux::proc::process::OomAdj const&)@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::OomScoreAdj&)@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::operator<<(core::posix::Process const&, core::posix::linux::proc::process::OomScoreAdj const&)@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::OomScore&)@Base" 0replaceme
- (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::Stat&)@Base" 0replaceme
- (c++)"core::posix::operator|(core::posix::StandardStream, core::posix::StandardStream)@Base" 0replaceme
- (c++)"core::posix::operator&(core::posix::StandardStream, core::posix::StandardStream)@Base" 0replaceme
- (c++)"core::posix::ProcessGroup::id() const@Base" 0replaceme
- (c++)"core::posix::Process::invalid()@Base" 0replaceme
- (c++)"core::posix::Process::pid() const@Base" 0replaceme
- (c++)"core::posix::Process::~Process()@Base" 0replaceme
- (c++)"core::posix::Process::process_group_or_throw() const@Base" 0replaceme
- (c++)"core::posix::Process::process_group(std::error_code&) const@Base" 0replaceme
- (c++)"core::posix::Process::Process(int)@Base" 0replaceme
- (c++)"core::posix::Signalable::send_signal(core::posix::Signal, std::error_code&)@Base" 0replaceme
- (c++)"core::posix::Signalable::send_signal_or_throw(core::posix::Signal)@Base" 0replaceme
- (c++)"core::posix::this_process::cerr()@Base" 0replaceme
- (c++)"core::posix::this_process::cin()@Base" 0replaceme
- (c++)"core::posix::this_process::cout()@Base" 0replaceme
- (c++)"core::posix::this_process::env::for_each(std::function<void (std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)> const&)@Base" 0replaceme
- (c++)"core::posix::this_process::env::get_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
- (c++)"core::posix::this_process::env::get(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
- (c++)"core::posix::this_process::env::set_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
- (c++)"core::posix::this_process::env::set(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::error_code&)@Base" 0replaceme
- (c++)"core::posix::this_process::env::unset_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
- (c++)"core::posix::this_process::env::unset(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::error_code&)@Base" 0replaceme
- (c++)"core::posix::this_process::instance()@Base" 0replaceme
- (c++)"core::posix::this_process::parent()@Base" 0replaceme
- (c++)"core::posix::vfork(std::function<core::posix::exit::Status ()> const&, core::posix::StandardStream const&)@Base" 0replaceme
- (c++)"core::posix::wait::operator|(core::posix::wait::Flags, core::posix::wait::Flags)@Base" 0replaceme
- (c++)"core::testing::CrossProcessSync::~CrossProcessSync()@Base" 0replaceme
- (c++)"core::testing::CrossProcessSync::CrossProcessSync()@Base" 0replaceme
- (c++)"core::testing::CrossProcessSync::CrossProcessSync(core::testing::CrossProcessSync const&)@Base" 0replaceme
- (c++)"core::testing::CrossProcessSync::Error::Timeout::~Timeout()@Base" 0replaceme
- (c++)"core::testing::CrossProcessSync::operator=(core::testing::CrossProcessSync const&)@Base" 0replaceme
- (c++)"core::testing::fork_and_run(std::function<core::posix::exit::Status ()> const&, std::function<core::posix::exit::Status ()> const&)@Base" 0replaceme
- (c++)"core::testing::operator|(core::testing::ForkAndRunResult, core::testing::ForkAndRunResult)@Base" 0replaceme
- (c++)"core::testing::operator&(core::testing::ForkAndRunResult, core::testing::ForkAndRunResult)@Base" 0replaceme
- (c++)"typeinfo for core::posix::ChildProcess@Base" 0replaceme
- (c++)"typeinfo for core::posix::ChildProcess::DeathObserver@Base" 0replaceme
- (c++)"typeinfo for core::posix::Process@Base" 0replaceme
- (c++)"typeinfo for core::posix::ProcessGroup@Base" 0replaceme
- (c++)"typeinfo for core::posix::Signalable@Base" 0replaceme
- (c++)"typeinfo for core::testing::CrossProcessSync::Error::Timeout@Base" 0replaceme
- (c++)"typeinfo name for core::posix::ChildProcess@Base" 0replaceme
- (c++)"typeinfo name for core::posix::ChildProcess::DeathObserver@Base" 0replaceme
- (c++)"typeinfo name for core::posix::Process@Base" 0replaceme
- (c++)"typeinfo name for core::posix::ProcessGroup@Base" 0replaceme
- (c++)"typeinfo name for core::posix::Signalable@Base" 0replaceme
- (c++)"typeinfo name for core::testing::CrossProcessSync::Error::Timeout@Base" 0replaceme
- (c++)"vtable for core::posix::ChildProcess@Base" 0replaceme
- (c++)"vtable for core::posix::ChildProcess::DeathObserver@Base" 0replaceme
- (c++)"vtable for core::posix::Process@Base" 0replaceme
- (c++)"vtable for core::posix::ProcessGroup@Base" 0replaceme
- (c++)"vtable for core::posix::Signalable@Base" 0replaceme
- (c++)"vtable for core::testing::CrossProcessSync::Error::Timeout@Base" 0replaceme
+ (c++|arch=!amd64 !arm64 !ppc64el)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0.0.1+14.04.20140311
+ (c++|arch=amd64 arm64 ppc64el)"core::testing::CrossProcessSync::try_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0.0.1+14.04.20140311
+ (c++|arch=!amd64 !arm64 !ppc64el)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long long, std::ratio<1ll, 1000ll> > const&)@Base" 0.0.1+14.04.20140311
+ (c++|arch=amd64 arm64 ppc64el)"core::testing::CrossProcessSync::wait_for_signal_ready_for(std::chrono::duration<long, std::ratio<1l, 1000l> > const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ChildProcess::cerr()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ChildProcess::~ChildProcess()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ChildProcess::cin()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ChildProcess::cout()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ChildProcess::DeathObserver::instance()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ChildProcess::invalid()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ChildProcess::wait_for(core::posix::wait::Flags const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::exec(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::map<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&, core::posix::StandardStream const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::fork(std::function<core::posix::exit::Status ()> const&, core::posix::StandardStream const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::OomAdj::disable_value()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::OomAdj::max_value()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::OomAdj::min_value()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::OomScoreAdj::max_value()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::OomScoreAdj::min_value()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::OomAdj&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::operator<<(core::posix::Process const&, core::posix::linux::proc::process::OomAdj const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::OomScoreAdj&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::operator<<(core::posix::Process const&, core::posix::linux::proc::process::OomScoreAdj const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::OomScore&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::linux::proc::process::operator>>(core::posix::Process const&, core::posix::linux::proc::process::Stat&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::operator|(core::posix::StandardStream, core::posix::StandardStream)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::operator&(core::posix::StandardStream, core::posix::StandardStream)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::ProcessGroup::id() const@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Process::invalid()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Process::pid() const@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Process::~Process()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Process::process_group_or_throw() const@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Process::process_group(std::error_code&) const@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Process::Process(int)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Signalable::send_signal(core::posix::Signal, std::error_code&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::Signalable::send_signal_or_throw(core::posix::Signal)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::cerr()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::cin()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::cout()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::env::for_each(std::function<void (std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)> const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::env::get_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::env::get(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::env::set_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::env::set(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::error_code&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::env::unset_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::env::unset(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::error_code&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::instance()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::this_process::parent()@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::vfork(std::function<core::posix::exit::Status ()> const&, core::posix::StandardStream const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::posix::wait::operator|(core::posix::wait::Flags, core::posix::wait::Flags)@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::CrossProcessSync::~CrossProcessSync()@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::CrossProcessSync::CrossProcessSync()@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::CrossProcessSync::CrossProcessSync(core::testing::CrossProcessSync const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::CrossProcessSync::Error::Timeout::~Timeout()@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::CrossProcessSync::operator=(core::testing::CrossProcessSync const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::fork_and_run(std::function<core::posix::exit::Status ()> const&, std::function<core::posix::exit::Status ()> const&)@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::operator|(core::testing::ForkAndRunResult, core::testing::ForkAndRunResult)@Base" 0.0.1+14.04.20140311
+ (c++)"core::testing::operator&(core::testing::ForkAndRunResult, core::testing::ForkAndRunResult)@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo for core::posix::ChildProcess@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo for core::posix::ChildProcess::DeathObserver@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo for core::posix::Process@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo for core::posix::ProcessGroup@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo for core::posix::Signalable@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo for core::testing::CrossProcessSync::Error::Timeout@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo name for core::posix::ChildProcess@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo name for core::posix::ChildProcess::DeathObserver@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo name for core::posix::Process@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo name for core::posix::ProcessGroup@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo name for core::posix::Signalable@Base" 0.0.1+14.04.20140311
+ (c++)"typeinfo name for core::testing::CrossProcessSync::Error::Timeout@Base" 0.0.1+14.04.20140311
+ (c++)"vtable for core::posix::ChildProcess@Base" 0.0.1+14.04.20140311
+ (c++)"vtable for core::posix::ChildProcess::DeathObserver@Base" 0.0.1+14.04.20140311
+ (c++)"vtable for core::posix::Process@Base" 0.0.1+14.04.20140311
+ (c++)"vtable for core::posix::ProcessGroup@Base" 0.0.1+14.04.20140311
+ (c++)"vtable for core::posix::Signalable@Base" 0.0.1+14.04.20140311
+ (c++)"vtable for core::testing::CrossProcessSync::Error::Timeout@Base" 0.0.1+14.04.20140311
