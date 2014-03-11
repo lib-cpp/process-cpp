@@ -99,7 +99,7 @@ CORE_POSIX_DLL_PUBLIC bool set(const std::string &key,
 /**
   * @brief Returns a Process instance corresponding to this process.
   */
-CORE_POSIX_DLL_PUBLIC const Process& instance() noexcept(true);
+CORE_POSIX_DLL_PUBLIC Process instance() noexcept(true);
 
 /**
  * @brief Query the parent of the process.

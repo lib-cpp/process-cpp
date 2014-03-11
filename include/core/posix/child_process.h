@@ -23,6 +23,8 @@
 #include <core/posix/standard_stream.h>
 #include <core/posix/visibility.h>
 
+#include <core/signal.h>
+
 #include <iosfwd>
 #include <functional>
 
@@ -41,6 +43,65 @@ namespace posix
 class CORE_POSIX_DLL_PUBLIC ChildProcess : public Process
 {
 public:
+    /**
+     * @brief The DeathObserver class observes child process' states and emits a signal when a monitored child has died.
+     *
+     * Please note that the name of this class is morbid for a reason: Listening
+     * for SIGCHLD is not enough to catch all dying children. Whenever a SIGCHLD is
+     * received, we have to wait for all the children of this process and reap all
+     * monitored ones. We are thus changing state and potentially race with other
+     * wait operations on children.
+     *
+     */
+    class DeathObserver
+    {
+    public:
+        /**
+         * @brief Access the single instance of the death observer.
+         */
+        static DeathObserver& instance();
+
+        DeathObserver(const DeathObserver&) = delete;
+        virtual ~DeathObserver() = default;
+
+        DeathObserver& operator=(const DeathObserver&) = delete;
+        bool operator==(const DeathObserver&) const = delete;
+
+        /**
+         * @brief add adds the specified child to the list of observed child processes.
+         * @param child The child to be observed.
+         * @return true iff the child has been added to the list of observed child processes.
+         */
+        virtual bool add(const ChildProcess& child) = 0;
+
+        /**
+         * @brief has checks whether the specified child is observed.
+         * @param child The child to check for.
+         * @return true iff the specified child is observed for state changes.
+         */
+        virtual bool has(const ChildProcess& child) const = 0;
+
+        /**
+         * @brief child_died is emitted whenever an observed child ceases to exist.
+         */
+        virtual const core::Signal<ChildProcess>& child_died() const = 0;
+
+        /**
+         * @brief run starts the observer and blocks until quit() is called.
+         * @throw std::runtime_error if called more than once without intermediate quit().
+         * @param ec Destination to store errors.
+         */
+        virtual void run(std::error_code& ec) = 0;
+
+        /**
+         * @brief quit stops the execution of the observer.
+         */
+        virtual void quit() = 0;
+
+    protected:
+        DeathObserver() = default;
+    };
+
     /**
      * @brief Creates an invalid ChildProcess.
      * @return An invalid ChildProcess instance.

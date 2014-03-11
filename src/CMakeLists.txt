@@ -46,10 +46,15 @@ target_link_libraries(
   ${CMAKE_THREAD_LIBS_INIT}
 )
 
+# We compile with all symbols visible by default. For the shipping library, we strip
+# out all symbols that are not in core::*
+set(symbol_map "${CMAKE_SOURCE_DIR}/symbols.map")
 set_target_properties(
   process-cpp
 
   PROPERTIES
+  LINK_FLAGS "${ldflags} -Wl,--version-script,${symbol_map}"
+  LINK_DEPENDS ${symbol_map}
   VERSION ${PROCESS_CPP_VERSION_MAJOR}.${PROCESS_CPP_VERSION_MINOR}.${PROCESS_CPP_VERSION_PATCH}
   SOVERSION ${PROCESS_CPP_VERSION_MAJOR}
 )

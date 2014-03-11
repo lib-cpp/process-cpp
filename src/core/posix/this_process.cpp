@@ -150,7 +150,7 @@ bool set(const std::string &key,
 }
 }
 
-const Process& instance() noexcept(true)
+Process instance() noexcept(true)
 {
     static const Process self{getpid()};
     return self;

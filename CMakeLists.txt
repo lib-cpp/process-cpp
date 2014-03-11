@@ -19,7 +19,10 @@ cmake_minimum_required(VERSION 2.8)
 project(process-cpp)
 
 find_package(Boost COMPONENTS iostreams system REQUIRED)
+find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
+
+pkg_check_modules(PROPERTIES_CPP properties-cpp)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -63,6 +66,7 @@ include_directories(
   include/
 
   ${Boost_INCLUDE_DIRS}
+  ${PROPERTIES_CPP_INCLUDE_DIRS}
 )
 
 add_subdirectory(doc)
