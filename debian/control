@@ -37,6 +37,7 @@ Multi-Arch: same
 Recommends: libprocess-cpp-doc,
 Depends: libprocess-cpp0 (= ${binary:Version}),
          ${misc:Depends},
+         libproperties-cpp-dev,
 Description: C++11 library for handling processes - dev headers and libraries
  Process-cpp is a simple convenience library for handling processes in C++11.
  .
