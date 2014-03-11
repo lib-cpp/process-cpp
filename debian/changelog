@@ -1,3 +1,10 @@
+process-cpp (0.0.1+14.04.20140311.1-0ubuntu1) trusty; urgency=low
+
+  [ Ricardo Salveti de Araujo ]
+  * libprocess-cpp-dev should also depend on libproperties-cpp-dev.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 11 Mar 2014 19:40:04 +0000
+
 process-cpp (0.0.1+14.04.20140311-0ubuntu1) trusty; urgency=low
 
   [ thomas-voss ]
