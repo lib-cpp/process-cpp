@@ -159,59 +159,64 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
             if (fds[signal_fd_idx].revents == POLLIN)
             {
                 auto result = ::read(signal_fd, &signal_info, sizeof(signal_info));
-                if (result != sizeof(signal_info))
+                if (result == -1 || result != sizeof(signal_info))
                 {
                     ec = std::error_code(errno, std::system_category());
                 }
-
-                switch(signal_info.ssi_signo)
+                else if (result == sizeof(signal_info))
                 {
-                case SIGCHLD:
-                {
-                    pid_t pid{-1}; int status{-1};
-                    while (true)
+                    switch(signal_info.ssi_signo)
                     {
-                        pid = ::waitpid(-1, &status, WNOHANG);
-
-                        if (pid == -1)
+                    case SIGCHLD:
+                    {
+                        pid_t pid{-1}; int status{-1};
+                        while (true)
                         {
-                            if (errno == ECHILD)
+                            pid = ::waitpid(-1, &status, WNOHANG);
+
+                            if (pid == -1)
+                            {
+                                if (errno == ECHILD)
+                                {
+                                    break; // No more children
+                                }
+                                continue; // Ignore stray SIGCHLD signals
+                            }
+                            else if (pid == 0)
                             {
                                 break; // No more children
                             }
-                            continue; // Ignore stray SIGCHLD signals
-                        }
-                        else if (pid == 0)
-                        {
-                            break; // No more children
-                        }
-                        else
-                        {
-                            std::lock_guard<std::mutex> lg(guard);
-                            auto it = children.find(pid);
-
-                            if (it != children.end())
+                            else
                             {
-                                if (WIFSIGNALED(status) || WIFEXITED(status))
+                                std::lock_guard<std::mutex> lg(guard);
+                                auto it = children.find(pid);
+
+                                if (it != children.end())
                                 {
-                                    signals.child_died(it->second);
-                                    children.erase(it);
+                                    if (WIFSIGNALED(status) || WIFEXITED(status))
+                                    {
+                                        signals.child_died(it->second);
+                                        children.erase(it);
+                                    }
                                 }
                             }
                         }
+                        break;
                     }
-                    break;
-                }
-                default:
-                    break;
+                    default:
+                        break;
+                    }
                 }
             }
 
             if (fds[wakeup_fd_idx].revents == POLLIN)
             {
                 std::int64_t value{1};
-                if (::read(wakeup_fd, &value, sizeof(value)) != sizeof(value))
+                auto result = ::read(wakeup_fd, &value, sizeof(value));
+                if (result == -1 || result != sizeof(value))
+                {
                     ec = std::error_code(errno, std::system_category());
+                }
                 break;
             }
         }
