@@ -56,14 +56,13 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
         if (::sigprocmask(SIG_BLOCK, &mask, &old_process_mask) == -1)
             throw std::system_error(errno, std::system_category());
 
-        static const int empty_flags = 0;
-        signal_fd = ::signalfd(signal_fd, &mask, empty_flags);
+        signal_fd = ::signalfd(signal_fd, &mask, SFD_NONBLOCK);
 
         if (signal_fd == -1)
             throw std::system_error(errno, std::system_category());
 
         static const unsigned int initial_value = 0;
-        wakeup_fd = ::eventfd(initial_value, empty_flags);
+        wakeup_fd = ::eventfd(initial_value, EFD_NONBLOCK);
 
         if (wakeup_fd == -1)
             throw std::system_error(errno, std::system_category());
