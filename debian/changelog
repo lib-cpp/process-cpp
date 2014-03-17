@@ -1,3 +1,12 @@
+process-cpp (0.0.1+14.04.20140317-0ubuntu1) trusty; urgency=low
+
+  [ Marcus Tomlinson ]
+  * Set fd flags to *_NONBLOCK as we are checking fd.revents before
+    reads anyway. Blocking reads are dangerous when recieving partial
+    payloads.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 17 Mar 2014 10:10:41 +0000
+
 process-cpp (0.0.1+14.04.20140311.1-0ubuntu1) trusty; urgency=low
 
   [ Ricardo Salveti de Araujo ]
