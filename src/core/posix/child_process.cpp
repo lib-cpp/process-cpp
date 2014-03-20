@@ -37,6 +37,7 @@ namespace io = boost::iostreams;
 
 namespace
 {
+
 struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
 {
     enum class State
@@ -46,23 +47,11 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
     };
 
     SignalFdDeathObserver()
-        : signal_fd(-1),
-          wakeup_fd(-1),
+        : wakeup_fd(-1),
           state(State::not_running)
     {
-        ::sigemptyset(&mask);
-        ::sigaddset(&mask, SIGCHLD);
-
-        if (::sigprocmask(SIG_BLOCK, &mask, &old_process_mask) == -1)
-            throw std::system_error(errno, std::system_category());
-
-        signal_fd = ::signalfd(signal_fd, &mask, SFD_NONBLOCK);
-
-        if (signal_fd == -1)
-            throw std::system_error(errno, std::system_category());
-
         static const unsigned int initial_value = 0;
-        wakeup_fd = ::eventfd(initial_value, EFD_NONBLOCK);
+        wakeup_fd = ::eventfd(initial_value, EFD_CLOEXEC | EFD_NONBLOCK);
 
         if (wakeup_fd == -1)
             throw std::system_error(errno, std::system_category());
@@ -70,8 +59,6 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
 
     ~SignalFdDeathObserver()
     {
-        ::sigprocmask(SIG_SETMASK, &old_process_mask, nullptr);
-        ::close(signal_fd);
         ::close(wakeup_fd);
     }
 
@@ -122,26 +109,38 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
 
         state.store(State::running);
 
-        sigset_t old_mask;
+        ::sigset_t mask;
+        ::sigemptyset(&mask);
+        ::sigaddset(&mask, SIGCHLD);
 
-        if (::pthread_sigmask(SIG_SETMASK, &mask, &old_mask) == -1)
+        struct Scope
         {
-            ec = std::error_code(errno, std::system_category());
-            return;
-        }
+            ~Scope()
+            {
+                if (signal_fd != -1)
+                    ::close(signal_fd);
+            }
 
-        signalfd_siginfo signal_info;
-        ::memset(&signal_info, 0, sizeof(signal_info));
+            int signal_fd;
+        } scope{::signalfd(-1, &mask, SFD_CLOEXEC | SFD_NONBLOCK)};
+
+        if (scope.signal_fd == -1)
+            throw std::system_error(errno, std::system_category());
+
+        signalfd_siginfo signal_info[5];
 
         static const int signal_fd_idx = 0;
         static const int wakeup_fd_idx = 1;
 
         pollfd fds[2];
-        fds[0] = {signal_fd, POLLIN, 0};
+        fds[0] = {scope.signal_fd, POLLIN, 0};
         fds[1] = {wakeup_fd, POLLIN, 0};
 
         while (true)
         {
+            fds[0] = {scope.signal_fd, POLLIN, 0};
+            fds[1] = {wakeup_fd, POLLIN, 0};
+
             auto rc = ::poll(fds, 2, -1);
 
             if (rc == -1)
@@ -156,60 +155,69 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
             if (rc == 0)
                 continue;
 
-            if (fds[signal_fd_idx].revents == POLLIN)
+            if (fds[signal_fd_idx].revents & POLLIN)
             {
-                auto result = ::read(signal_fd, &signal_info, sizeof(signal_info));
-                if (result == -1 || result != sizeof(signal_info))
+                auto result = ::read(scope.signal_fd, signal_info, sizeof(signal_info));
+
+                if (result == -1 && (errno == EINTR || errno == EAGAIN))
+                    continue;
+
+                if (result == -1)
                 {
                     ec = std::error_code(errno, std::system_category());
                 }
-                else if (result == sizeof(signal_info))
+                else
                 {
-                    switch(signal_info.ssi_signo)
-                    {
-                    case SIGCHLD:
-                    {
-                        pid_t pid{-1}; int status{-1};
-                        while (true)
-                        {
-                            pid = ::waitpid(-1, &status, WNOHANG);
+                    auto count = result / sizeof(signalfd_siginfo);
 
-                            if (pid == -1)
+                    for(uint i = 0; i < count; i++)
+                    {
+                        switch(signal_info[i].ssi_signo)
+                        {
+                        case SIGCHLD:
+                        {
+                            pid_t pid{-1}; int status{-1};
+                            while (true)
                             {
-                                if (errno == ECHILD)
+                                pid = ::waitpid(-1, &status, WNOHANG);
+
+                                if (pid == -1)
+                                {
+                                    if (errno == ECHILD)
+                                    {
+                                        break; // No more children
+                                    }
+                                    continue; // Ignore stray SIGCHLD signals
+                                }
+                                else if (pid == 0)
                                 {
                                     break; // No more children
                                 }
-                                continue; // Ignore stray SIGCHLD signals
-                            }
-                            else if (pid == 0)
-                            {
-                                break; // No more children
-                            }
-                            else
-                            {
-                                std::lock_guard<std::mutex> lg(guard);
-                                auto it = children.find(pid);
-
-                                if (it != children.end())
+                                else
                                 {
-                                    if (WIFSIGNALED(status) || WIFEXITED(status))
+                                    std::lock_guard<std::mutex> lg(guard);
+                                    auto it = children.find(pid);
+
+                                    if (it != children.end())
                                     {
-                                        signals.child_died(it->second);
-                                        children.erase(it);
+                                        if (WIFSIGNALED(status) || WIFEXITED(status))
+                                        {
+                                            signals.child_died(it->second);
+                                            children.erase(it);
+                                        }
                                     }
                                 }
                             }
+                            break;
                         }
-                        break;
-                    }
-                    default:
-                        break;
+                        default:
+                            break;
+                        }
                     }
                 }
             }
 
-            if (fds[wakeup_fd_idx].revents == POLLIN)
+            if (fds[wakeup_fd_idx].revents & POLLIN)
             {
                 std::int64_t value{1};
                 auto result = ::read(wakeup_fd, &value, sizeof(value));
@@ -221,9 +229,6 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
             }
         }
 
-        if (pthread_sigmask(SIG_SETMASK, &old_mask, nullptr) == -1)
-            ec = std::error_code(errno, std::system_category());
-
         state.store(State::not_running);
     }
 
@@ -234,9 +239,6 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
             throw std::system_error(errno, std::system_category());
     }
 
-    sigset_t mask;
-    sigset_t old_process_mask;
-    int signal_fd;
     int wakeup_fd;
     std::atomic<State> state;
     mutable std::mutex guard;

@@ -50,6 +50,21 @@ struct ForkedSpinningProcess : public ::testing::Test
 
     core::posix::ChildProcess child = core::posix::ChildProcess::invalid();
 };
+
+struct Init
+{
+    Init()
+    {
+        ::sigset_t mask;
+        ::sigemptyset(&mask);
+        ::sigaddset(&mask, SIGCHLD);
+        if (::pthread_sigmask(SIG_BLOCK, &mask, nullptr) == -1)
+        {
+            throw std::system_error(errno, std::system_category());
+        }
+    }
+} init;
+
 }
 
 TEST(PosixProcess, ctor_throws_for_invalid_pid)
