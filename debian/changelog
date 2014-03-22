@@ -1,3 +1,10 @@
+process-cpp (0.0.1+14.04.20140322-0ubuntu1) trusty; urgency=low
+
+  [ thomas-voss ]
+  * Only generate docs in release mode by default.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Sat, 22 Mar 2014 09:42:53 +0000
+
 process-cpp (0.0.1+14.04.20140317-0ubuntu1) trusty; urgency=low
 
   [ Marcus Tomlinson ]
