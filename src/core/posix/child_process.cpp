@@ -38,30 +38,8 @@ namespace io = boost::iostreams;
 namespace
 {
 
-struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
+struct DeathObserverImpl : public core::posix::ChildProcess::DeathObserver
 {
-    enum class State
-    {
-        not_running,
-        running
-    };
-
-    SignalFdDeathObserver()
-        : wakeup_fd(-1),
-          state(State::not_running)
-    {
-        static const unsigned int initial_value = 0;
-        wakeup_fd = ::eventfd(initial_value, EFD_CLOEXEC | EFD_NONBLOCK);
-
-        if (wakeup_fd == -1)
-            throw std::system_error(errno, std::system_category());
-    }
-
-    ~SignalFdDeathObserver()
-    {
-        ::close(wakeup_fd);
-    }
-
     bool add(const core::posix::ChildProcess& process) override
     {
         if (process.pid() == -1)
@@ -102,145 +80,42 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
         return signals.child_died;
     }
 
-    void run(std::error_code& ec) override
+    void on_sig_child() override
     {
-        if (state.load() == State::running)
-            throw std::runtime_error("DeathObserver::run can only be run once.");
-
-        state.store(State::running);
-
-        ::sigset_t mask;
-        ::sigemptyset(&mask);
-        ::sigaddset(&mask, SIGCHLD);
-
-        struct Scope
-        {
-            ~Scope()
-            {
-                if (signal_fd != -1)
-                    ::close(signal_fd);
-            }
-
-            int signal_fd;
-        } scope{::signalfd(-1, &mask, SFD_CLOEXEC | SFD_NONBLOCK)};
-
-        if (scope.signal_fd == -1)
-            throw std::system_error(errno, std::system_category());
-
-        signalfd_siginfo signal_info[5];
-
-        static const int signal_fd_idx = 0;
-        static const int wakeup_fd_idx = 1;
-
-        pollfd fds[2];
-        fds[0] = {scope.signal_fd, POLLIN, 0};
-        fds[1] = {wakeup_fd, POLLIN, 0};
-
+        pid_t pid{-1}; int status{-1};
         while (true)
         {
-            fds[0] = {scope.signal_fd, POLLIN, 0};
-            fds[1] = {wakeup_fd, POLLIN, 0};
+            pid = ::waitpid(-1, &status, WNOHANG);
 
-            auto rc = ::poll(fds, 2, -1);
-
-            if (rc == -1)
+            if (pid == -1)
             {
-                if (errno == EINTR)
-                    continue;
-
-                ec = std::error_code(errno, std::system_category());
-                break;
-            }
-
-            if (rc == 0)
-                continue;
-
-            if (fds[signal_fd_idx].revents & POLLIN)
-            {
-                auto result = ::read(scope.signal_fd, signal_info, sizeof(signal_info));
-
-                if (result == -1 && (errno == EINTR || errno == EAGAIN))
-                    continue;
-
-                if (result == -1)
+                if (errno == ECHILD)
                 {
-                    ec = std::error_code(errno, std::system_category());
+                    break; // No more children
                 }
-                else
+                continue; // Ignore stray SIGCHLD signals
+            }
+            else if (pid == 0)
+            {
+                break; // No more children
+            }
+            else
+            {
+                std::lock_guard<std::mutex> lg(guard);
+                auto it = children.find(pid);
+
+                if (it != children.end())
                 {
-                    auto count = result / sizeof(signalfd_siginfo);
-
-                    for(uint i = 0; i < count; i++)
+                    if (WIFSIGNALED(status) || WIFEXITED(status))
                     {
-                        switch(signal_info[i].ssi_signo)
-                        {
-                        case SIGCHLD:
-                        {
-                            pid_t pid{-1}; int status{-1};
-                            while (true)
-                            {
-                                pid = ::waitpid(-1, &status, WNOHANG);
-
-                                if (pid == -1)
-                                {
-                                    if (errno == ECHILD)
-                                    {
-                                        break; // No more children
-                                    }
-                                    continue; // Ignore stray SIGCHLD signals
-                                }
-                                else if (pid == 0)
-                                {
-                                    break; // No more children
-                                }
-                                else
-                                {
-                                    std::lock_guard<std::mutex> lg(guard);
-                                    auto it = children.find(pid);
-
-                                    if (it != children.end())
-                                    {
-                                        if (WIFSIGNALED(status) || WIFEXITED(status))
-                                        {
-                                            signals.child_died(it->second);
-                                            children.erase(it);
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                        default:
-                            break;
-                        }
+                        signals.child_died(it->second);
+                        children.erase(it);
                     }
                 }
             }
-
-            if (fds[wakeup_fd_idx].revents & POLLIN)
-            {
-                std::int64_t value{1};
-                auto result = ::read(wakeup_fd, &value, sizeof(value));
-                if (result == -1 || result != sizeof(value))
-                {
-                    ec = std::error_code(errno, std::system_category());
-                }
-                break;
-            }
         }
-
-        state.store(State::not_running);
     }
 
-    void quit() override
-    {
-        static const std::int64_t value = {1};
-        if (sizeof(value) != ::write(wakeup_fd, &value, sizeof(value)))
-            throw std::system_error(errno, std::system_category());
-    }
-
-    int wakeup_fd;
-    std::atomic<State> state;
     mutable std::mutex guard;
     std::unordered_map<pid_t, core::posix::ChildProcess> children;
     struct
@@ -250,16 +125,16 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
 };
 }
 
+core::posix::ChildProcess::DeathObserver& core::posix::ChildProcess::DeathObserver::instance()
+{
+    static DeathObserverImpl observer;
+    return observer;
+}
+
 namespace core
 {
 namespace posix
 {
-ChildProcess::DeathObserver& ChildProcess::DeathObserver::instance()
-{
-    static SignalFdDeathObserver observer;
-    return observer;
-}
-
 ChildProcess::Pipe ChildProcess::Pipe::invalid()
 {
     static Pipe p;

@@ -19,7 +19,14 @@
 #ifndef CORE_POSIX_SIGNAL_H_
 #define CORE_POSIX_SIGNAL_H_
 
+#include <core/posix/visibility.h>
+
+#include <core/signal.h>
+
 #include <signal.h>
+
+#include <initializer_list>
+#include <memory>
 
 namespace core
 {
@@ -30,6 +37,7 @@ namespace posix
  */
 enum class Signal
 {
+    unknown = 0,
     sig_hup = SIGHUP,
     sig_int = SIGINT,
     sig_quit = SIGQUIT,
@@ -50,6 +58,59 @@ enum class Signal
     sig_ttin = SIGTTIN,
     sig_ttou = SIGTTOU
 };
+
+/**
+ * @brief The SignalTrap class encapsulates functionality to trap and handle signals.
+ */
+class CORE_POSIX_DLL_PUBLIC SignalTrap
+{
+public:
+    SignalTrap(const SignalTrap&) = delete;
+    virtual ~SignalTrap() = default;
+
+    SignalTrap& operator=(const SignalTrap&) = delete;
+    bool operator==(const SignalTrap&) const = delete;
+
+    /**
+     * @brief Returns true if the given signal is trapped by this instance.
+     */
+    virtual bool has(Signal signal) = 0;
+
+    /**
+     * @brief Starts observation of incoming signals, relaying them via
+     * signal_raised(). The call blocks until stop is called.
+     */
+    virtual void run() = 0;
+
+    /**
+     * @brief Stops execution of the signal trap.
+     */
+    virtual void stop() = 0;
+
+    /**
+     * @brief Emitted whenever a trapped signal is raised by the operating system.
+     */
+    virtual core::Signal<Signal>& signal_raised() = 0;
+
+protected:
+    SignalTrap() = default;
+};
+
+/**
+  * @brief Traps the specified signals for the entire process.
+  */
+CORE_POSIX_DLL_PUBLIC
+std::shared_ptr<SignalTrap> trap_signals_for_process(
+        std::initializer_list<Signal> blocked_signals);
+
+/**
+  * @brief Traps the specified signals for the current thread, and inherits
+  * the respective signal mask to all child-threads.
+  */
+CORE_POSIX_DLL_PUBLIC
+std::shared_ptr<SignalTrap> trap_signals_for_all_subsequent_threads(
+        std::initializer_list<Signal> blocked_signals);
+
 }
 }
 
