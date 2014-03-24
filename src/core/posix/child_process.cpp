@@ -161,12 +161,27 @@ core::posix::ChildProcess::DeathObserver::create_once_with_signal_trap(
             "Cannot create more than one instance."
         };
 
-    std::unique_ptr<core::posix::ChildProcess::DeathObserver> result
+    try
     {
-        new DeathObserverImpl{trap}
-    };
+        std::unique_ptr<core::posix::ChildProcess::DeathObserver> result
+        {
+            new DeathObserverImpl{trap}
+        };
 
-    return result;
+        return result;
+    } catch(...)
+    {
+        // We make sure that a throwing c'tor does not impact our ability to
+        // retry creation of a DeathObserver instance.
+        has_been_created_once.store(false);
+
+        std::rethrow_exception(std::current_exception());
+    }
+
+    assert(false && "We should never reach here.");
+
+    // Silence the compiler.
+    return std::unique_ptr<core::posix::ChildProcess::DeathObserver>{};
 }
 
 namespace core
