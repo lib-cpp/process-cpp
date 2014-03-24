@@ -40,6 +40,28 @@ namespace
 
 struct DeathObserverImpl : public core::posix::ChildProcess::DeathObserver
 {
+    DeathObserverImpl(const std::shared_ptr<core::posix::SignalTrap>& trap)
+        : on_sig_child_connection
+          {
+              trap->signal_raised().connect([this](core::posix::Signal signal)
+              {
+                  switch (signal)
+                  {
+                  case core::posix::Signal::sig_chld:
+                    on_sig_child();
+                    break;
+                  default:
+                    break;
+                  }
+              })
+          }
+    {
+        if (!trap->has(core::posix::Signal::sig_chld))
+            throw std::logic_error(
+                    "DeathObserver::DeathObserverImpl: Given SignalTrap"
+                    " instance does not trap Signal::sig_chld.");
+    }
+
     bool add(const core::posix::ChildProcess& process) override
     {
         if (process.pid() == -1)
@@ -118,6 +140,7 @@ struct DeathObserverImpl : public core::posix::ChildProcess::DeathObserver
 
     mutable std::mutex guard;
     std::unordered_map<pid_t, core::posix::ChildProcess> children;
+    core::ScopedConnection on_sig_child_connection;
     struct
     {
         core::Signal<core::posix::ChildProcess> child_died;
@@ -125,10 +148,25 @@ struct DeathObserverImpl : public core::posix::ChildProcess::DeathObserver
 };
 }
 
-core::posix::ChildProcess::DeathObserver& core::posix::ChildProcess::DeathObserver::instance()
+std::unique_ptr<core::posix::ChildProcess::DeathObserver>
+core::posix::ChildProcess::DeathObserver::create_once_with_signal_trap(
+        std::shared_ptr<core::posix::SignalTrap> trap)
 {
-    static DeathObserverImpl observer;
-    return observer;
+    static std::atomic<bool> has_been_created_once{false};
+
+    if (has_been_created_once.exchange(true))
+        throw std::runtime_error
+        {
+            "DeathObserver::create_once_with_signal_trap: "
+            "Cannot create more than one instance."
+        };
+
+    std::unique_ptr<core::posix::ChildProcess::DeathObserver> result
+    {
+        new DeathObserverImpl{trap}
+    };
+
+    return result;
 }
 
 namespace core

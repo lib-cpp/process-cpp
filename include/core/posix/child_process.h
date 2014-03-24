@@ -57,9 +57,12 @@ public:
     {
     public:
         /**
-         * @brief Access the single instance of the death observer.
+         * @brief Creates the unique instance of class DeathObserver.
+         * @throw std::logic_error if the given SignalTrap instance does not trap Signal::sig_chld.
+         * @throw std::runtime_error if there already is an instance of the death observer.
          */
-        static DeathObserver& instance();
+        static std::unique_ptr<DeathObserver> create_once_with_signal_trap(
+                std::shared_ptr<SignalTrap> trap);
 
         DeathObserver(const DeathObserver&) = delete;
         virtual ~DeathObserver() = default;

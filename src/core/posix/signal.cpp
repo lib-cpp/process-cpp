@@ -177,6 +177,7 @@ public:
 
     void stop() override
     {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
         static const std::int64_t value = {1};
         if (sizeof(value) != ::write(event_fd, &value, sizeof(value)))
             throw std::system_error(errno, std::system_category());
