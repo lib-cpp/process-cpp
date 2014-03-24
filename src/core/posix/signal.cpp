@@ -31,12 +31,12 @@ namespace impl
 {
 void set_thread_signal_mask(::sigset_t* new_mask, ::sigset_t* old_mask)
 {
-    ::pthread_sigmask(SIG_SETMASK, new_mask, old_mask);
+    ::pthread_sigmask(SIG_BLOCK, new_mask, old_mask);
 }
 
 void set_process_signal_mask(::sigset_t* new_mask, ::sigset_t* old_mask)
 {
-    ::sigprocmask(SIG_SETMASK, new_mask, old_mask);
+    ::sigprocmask(SIG_BLOCK, new_mask, old_mask);
 }
 
 class SignalTrap : public core::posix::SignalTrap
