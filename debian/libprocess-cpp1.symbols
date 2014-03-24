@@ -1,4 +1,4 @@
-libprocess-cpp.so.0 libprocess-cpp0 #MINVER#
+libprocess-cpp.so.1 libprocess-cpp1 #MINVER#
  (c++)"core::posix::Signalable::send_signal(core::posix::Signal, std::error_code&)@Base" 0replaceme
  (c++)"core::posix::Signalable::send_signal_or_throw(core::posix::Signal)@Base" 0replaceme
  (c++)"core::posix::ChildProcess::DeathObserver::create_once_with_signal_trap(std::shared_ptr<core::posix::SignalTrap>)@Base" 0replaceme

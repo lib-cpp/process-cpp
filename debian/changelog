@@ -1,3 +1,12 @@
+process-cpp (1.0.0) UNRELEASED; urgency=medium
+
+  * Bump so name.
+  * Fix death observer racyness.
+  * Factor out signalfd-based wait operations on operating system signals.
+  * Introduce interface SignalTrap and accompanying factory functions.
+
+ -- Thomas Voß <thomas.voss@canonical.com>  Mon, 24 Mar 2014 18:06:46 +0100
+
 process-cpp (0.0.1+14.04.20140317-0ubuntu1) trusty; urgency=low
 
   [ Marcus Tomlinson ]
