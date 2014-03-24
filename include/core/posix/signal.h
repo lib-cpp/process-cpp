@@ -101,7 +101,7 @@ protected:
   */
 CORE_POSIX_DLL_PUBLIC
 std::shared_ptr<SignalTrap> trap_signals_for_process(
-        std::initializer_list<Signal> blocked_signals);
+        std::initializer_list<core::posix::Signal> blocked_signals);
 
 /**
   * @brief Traps the specified signals for the current thread, and inherits
@@ -109,7 +109,7 @@ std::shared_ptr<SignalTrap> trap_signals_for_process(
   */
 CORE_POSIX_DLL_PUBLIC
 std::shared_ptr<SignalTrap> trap_signals_for_all_subsequent_threads(
-        std::initializer_list<Signal> blocked_signals);
+        std::initializer_list<core::posix::Signal> blocked_signals);
 
 }
 }
