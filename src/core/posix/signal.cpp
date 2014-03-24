@@ -151,7 +151,7 @@ public:
 
                 for (uint i = 0; i < result / sizeof(signalfd_siginfo); i++)
                 {
-                    if (::sigismember(&blocked_signals_mask, signal_info[i].ssi_signo))
+                    if (has(static_cast<core::posix::Signal>(signal_info[i].ssi_signo)))
                     {
                         on_signal_raised(
                                     static_cast<core::posix::Signal>(
@@ -177,7 +177,6 @@ public:
 
     void stop() override
     {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
         static const std::int64_t value = {1};
         if (sizeof(value) != ::write(event_fd, &value, sizeof(value)))
             throw std::system_error(errno, std::system_category());
