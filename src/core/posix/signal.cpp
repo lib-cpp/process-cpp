@@ -89,6 +89,8 @@ public:
             set_thread_signal_mask(&old_signals_mask, nullptr);
             break;
         }
+
+        ::close(event_fd);
     }
 
     bool has(core::posix::Signal signal) override
@@ -209,7 +211,7 @@ std::shared_ptr<core::posix::SignalTrap> core::posix::trap_signals_for_all_subse
         std::initializer_list<core::posix::Signal> blocked_signals)
 {
     return std::make_shared<impl::SignalTrap>(
-                impl::SignalTrap::Scope::process,
+                impl::SignalTrap::Scope::thread,
                 blocked_signals);
 }
 
