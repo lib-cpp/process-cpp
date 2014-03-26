@@ -8,6 +8,7 @@ libprocess-cpp.so.1 libprocess-cpp1 #MINVER#
  (c++)"core::posix::ChildProcess::invalid()@Base" 0.0.1+14.04.20140311
  (c++)"core::posix::ChildProcess::wait_for(core::posix::wait::Flags const&)@Base" 0.0.1+14.04.20140311
  (c++)"core::posix::ChildProcess::~ChildProcess()@Base" 0replaceme
+ (c++|arch=ppc64el)"core::posix::ChildProcess::ChildProcess(core::posix::ChildProcess const&)@Base" 0replaceme
  (c++)"core::posix::this_process::cin()@Base" 0replaceme
  (c++)"core::posix::this_process::env::get_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
  (c++)"core::posix::this_process::env::set_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
