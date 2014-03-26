@@ -25,6 +25,7 @@ add_library(
   core/posix/fork.cpp
   core/posix/process.cpp
   core/posix/process_group.cpp
+  core/posix/signal.cpp
   core/posix/signalable.cpp
   core/posix/standard_stream.cpp
   core/posix/wait.cpp

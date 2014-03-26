@@ -57,6 +57,11 @@ add_executable(
   cross_process_sync_test.cpp
 )
 
+add_executable(
+  death_observer_test
+  death_observer_test.cpp
+)
+
 target_link_libraries(
   posix_process_test
 
@@ -93,7 +98,17 @@ target_link_libraries(
   ${GMOCK_BOTH_LIBRARIES}
 )
 
+target_link_libraries(
+  death_observer_test
+
+  process-cpp
+
+  ${CMAKE_THREAD_LIBS_INIT}
+  ${GMOCK_BOTH_LIBRARIES}
+)
+
 add_test(posix_process_test ${CMAKE_CURRENT_BINARY_DIR}/posix_process_test)
 add_test(linux_process_test ${CMAKE_CURRENT_BINARY_DIR}/linux_process_test)
 add_test(fork_and_run_test ${CMAKE_CURRENT_BINARY_DIR}/fork_and_run_test)
 add_test(cross_process_sync_test ${CMAKE_CURRENT_BINARY_DIR}/cross_process_sync_test)
+add_test(death_observer_test ${CMAKE_CURRENT_BINARY_DIR}/death_observer_test)

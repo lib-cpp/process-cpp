@@ -37,42 +37,29 @@ namespace io = boost::iostreams;
 
 namespace
 {
-struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
+
+struct DeathObserverImpl : public core::posix::ChildProcess::DeathObserver
 {
-    enum class State
+    DeathObserverImpl(const std::shared_ptr<core::posix::SignalTrap>& trap)
+        : on_sig_child_connection
+          {
+              trap->signal_raised().connect([this](core::posix::Signal signal)
+              {
+                  switch (signal)
+                  {
+                  case core::posix::Signal::sig_chld:
+                    on_sig_child();
+                    break;
+                  default:
+                    break;
+                  }
+              })
+          }
     {
-        not_running,
-        running
-    };
-
-    SignalFdDeathObserver()
-        : signal_fd(-1),
-          wakeup_fd(-1),
-          state(State::not_running)
-    {
-        ::sigemptyset(&mask);
-        ::sigaddset(&mask, SIGCHLD);
-
-        if (::sigprocmask(SIG_BLOCK, &mask, &old_process_mask) == -1)
-            throw std::system_error(errno, std::system_category());
-
-        signal_fd = ::signalfd(signal_fd, &mask, SFD_NONBLOCK);
-
-        if (signal_fd == -1)
-            throw std::system_error(errno, std::system_category());
-
-        static const unsigned int initial_value = 0;
-        wakeup_fd = ::eventfd(initial_value, EFD_NONBLOCK);
-
-        if (wakeup_fd == -1)
-            throw std::system_error(errno, std::system_category());
-    }
-
-    ~SignalFdDeathObserver()
-    {
-        ::sigprocmask(SIG_SETMASK, &old_process_mask, nullptr);
-        ::close(signal_fd);
-        ::close(wakeup_fd);
+        if (!trap->has(core::posix::Signal::sig_chld))
+            throw std::logic_error(
+                    "DeathObserver::DeathObserverImpl: Given SignalTrap"
+                    " instance does not trap Signal::sig_chld.");
     }
 
     bool add(const core::posix::ChildProcess& process) override
@@ -115,132 +102,45 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
         return signals.child_died;
     }
 
-    void run(std::error_code& ec) override
+    void on_sig_child() override
     {
-        if (state.load() == State::running)
-            throw std::runtime_error("DeathObserver::run can only be run once.");
-
-        state.store(State::running);
-
-        sigset_t old_mask;
-
-        if (::pthread_sigmask(SIG_SETMASK, &mask, &old_mask) == -1)
-        {
-            ec = std::error_code(errno, std::system_category());
-            return;
-        }
-
-        signalfd_siginfo signal_info;
-        ::memset(&signal_info, 0, sizeof(signal_info));
-
-        static const int signal_fd_idx = 0;
-        static const int wakeup_fd_idx = 1;
-
-        pollfd fds[2];
-        fds[0] = {signal_fd, POLLIN, 0};
-        fds[1] = {wakeup_fd, POLLIN, 0};
-
+        pid_t pid{-1}; int status{-1};
         while (true)
         {
-            auto rc = ::poll(fds, 2, -1);
+            pid = ::waitpid(-1, &status, WNOHANG);
 
-            if (rc == -1)
+            if (pid == -1)
             {
-                if (errno == EINTR)
-                    continue;
-
-                ec = std::error_code(errno, std::system_category());
-                break;
-            }
-
-            if (rc == 0)
-                continue;
-
-            if (fds[signal_fd_idx].revents == POLLIN)
-            {
-                auto result = ::read(signal_fd, &signal_info, sizeof(signal_info));
-                if (result == -1 || result != sizeof(signal_info))
+                if (errno == ECHILD)
                 {
-                    ec = std::error_code(errno, std::system_category());
+                    break; // No more children
                 }
-                else if (result == sizeof(signal_info))
+                continue; // Ignore stray SIGCHLD signals
+            }
+            else if (pid == 0)
+            {
+                break; // No more children
+            }
+            else
+            {
+                std::lock_guard<std::mutex> lg(guard);
+                auto it = children.find(pid);
+
+                if (it != children.end())
                 {
-                    switch(signal_info.ssi_signo)
+                    if (WIFSIGNALED(status) || WIFEXITED(status))
                     {
-                    case SIGCHLD:
-                    {
-                        pid_t pid{-1}; int status{-1};
-                        while (true)
-                        {
-                            pid = ::waitpid(-1, &status, WNOHANG);
-
-                            if (pid == -1)
-                            {
-                                if (errno == ECHILD)
-                                {
-                                    break; // No more children
-                                }
-                                continue; // Ignore stray SIGCHLD signals
-                            }
-                            else if (pid == 0)
-                            {
-                                break; // No more children
-                            }
-                            else
-                            {
-                                std::lock_guard<std::mutex> lg(guard);
-                                auto it = children.find(pid);
-
-                                if (it != children.end())
-                                {
-                                    if (WIFSIGNALED(status) || WIFEXITED(status))
-                                    {
-                                        signals.child_died(it->second);
-                                        children.erase(it);
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                        break;
+                        signals.child_died(it->second);
+                        children.erase(it);
                     }
                 }
-            }
-
-            if (fds[wakeup_fd_idx].revents == POLLIN)
-            {
-                std::int64_t value{1};
-                auto result = ::read(wakeup_fd, &value, sizeof(value));
-                if (result == -1 || result != sizeof(value))
-                {
-                    ec = std::error_code(errno, std::system_category());
-                }
-                break;
             }
         }
-
-        if (pthread_sigmask(SIG_SETMASK, &old_mask, nullptr) == -1)
-            ec = std::error_code(errno, std::system_category());
-
-        state.store(State::not_running);
     }
 
-    void quit() override
-    {
-        static const std::int64_t value = {1};
-        if (sizeof(value) != ::write(wakeup_fd, &value, sizeof(value)))
-            throw std::system_error(errno, std::system_category());
-    }
-
-    sigset_t mask;
-    sigset_t old_process_mask;
-    int signal_fd;
-    int wakeup_fd;
-    std::atomic<State> state;
     mutable std::mutex guard;
     std::unordered_map<pid_t, core::posix::ChildProcess> children;
+    core::ScopedConnection on_sig_child_connection;
     struct
     {
         core::Signal<core::posix::ChildProcess> child_died;
@@ -248,16 +148,46 @@ struct SignalFdDeathObserver : public core::posix::ChildProcess::DeathObserver
 };
 }
 
+std::unique_ptr<core::posix::ChildProcess::DeathObserver>
+core::posix::ChildProcess::DeathObserver::create_once_with_signal_trap(
+        std::shared_ptr<core::posix::SignalTrap> trap)
+{
+    static std::atomic<bool> has_been_created_once{false};
+
+    if (has_been_created_once.exchange(true))
+        throw std::runtime_error
+        {
+            "DeathObserver::create_once_with_signal_trap: "
+            "Cannot create more than one instance."
+        };
+
+    try
+    {
+        std::unique_ptr<core::posix::ChildProcess::DeathObserver> result
+        {
+            new DeathObserverImpl{trap}
+        };
+
+        return result;
+    } catch(...)
+    {
+        // We make sure that a throwing c'tor does not impact our ability to
+        // retry creation of a DeathObserver instance.
+        has_been_created_once.store(false);
+
+        std::rethrow_exception(std::current_exception());
+    }
+
+    assert(false && "We should never reach here.");
+
+    // Silence the compiler.
+    return std::unique_ptr<core::posix::ChildProcess::DeathObserver>{};
+}
+
 namespace core
 {
 namespace posix
 {
-ChildProcess::DeathObserver& ChildProcess::DeathObserver::instance()
-{
-    static SignalFdDeathObserver observer;
-    return observer;
-}
-
 ChildProcess::Pipe ChildProcess::Pipe::invalid()
 {
     static Pipe p;

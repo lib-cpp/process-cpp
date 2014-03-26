@@ -56,9 +56,9 @@ IF(cmake_build_type_lower MATCHES coverage)
   SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -ftest-coverage -fprofile-arcs" )
 ENDIF(cmake_build_type_lower MATCHES coverage)
 
-set(PROCESS_CPP_VERSION_MAJOR 0)
+set(PROCESS_CPP_VERSION_MAJOR 1)
 set(PROCESS_CPP_VERSION_MINOR 0)
-set(PROCESS_CPP_VERSION_PATCH 1)
+set(PROCESS_CPP_VERSION_PATCH 0)
 
 include(CTest)
 

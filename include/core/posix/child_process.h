@@ -57,9 +57,12 @@ public:
     {
     public:
         /**
-         * @brief Access the single instance of the death observer.
+         * @brief Creates the unique instance of class DeathObserver.
+         * @throw std::logic_error if the given SignalTrap instance does not trap Signal::sig_chld.
+         * @throw std::runtime_error if there already is an instance of the death observer.
          */
-        static DeathObserver& instance();
+        static std::unique_ptr<DeathObserver> create_once_with_signal_trap(
+                std::shared_ptr<SignalTrap> trap);
 
         DeathObserver(const DeathObserver&) = delete;
         virtual ~DeathObserver() = default;
@@ -87,16 +90,9 @@ public:
         virtual const core::Signal<ChildProcess>& child_died() const = 0;
 
         /**
-         * @brief run starts the observer and blocks until quit() is called.
-         * @throw std::runtime_error if called more than once without intermediate quit().
-         * @param ec Destination to store errors.
+         * @brief Checks and reaps all child processes registered with the observer instance.
          */
-        virtual void run(std::error_code& ec) = 0;
-
-        /**
-         * @brief quit stops the execution of the observer.
-         */
-        virtual void quit() = 0;
+        virtual void on_sig_child() = 0;
 
     protected:
         DeathObserver() = default;

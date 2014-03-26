@@ -50,6 +50,23 @@ struct ForkedSpinningProcess : public ::testing::Test
 
     core::posix::ChildProcess child = core::posix::ChildProcess::invalid();
 };
+
+struct Init
+{
+    Init()
+        : signal_trap(
+              core::posix::trap_signals_for_all_subsequent_threads(
+                  {core::posix::Signal::sig_chld})),
+          death_observer(
+              core::posix::ChildProcess::DeathObserver::create_once_with_signal_trap(
+                  signal_trap))
+    {
+    }
+
+    std::shared_ptr<core::posix::SignalTrap> signal_trap;
+    std::unique_ptr<core::posix::ChildProcess::DeathObserver> death_observer;
+} init;
+
 }
 
 TEST(PosixProcess, ctor_throws_for_invalid_pid)
@@ -344,7 +361,7 @@ TEST(ChildProcess, stopping_an_execd_child_makes_wait_for_return_correct_result)
 
 namespace
 {
-struct ChildDeathObserverSignalTrap
+struct ChildDeathObserverEventCollector
 {
     MOCK_METHOD1(on_child_died,void(const core::posix::Process&));
 };
@@ -354,51 +371,43 @@ TEST_F(ForkedSpinningProcess, observing_child_processes_for_death_works_if_child
 {
     using namespace ::testing;
 
-    ChildDeathObserverSignalTrap signal_trap;
-
-    auto& death_observer = core::posix::ChildProcess::DeathObserver::instance();
-
-    EXPECT_TRUE(death_observer.add(child));
+    ChildDeathObserverEventCollector event_collector;
 
     core::ScopedConnection sc
     {
-        death_observer.child_died().connect([&signal_trap](const core::posix::ChildProcess& child)
+        init.death_observer->child_died().connect([&event_collector](core::posix::ChildProcess cp)
         {
-            signal_trap.on_child_died(child);
+            event_collector.on_child_died(cp);
         })
     };
 
-    EXPECT_CALL(signal_trap, on_child_died(_))
+    EXPECT_TRUE(init.death_observer->add(child));
+    EXPECT_CALL(event_collector, on_child_died(_))
             .Times(1)
             .WillOnce(
                 InvokeWithoutArgs(
-                    &death_observer,
-                    &core::posix::ChildProcess::DeathObserver::quit));
+                    init.signal_trap.get(),
+                    &core::posix::SignalTrap::stop));
 
-    std::error_code ec;
-    std::thread worker{[&death_observer, &ec]() { death_observer.run(ec); }};
+    std::thread worker{[]() { init.signal_trap->run(); }};
 
     child.send_signal_or_throw(core::posix::Signal::sig_kill);
 
     if (worker.joinable())
         worker.join();
-
-    EXPECT_FALSE(ec);
 }
 
 TEST_F(ForkedSpinningProcess, observing_child_processes_for_death_works_if_child_is_signalled_with_sigterm)
 {
     using namespace ::testing;
 
-    ChildDeathObserverSignalTrap signal_trap;
+    ChildDeathObserverEventCollector signal_trap;
 
-    auto& death_observer = core::posix::ChildProcess::DeathObserver::instance();
-
-    EXPECT_TRUE(death_observer.add(child));
+    EXPECT_TRUE(init.death_observer->add(child));
 
     core::ScopedConnection sc
     {
-        death_observer.child_died().connect([&signal_trap](const core::posix::ChildProcess& child)
+        init.death_observer->child_died().connect([&signal_trap](const core::posix::ChildProcess& child)
         {
             signal_trap.on_child_died(child);
         })
@@ -408,57 +417,51 @@ TEST_F(ForkedSpinningProcess, observing_child_processes_for_death_works_if_child
             .Times(1)
             .WillOnce(
                 InvokeWithoutArgs(
-                    &death_observer,
-                    &core::posix::ChildProcess::DeathObserver::quit));
+                    init.signal_trap.get(),
+                    &core::posix::SignalTrap::stop));
 
-    std::error_code ec;
-    std::thread worker{[&death_observer, &ec]() { death_observer.run(ec); }};
+    std::thread worker{[]() { init.signal_trap->run(); }};
 
     child.send_signal_or_throw(core::posix::Signal::sig_term);
 
     if (worker.joinable())
         worker.join();
-
-    EXPECT_FALSE(ec);
 }
 
 TEST(ChildProcess, ensure_that_forked_children_are_cleaned_up)
 {
     static const unsigned int child_process_count = 100;
-    static unsigned int counter = 0;
+    unsigned int counter = 1;
 
-    auto& death_observer = core::posix::ChildProcess::DeathObserver::instance();
     core::ScopedConnection sc
     {
-        death_observer.child_died().connect([&death_observer](const core::posix::ChildProcess&)
+        init.death_observer->child_died().connect([&counter](const core::posix::ChildProcess&)
         {
             counter++;
 
             if (counter == child_process_count)
             {
-                death_observer.quit();
+                init.signal_trap->stop();
             }
         })
     };
 
-    std::error_code ec;
-    std::thread t([&death_observer, &ec]() {death_observer.run(ec);});
+    std::thread t([]() {init.signal_trap->run();});
 
     for (unsigned int i = 0; i < child_process_count; i++)
     {
         auto child = core::posix::fork(
                     []() { return core::posix::exit::Status::success; },
         core::posix::StandardStream::stdin | core::posix::StandardStream::stdout);
-        death_observer.add(child);
+        init.death_observer->add(child);
         // A bit ugly but we have to ensure that no signal is lost.
         // And thus, we keep the process object alive.
-        std::this_thread::sleep_for(std::chrono::milliseconds{10});
+        std::this_thread::sleep_for(std::chrono::milliseconds{5});
     }
 
     if (t.joinable())
         t.join();
 
-    EXPECT_FALSE(ec);
     EXPECT_EQ(child_process_count, counter);
 }
 
