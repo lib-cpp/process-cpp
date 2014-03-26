@@ -1,4 +1,4 @@
-process-cpp (1.0.0) UNRELEASED; urgency=medium
+process-cpp (1.0.0+14.04.20140326.2-0ubuntu1) trusty; urgency=medium
 
   [ Thomas Voß ]
   * Bump so name.
@@ -9,7 +9,7 @@ process-cpp (1.0.0) UNRELEASED; urgency=medium
   [ Ubuntu daily release ]
   * debian/*symbols: auto-update new symbols to released version
 
- -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 26 Mar 2014 13:55:23 +0000
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 26 Mar 2014 13:55:24 +0000
 
 process-cpp (0.0.1+14.04.20140322-0ubuntu1) trusty; urgency=low
 
