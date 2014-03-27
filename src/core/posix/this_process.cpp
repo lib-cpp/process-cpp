@@ -58,12 +58,9 @@ void for_each(const std::function<void(const std::string&, const std::string&)>&
     auto it = ::environ;
     while (it != nullptr && *it != nullptr)
     {
-        std::string line(*it);
-        std::vector<std::string> tokens;
-        boost::algorithm::split(tokens, line, boost::is_any_of("="));
-
-        functor(tokens.front(), tokens.back());
-
+        std::string line(*it);        
+        functor(line.substr(0,line.find_first_of('=')),
+                line.substr(line.find_first_of('=')+1));
         ++it;
     }
 }
