@@ -107,7 +107,7 @@ struct DeathObserverImpl : public core::posix::ChildProcess::DeathObserver
         pid_t pid{-1}; int status{-1};
         while (true)
         {
-            pid = ::waitpid(-1, &status, WNOHANG);
+            pid = ::waitpid(0, &status, WNOHANG);
 
             if (pid == -1)
             {
