@@ -509,3 +509,33 @@ TEST(Environment, specifying_default_value_for_get_returns_correct_result)
     EXPECT_EQ(expected_value,
               core::posix::this_process::env::get("totally_non_existant_key_in_env_blubb", expected_value));
 }
+
+TEST(Environment, for_each_returns_correct_results)
+{
+    std::array<std::string, 3> env_keys = {"totally_non_existant_key_in_env_blubb0",
+                                           "totally_non_existant_key_in_env_blubb1",
+                                           "totally_non_existant_key_in_env_blubb2"};
+    std::array<std::string, 3> env_vars = {env_keys[0] + "=" + "hello",
+                                           env_keys[1] + "=" + "",
+                                           env_keys[2] + "=" + "string=hello"};
+    for( auto const& env_var : env_vars )
+    {
+        ::putenv(const_cast<char*>(env_var.c_str()));
+    }
+
+    core::posix::this_process::env::for_each([env_keys](const std::string& key, const std::string& value)
+    {
+        if (key == env_keys[0])
+        {
+            EXPECT_EQ("hello", value);
+        }
+        else if (key == env_keys[1])
+        {
+            EXPECT_EQ("", value);
+        }
+        else if (key == env_keys[2])
+        {
+            EXPECT_EQ("string=hello", value);
+        }
+    });
+}
