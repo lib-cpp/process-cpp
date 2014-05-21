@@ -35,7 +35,17 @@ ChildProcess exec(const std::string& fn,
                   const std::map<std::string, std::string>& env,
                   const StandardStream& flags)
 {
-    return posix::fork([fn, argv, env]()
+    std::function<void()> null_function = [](){};
+    return exec(fn, argv, env, flags, null_function);
+}
+
+ChildProcess exec(const std::string& fn,
+                  const std::vector<std::string>& argv,
+                  const std::map<std::string, std::string>& env,
+                  const StandardStream& flags,
+                  const std::function<void()>& child_setup)
+{
+    return posix::fork([fn, argv, env, child_setup]()
     {
         char** it; char** pargv; char** penv;
         it = pargv = new char*[argv.size()+2];
@@ -56,8 +66,10 @@ ChildProcess exec(const std::string& fn,
         }
         *it = nullptr;
 
+        child_setup();
         return static_cast<posix::exit::Status>(execve(fn.c_str(), pargv, penv));
     }, flags);
 }
+
 }
 }
