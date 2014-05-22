@@ -1,12 +1,13 @@
-process-cpp (1.0.1-0ubuntu1) UNRELEASED; urgency=medium
+process-cpp (1.0.1+14.10.20140522-0ubuntu1) utopic; urgency=medium
 
   [ Pete Woods ]
   * Add child_setup function to core::posic::exec.
 
   [ Ubuntu daily release ]
   * debian/*symbols: auto-update new symbols to released version
+  * New rebuild forced
 
- -- Pete Woods <pete.woods@canonical.com>  Wed, 21 May 2014 14:38:53 +0100
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 22 May 2014 09:49:51 +0000
 
 process-cpp (1.0.0+14.04.20140328-0ubuntu2) utopic; urgency=high
 
