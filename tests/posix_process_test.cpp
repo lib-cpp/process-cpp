@@ -290,6 +290,27 @@ TEST(ChildProcess, exec_returns_process_object_with_valid_pid_and_wait_for_retur
               result.detail.if_signaled.signal);
 }
 
+TEST(ChildProcess, exec_child_setup)
+{
+    const std::string program{"/usr/bin/sleep"};
+    const std::vector<std::string> argv = {"10"};
+    std::map<std::string, std::string> env;
+    std::function<void()> child_setup = []()
+    {
+        std::cout << "hello_there" << std::endl;
+    };
+
+    core::posix::ChildProcess child = core::posix::exec(program,
+                                            argv,
+                                            env,
+                                            core::posix::StandardStream::stdout,
+                                            child_setup);
+    EXPECT_TRUE(child.pid() > 0);
+    std::string output;
+    child.cout() >> output;
+    EXPECT_EQ("hello_there", output);
+}
+
 TEST(ChildProcess, signalling_an_execd_child_makes_wait_for_return_correct_result)
 {
     const std::string program{"/usr/bin/env"};
