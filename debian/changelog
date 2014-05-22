@@ -1,3 +1,16 @@
+process-cpp (1.0.1-0ubuntu1) UNRELEASED; urgency=medium
+
+  [ Pete Woods ]
+  * Add child_setup function to core::posic::exec.
+
+ -- Pete Woods <pete.woods@canonical.com>  Wed, 21 May 2014 14:38:53 +0100
+
+process-cpp (1.0.0+14.04.20140328-0ubuntu2) utopic; urgency=high
+
+  * No change rebuild against boost1.55.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Sun, 27 Apr 2014 02:37:06 +0100
+
 process-cpp (1.0.0+14.04.20140328-0ubuntu1) trusty; urgency=low
 
   [ Marcus Tomlinson ]

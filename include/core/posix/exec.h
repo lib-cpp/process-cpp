@@ -46,6 +46,22 @@ CORE_POSIX_DLL_PUBLIC ChildProcess exec(const std::string& fn,
                   const std::vector<std::string>& argv,
                   const std::map<std::string, std::string>& env,
                   const StandardStream& flags);
+
+/**
+ * @brief exec execve's the executable with the provided arguments and environment.
+ * @throws std::system_error in case of errors.
+ * @param fn The executable to run.
+ * @param argv Vector of command line arguments
+ * @param env Environment that the new process should run under
+ * @param flags Specifies which standard streams should be redirected.
+ * @param child_setup Function to run in the child just before exec().
+ * @return An instance of ChildProcess corresponding to the newly exec'd process.
+ */
+CORE_POSIX_DLL_PUBLIC ChildProcess exec(const std::string& fn,
+                  const std::vector<std::string>& argv,
+                  const std::map<std::string, std::string>& env,
+                  const StandardStream& flags,
+                  const std::function<void()>& child_setup);
 }
 }
 
