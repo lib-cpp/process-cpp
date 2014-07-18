@@ -1,8 +1,9 @@
-process-cpp (2.0.0) UNRELEASED; urgency=medium
+process-cpp (2.0.0+14.10.20140718-0ubuntu1) utopic; urgency=medium
 
+  [ Thomas Voß ]
   * Bump major revision and so name to account for toolchain update.
 
- -- Thomas Voß <thomas.voss@canonical.com>  Fri, 27 Jun 2014 09:49:30 +0200
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 18 Jul 2014 12:29:36 +0000
 
 process-cpp (1.0.1+14.10.20140522-0ubuntu1) utopic; urgency=medium
 
