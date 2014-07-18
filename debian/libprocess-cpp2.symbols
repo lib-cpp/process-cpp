@@ -1,4 +1,4 @@
-libprocess-cpp.so.1 libprocess-cpp1 #MINVER#
+libprocess-cpp.so.2 libprocess-cpp2 #MINVER#
  (c++)"core::posix::Signalable::send_signal(core::posix::Signal, std::error_code&)@Base" 1.0.0+14.04.20140326.2
  (c++)"core::posix::Signalable::send_signal_or_throw(core::posix::Signal)@Base" 1.0.0+14.04.20140326.2
  (c++)"core::posix::ChildProcess::DeathObserver::create_once_with_signal_trap(std::shared_ptr<core::posix::SignalTrap>)@Base" 1.0.0+14.04.20140326.2
@@ -8,7 +8,6 @@ libprocess-cpp.so.1 libprocess-cpp1 #MINVER#
  (c++)"core::posix::ChildProcess::invalid()@Base" 0.0.1+14.04.20140311
  (c++)"core::posix::ChildProcess::wait_for(core::posix::wait::Flags const&)@Base" 0.0.1+14.04.20140311
  (c++)"core::posix::ChildProcess::~ChildProcess()@Base" 1.0.0+14.04.20140326.2
- (c++|arch=ppc64el)"core::posix::ChildProcess::ChildProcess(core::posix::ChildProcess const&)@Base" 1.0.0+14.04.20140326.2
  (c++)"core::posix::this_process::cin()@Base" 1.0.0+14.04.20140326.2
  (c++)"core::posix::this_process::env::get_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.0.0+14.04.20140326.2
  (c++)"core::posix::this_process::env::set_or_throw(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.0.0+14.04.20140326.2

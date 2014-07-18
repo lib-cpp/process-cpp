@@ -6,6 +6,10 @@ Build-Depends: cmake,
                doxygen,
                google-mock,
                graphviz,
+# We rely on C++11 features, and to prevent from ABI breaks
+# in libstdc++ causing us issues, we explicitly select a G++
+# version.
+               g++-4.9,
                libboost-dev,
                libboost-iostreams-dev,
                libboost-system-dev,
@@ -19,7 +23,7 @@ Homepage: https://launchpad.net/process-cpp
 Vcs-Bzr: https://code.launchpad.net/~phablet-team/content-hub/trunk
 Vcs-Browser: https://bazaar.launchpad.net/~phablet-team/process-cpp/trunk/files
 
-Package: libprocess-cpp1
+Package: libprocess-cpp2
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends},
@@ -35,7 +39,7 @@ Section: libdevel
 Architecture: any
 Multi-Arch: same
 Recommends: libprocess-cpp-doc,
-Depends: libprocess-cpp1 (= ${binary:Version}),
+Depends: libprocess-cpp2 (= ${binary:Version}),
          ${misc:Depends},
          libproperties-cpp-dev,
 Description: C++11 library for handling processes - dev headers and libraries
