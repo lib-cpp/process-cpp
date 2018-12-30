@@ -45,6 +45,7 @@ target_link_libraries(
 
   ${Boost_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
+  execinfo
 )
 
 # We compile with all symbols visible by default. For the shipping library, we strip

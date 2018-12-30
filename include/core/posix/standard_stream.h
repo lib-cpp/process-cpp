@@ -23,6 +23,11 @@
 
 #include <cstdint>
 
+// Musl uses "#define stdin (stdin)", so the enum declaration fails with a syntax error
+#undef stdin
+#undef stdout
+#undef stderr
+
 namespace core
 {
 namespace posix
